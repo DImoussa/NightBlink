@@ -136,8 +136,11 @@ func _scan_ports(port_list: Array) -> void:
 
 
 func _get_port_override() -> String:
-	return OS.get_environment(PORT_OVERRIDE_ENV).strip_edges()
-
+	var env_port = OS.get_environment(PORT_OVERRIDE_ENV).strip_edges()
+	if env_port != "":
+		return env_port
+	# AJOUTE CETTE LIGNE : Force la connexion sur le simulateur Wokwi de VS Code
+	return "tcp://127.0.0.1:4000"
 
 func _dbg(msg: String) -> void:
 	if _debug:

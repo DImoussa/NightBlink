@@ -102,10 +102,8 @@ script = ExtResource("1_glv2v")
 shape = SubResource("CapsuleShape3D_aloso")
 
 [node name="Head" type="Node3D" parent="Player" unique_id=82651158]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -2.3559558)
 
 [node name="Camera3D" type="Camera3D" parent="Player/Head" unique_id=1709636960]
-transform = Transform3D(-0.0045546573, 0, 0.9999896, 0, 1, 0, -0.9999896, 0, -0.0045546573, 1.5588548, 0, 0)
 
 [node name="Lantern" type="SpotLight3D" parent="Player/Head/Camera3D" unique_id=352713563]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.2, 0)

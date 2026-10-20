@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://bsfj7o4pcbvy"]
+
+[ext_resource type="Script" uid="uid://cmrojrnnqr2bj" path="res://Scenes/PapierOuvrant/note_papier.gd" id="1_kj1qb"]
+[ext_resource type="PackedScene" uid="uid://bolprwn0lhb0d" path="res://player.tscn" id="2_7kr33"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_k0vqr"]
+radius = 0.7
+
+[sub_resource type="QuadMesh" id="QuadMesh_k0vqr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ih5vm"]
+albedo_color = Color(0.61810786, 0.61810786, 0.61810786, 1)
+roughness = 0.9
+
+[node name="Node3D" type="Node3D" unique_id=1596967186]
+
+[node name="Mur3" type="CSGBox3D" parent="." unique_id=631647826]
+transform = Transform3D(0.99997646, -0.0068825036, -0.00022423046, 0.00055539154, 0.048154525, 0.9988399, -0.0068638325, -0.99881625, 0.048157156, 1.4059826, 1.9227154, 41.49755)
+use_collision = true
+size = Vector3(37.16443, 81.91351, 1)
+
+[node name="NotePapier" type="Area3D" parent="." unique_id=2006595968]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.8389983, 3.3290844)
+script = ExtResource("1_kj1qb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NotePapier" unique_id=663555539]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0027635098, 0.38517046, -0.06600714)
+shape = SubResource("SphereShape3D_k0vqr")
+
+[node name="VisuelFeuilleTest" type="MeshInstance3D" parent="NotePapier" unique_id=1000619366]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.46860522, 0)
+mesh = SubResource("QuadMesh_k0vqr")
+
+[node name="IndiceEcrit" type="Label3D" parent="NotePapier" unique_id=1217713639]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="NotePapier" unique_id=1835756902]
+
+[node name="FondNoir" type="ColorRect" parent="NotePapier/CanvasLayer" unique_id=128022166]
+custom_minimum_size = Vector2(400, 380)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 603.0
+offset_top = 145.0
+offset_right = -608.0
+offset_bottom = -183.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.5254902, 0.49803922, 0.15294118, 0.6509804)
+
+[node name="Feuille" type="TextureRect" parent="NotePapier/CanvasLayer" unique_id=1639185185]
+offset_left = 637.0
+offset_top = 227.0
+offset_right = 1137.0
+offset_bottom = 827.0
+
+[node name="TexteNote" type="Label" parent="NotePapier/CanvasLayer" unique_id=541725541]
+custom_minimum_size = Vector2(400, 0)
+offset_left = 626.0
+offset_top = 204.0
+offset_right = 1165.0
+offset_bottom = 822.0
+theme_override_colors/font_color = Color(0.8741615, 0.8741615, 0.8741615, 1)
+theme_override_font_sizes/font_size = 32
+text = "
+"
+autowrap_mode = 3
+
+[node name="Mur" type="CSGBox3D" parent="." unique_id=1724250194]
+transform = Transform3D(0.9998342, -0.017799018, -0.0039021745, -0.017691923, -0.99950683, 0.025950251, -0.004362181, -0.025876839, -0.9996557, 0.7884603, 4.314014, 2.7565272)
+use_collision = true
+size = Vector3(37.21054, 8.606079, 1.0039063)
+material = SubResource("StandardMaterial3D_ih5vm")
+
+[node name="Player" parent="." unique_id=113448251 instance=ExtResource("2_7kr33")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.721933, 23.709785)

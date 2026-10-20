@@ -2,67 +2,74 @@ extends CharacterBody3D
 
 @export var speed := 4.0
 @export var mouse_sensitivity := 0.002
-@export var portee_aimant := 30.0   # distance max pour attraper un mur
+@export var force_attraction := 12.0
 
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera3D
+@onready var rayon_aimant: RayCast3D = get_node_or_null("Head/Camera3D/RayonAimant")
+@onready var point_attraction: Marker3D = get_node_or_null("Head/Camera3D/PointAttraction")
+@onready var lanterne: SpotLight3D = get_node_or_null("Head/Camera3D/Lantern")
 
-var mur_tenu: Node3D = null          # le mur attrapé par l'aimant
-var decalage_mur: Transform3D        # position du mur par rapport à la caméra
-
+var objet_attire: RigidBody3D = null
+var arduino_btn_state: bool = false # État du bouton de l'Arduino
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	# Bouton de la carte : active / relâche l'aimant
-	Arduino.bouton_appuye.connect(basculer_aimant)
+	if lanterne:
+		lanterne.visible = true
+
+	# Écoute le signal universel "message_received" du script des professeurs
+	var arduino_node = get_node_or_null("/root/Arduino")
+	if arduino_node and arduino_node.has_signal("message_received"):
+		arduino_node.message_received.connect(_sur_message_arduino)
+
+func _sur_message_arduino(key: String, value: String) -> void:
+	# Quand l'Arduino envoie "button:1" ou "button:0"
+	if key == "button":
+		arduino_btn_state = (value == "1")
+		print("Bouton Arduino reçu -> État : ", arduino_btn_state)
 
 func _unhandled_input(event):
-	# Regarder avec la souris
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * mouse_sensitivity)
 		head.rotate_x(-event.relative.y * mouse_sensitivity)
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-80), deg_to_rad(80))
 
-	# Allumer / éteindre la lanterne
-
-	# Touche E : même effet que le bouton de la carte (pour tester sans Arduino)
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_E:
-		basculer_aimant()
-
-	# Échap pour libérer la souris
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-func basculer_aimant():
-	if mur_tenu:
-		# Deuxième appui : on relâche le mur là où il est
-		mur_tenu = null
-		Arduino.led(false)
-		return
-	# Premier appui : on attrape le mur visé au centre de l'écran
-	var origine := camera.global_position
-	var fin := origine - camera.global_basis.z * portee_aimant
-	var requete := PhysicsRayQueryParameters3D.create(origine, fin)
-	requete.exclude = [get_rid()]
-	var resultat := get_world_3d().direct_space_state.intersect_ray(requete)
-	if resultat and resultat.collider is Node3D and str(resultat.collider.name).begins_with("Mur"):
-		mur_tenu = resultat.collider
-		decalage_mur = camera.global_transform.affine_inverse() * mur_tenu.global_transform
-		Arduino.led(true)   # LED allumée = aimant actif
-
-func _physics_process(delta):
-	# Gravité
+func _physics_process(_delta):
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		velocity += get_gravity() * _delta
 
-	# Déplacement ZQSD dans la direction du regard
+	# 1. DÉPLACEMENT : Avancer avec le bouton de l'Arduino ou Z/W
 	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
+	if arduino_btn_state or Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_Z):
+		direction = -transform.basis.z
+
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
-
 	move_and_slide()
 
-	# Le mur attrapé suit la caméra (donc la souris)
-	if mur_tenu:
-		mur_tenu.global_transform = camera.global_transform * decalage_mur
+	# 2. LOGIQUE DE L'AIMANT
+	if rayon_aimant and point_attraction:
+		var cible_visee = rayon_aimant.get_collider() if rayon_aimant.is_colliding() else null
+		var vise_du_metal = cible_visee is RigidBody3D and cible_visee.is_in_group("metal")
+
+		var arduino_node = get_node_or_null("/root/Arduino")
+		if arduino_node and arduino_node.has_method("send_led"):
+			arduino_node.send_led(vise_du_metal or (objet_attire != null))
+
+		if arduino_btn_state or Input.is_key_pressed(KEY_E):
+			if objet_attire == null and vise_du_metal:
+				objet_attire = cible_visee
+
+			if objet_attire != null:
+				var dir = point_attraction.global_position - objet_attire.global_position
+				objet_attire.linear_velocity = dir * force_attraction
+				objet_attire.angular_velocity = Vector3.ZERO
+		else:
+			if objet_attire != null:
+				objet_attire = null

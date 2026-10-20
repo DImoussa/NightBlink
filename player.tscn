@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bolprwn0lhb0d"]
+
+[ext_resource type="Script" uid="uid://263857itgir0" path="res://player.gd" id="1_2f46u"]
+[ext_resource type="Script" uid="uid://mcsitmp0c4ak" path="res://lantern.gd" id="2_ecvjs"]
+[ext_resource type="PackedScene" uid="uid://b74d812ubhn78" path="res://aimant.glb" id="3_i3pqv"]
+[ext_resource type="Script" uid="uid://ca1f8cw1jgo8h" path="res://aimant.gd" id="4_hqtel"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_l8wyf"]
+
+[node name="Player" type="CharacterBody3D" unique_id=113448251]
+script = ExtResource("1_2f46u")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1224643565]
+shape = SubResource("CapsuleShape3D_l8wyf")
+
+[node name="Head" type="Node3D" parent="." unique_id=1516763090]
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=467415295]
+
+[node name="RayonAimant" type="RayCast3D" parent="Head/Camera3D" unique_id=1066253998]
+target_position = Vector3(0, -1, -6)
+
+[node name="PointAttraction" type="Marker3D" parent="Head/Camera3D" unique_id=978817883]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.2)
+
+[node name="Lantern" type="SpotLight3D" parent="Head/Camera3D" unique_id=1496894219]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.2, 0)
+light_energy = 3.0
+shadow_enabled = true
+spot_range = 15.0
+spot_angle = 35.0
+script = ExtResource("2_ecvjs")
+
+[node name="scene_baked" parent="Head/Camera3D" unique_id=726911098 instance=ExtResource("3_i3pqv")]
+transform = Transform3D(0.0017654756, 0.19991548, -0.016570915, -0.002881379, -0.0052465172, -0.62566423, -0.14696115, 0.0025044978, 0.012067952, -0.41474044, -0.3519857, -0.56090605)
+script = ExtResource("4_hqtel")
