@@ -9,12 +9,15 @@ extends CharacterBody3D
 
 var mur_tenu: Node3D = null          # le mur attrapé par l'aimant
 var decalage_mur: Transform3D        # position du mur par rapport à la caméra
+var arduino: Node = null             # reste vide si la manette n'est pas activée
 
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	# Bouton de la carte : active / relâche l'aimant
-	Arduino.bouton_appuye.connect(basculer_aimant)
+	# On cherche l'autoload Arduino. S'il est désactivé, on joue au clavier.
+	# (Le bouton de la carte déclenche directement l'action "magnet", voir arduino.gd)
+	arduino = get_node_or_null("/root/Arduino")
+
 
 func _unhandled_input(event):
 	# Regarder avec la souris
@@ -23,21 +26,26 @@ func _unhandled_input(event):
 		head.rotate_x(-event.relative.y * mouse_sensitivity)
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-80), deg_to_rad(80))
 
-	# Allumer / éteindre la lanterne
-
-	# Touche E : même effet que le bouton de la carte (pour tester sans Arduino)
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_E:
+	# Action "magnet" (touche E) : même effet que le bouton de la carte
+	if event.is_action_pressed("magnet"):
 		basculer_aimant()
 
 	# Échap pour libérer la souris
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
+
+func allumer_led(allumee: bool):
+	# N'envoie l'ordre que si la manette est là
+	if arduino:
+		arduino.led(allumee)
+
+
 func basculer_aimant():
 	if mur_tenu:
 		# Deuxième appui : on relâche le mur là où il est
 		mur_tenu = null
-		Arduino.led(false)
+		allumer_led(false)
 		return
 	# Premier appui : on attrape le mur visé au centre de l'écran
 	var origine := camera.global_position
@@ -48,7 +56,8 @@ func basculer_aimant():
 	if resultat and resultat.collider is Node3D and str(resultat.collider.name).begins_with("Mur"):
 		mur_tenu = resultat.collider
 		decalage_mur = camera.global_transform.affine_inverse() * mur_tenu.global_transform
-		Arduino.led(true)   # LED allumée = aimant actif
+		allumer_led(true)   # LED allumée = aimant actif
+
 
 func _physics_process(delta):
 	# Gravité
