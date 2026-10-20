@@ -1,0 +1,20 @@
+{
+  "created_at": "2026-10-20T08:50:41",
+  "created_by": "scene_exporter 0.1.1",
+  "files": [
+    {
+      "kind": "resource",
+      "path": "res://Scènes/porte_métalique.tscn",
+      "sha256": "a4a47eb23d11f763b7193f9f222eb6d0ec7e3583c49bc45ab1c75b11575d7682",
+      "size": 2296
+    }
+  ],
+  "format_version": 1,
+  "godot_version": "4.7.2-stable (official)",
+  "referenced_settings": [],
+  "required_autoloads": [],
+  "required_plugins": [],
+  "required_project_settings": [],
+  "root_scene": "res://Scènes/porte_métalique.tscn",
+  "warnings": []
+}

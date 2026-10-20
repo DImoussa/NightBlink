@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://c4gw7kkibjl8x"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_k0vqr"]
+size = Vector3(0.06201172, 2.0908203, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tlamj"]
+albedo_color = Color(1, 0.41568628, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xj22b"]
+material = SubResource("StandardMaterial3D_tlamj")
+size = Vector3(0.001, 0.0690918, 1.1405029)
+
+[sub_resource type="Animation" id="Animation_xj22b"]
+resource_name = "Ouverture porte"
+length = 3.0000000000000004
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Porte:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.4666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -5.756096, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tlamj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Porte:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tlamj"]
+_data = {
+&"Ouverture porte": SubResource("Animation_xj22b"),
+&"RESET": SubResource("Animation_tlamj")
+}
+
+[node name="Porte-métalique" type="Node3D" unique_id=755542816]
+
+[node name="Porte" type="Node3D" parent="." unique_id=610283774]
+
+[node name="Modèle de la Porte" type="MeshInstance3D" parent="Porte" unique_id=1810030941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.03208813, 1.0431265, -0.51287353)
+mesh = SubResource("BoxMesh_k0vqr")
+skeleton = NodePath("../..")
+
+[node name="Pas de porte" type="MeshInstance3D" parent="." unique_id=536117082]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012277067, 2.1686668, 0.070251465)
+mesh = SubResource("BoxMesh_xj22b")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2113343218]
+libraries/ = SubResource("AnimationLibrary_tlamj")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=756308666]
+transform = Transform3D(0.13570811, 0, 0.9907489, 0, 1, 0, -0.9907489, 0, 0.13570811, 1.7608545, 1.068254, -0.29702556)
