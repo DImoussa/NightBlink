@@ -1,0 +1,37 @@
+00:00.031  color_management | Using OCIO=C:\Program Files\Blender Foundation\Blender 5.2\5.2\datafiles\colormanagement\config.ocio
+00:01.953  blend            | Read blend: "C:\Users\tomle\AppData\Local\Temp\blender_atlas_job_h_ryjz3d\scene_snapshot.blend"
+00:01.953  reports          | WARNING Library file, loading empty scene
+Blender 5.2.0 LTS (hash fbe6228777e7 built 2026-07-14 01:35:40)
+[00:15:03] [SCENE BAKE INFO] Script 2026-10-20 - couleurs multi-materiaux corrigees; Blender 5.2.0 LTS; 1 visible mesh objects.
+[00:15:03] [SCENE BAKE INFO] Copy / evaluate: Circle
+[00:15:03] [SCENE BAKE INFO] Copy materials; keep source shaders, input images and original UV maps.
+C:\Users\tomle\AppData\Local\Temp\blender_atlas_job_h_ryjz3d\atlas_worker.py:175: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+C:\Users\tomle\AppData\Local\Temp\blender_atlas_job_h_ryjz3d\atlas_worker.py:176: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if source is None or not source.use_nodes:
+[00:15:03] [SCENE BAKE INFO] Per-face source materials preserved: Circle.001: 2 used slot(s)
+[00:15:03] [SCENE BAKE INFO] Create and globally pack a non-overlapping atlas in UV tile 0-1.
+[00:15:03] [SCENE BAKE INFO] UV input: 1 meshes, 74 polygons; packer=AABB.
+[00:15:03] [SCENE BAKE INFO] Cycles Combined bake: 1024x1024, 16 samples, AUTO.
+00:02.000  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+[00:15:03] [SCENE BAKE INFO] GPU OPTIX: NVIDIA GeForce RTX 3070
+Info: Baking map saved to internal image, save it externally or pack it
+[00:15:05] [SCENE BAKE INFO] Save PNG, including the current view transform.
+C:\Users\tomle\AppData\Local\Temp\blender_atlas_job_h_ryjz3d\atlas_worker.py:301: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+[00:15:05] [SCENE BAKE INFO] Join AFTER baking; keep only the atlas UV and final unlit material.
+[00:15:05] [SCENE BAKE INFO] Export GLB and verify its embedded atlas / unlit extension.
+INFO Draco is available, use library at C:\Program Files\Blender Foundation\Blender 5.2\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files\Blender Foundation\Blender 5.2\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+00:15:06 | INFO: Starting glTF 2.0 export
+00:15:06 | INFO: Extracting primitive: Scene_Baked_Mesh
+00:15:06 | INFO: Primitives created: 1
+00:15:06 | INFO: Finished glTF 2.0 export in 0.06441187858581543 s
+
+[00:15:06] [SCENE BAKE INFO] GLB verified: one mesh, one material, one embedded image, KHR_materials_unlit.
+[00:15:06] [SCENE BAKE INFO] DONE in 3.3s
+  D:\BUREAU\NightBlink\3D_element\3D_asset\scene_baked.png
+  D:\BUREAU\NightBlink\3D_element\3D_asset\scene_baked.glb
+[00:15:06] [SCENE BAKE INFO] Worker finished. The original Blender document was not modified.
+
+Blender quit
