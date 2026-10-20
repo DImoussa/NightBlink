@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://bsfj7o4pcbvy"]
+
+[ext_resource type="Script" uid="uid://cmrojrnnqr2bj" path="res://Scenes/PapierOuvrant/note_papier.gd" id="1_kj1qb"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_k0vqr"]
+radius = 2.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_k0vqr"]
+
+[node name="Node3D" type="Node3D" unique_id=1596967186]
+
+[node name="NotePapier" type="Area3D" parent="." unique_id=2006595968]
+script = ExtResource("1_kj1qb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NotePapier" unique_id=663555539]
+shape = SubResource("SphereShape3D_k0vqr")
+
+[node name="VisuelFeuilleTest" type="MeshInstance3D" parent="NotePapier" unique_id=1000619366]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.46860522, 0)
+mesh = SubResource("QuadMesh_k0vqr")
+
+[node name="IndiceEcrit" type="Label3D" parent="NotePapier" unique_id=1217713639]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="NotePapier" unique_id=1835756902]
+visible = false
+
+[node name="FondNoir" type="ColorRect" parent="NotePapier/CanvasLayer" unique_id=128022166]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Feuille" type="TextureRect" parent="NotePapier/CanvasLayer" unique_id=1639185185]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TexteNote" type="Label" parent="NotePapier/CanvasLayer" unique_id=541725541]
+custom_minimum_size = Vector2(400, 0)
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.04395193, 0.04395193, 0.04395192, 1)
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 3

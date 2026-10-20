@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://8qel3v3li2vg"]
 
-[ext_resource type="Script" uid="uid://263857itgir0" path="res://player.gd" id="1_glv2v"]
-[ext_resource type="Script" uid="uid://mcsitmp0c4ak" path="res://lantern.gd" id="2_uu6xs"]
-[ext_resource type="PackedScene" uid="uid://b74d812ubhn78" path="res://scene_baked.glb" id="3_cm0pq"]
+[ext_resource type="PackedScene" uid="uid://btqmtw8fbyabk" path="res://player.tscn" id="1_r0du0"]
 [ext_resource type="Script" uid="uid://t7gfalwvrwp3" path="res://energy_bar.gd" id="3_r0du0"]
 [ext_resource type="PackedScene" uid="uid://bsfj7o4pcbvy" path="res://Scenes/PapierOuvrant/NotePapier.tscn" id="5_fos0i"]
 
@@ -11,8 +9,6 @@ background_mode = 1
 background_color = Color(0.015967917, 0.25954545, 0.19597183, 1)
 background_energy_multiplier = 1.24
 ssr_enabled = true
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aloso"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_r0du0"]
 size = Vector3(0.06201172, 2.0908203, 1)
@@ -98,34 +94,8 @@ size = Vector3(20, 1, 20)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=583242702]
 environment = SubResource("Environment_aloso")
 
-[node name="Player" type="CharacterBody3D" parent="." unique_id=641514628]
+[node name="Player" parent="." unique_id=502473477 instance=ExtResource("1_r0du0")]
 transform = Transform3D(0.022899609, 0, 0.9997378, 0, 1, 0, -0.9997378, 0, 0.022899609, 0.7586036, 1, -2.3600492)
-script = ExtResource("1_glv2v")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=1123428155]
-shape = SubResource("CapsuleShape3D_aloso")
-
-[node name="Head" type="Node3D" parent="Player" unique_id=82651158]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-
-[node name="Camera3D" type="Camera3D" parent="Player/Head" unique_id=1709636960]
-
-[node name="Lantern" type="SpotLight3D" parent="Player/Head/Camera3D" unique_id=352713563]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.2, 0)
-light_energy = 3.0
-shadow_enabled = true
-spot_range = 15.0
-spot_angle = 35.0
-script = ExtResource("2_uu6xs")
-
-[node name="Viseur" type="RayCast3D" parent="Player/Head/Camera3D" unique_id=783526511]
-target_position = Vector3(0, 0, -0.5)
-
-[node name="Aimant" parent="Player/Head/Camera3D" unique_id=201938871 instance=ExtResource("3_cm0pq")]
-transform = Transform3D(0.009727404, 0.0006109037, 0.071350455, -0.0040993555, 0.050020766, -9.268333e-06, -0.05660886, -0.0035173048, 0.012261202, -0.23627067, -0.12726581, -0.48771685)
-
-[node name="Scene_Baked" parent="Player/Head/Camera3D/Aimant" index="0" unique_id=1968391353]
-transform = Transform3D(0.5901135, -1.3969839e-08, 0, -5.820766e-08, 0.7748775, 5.5879354e-09, -1.1920929e-07, -6.9849193e-09, 1.099418, -2.9902215, -0.24503517, 0.1245842)
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=416986542]
 
@@ -173,4 +143,5 @@ material = SubResource("StandardMaterial3D_lgr22")
 
 [node name="Node3D2" parent="." unique_id=1596967186 instance=ExtResource("5_fos0i")]
 
+[editable path="Player"]
 [editable path="Player/Head/Camera3D/Aimant"]
