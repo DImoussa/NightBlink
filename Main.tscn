@@ -1,0 +1,160 @@
+[gd_scene format=3 uid="uid://8qel3v3li2vg"]
+
+[ext_resource type="Script" uid="uid://263857itgir0" path="res://player.gd" id="1_glv2v"]
+[ext_resource type="Script" uid="uid://mcsitmp0c4ak" path="res://lantern.gd" id="2_uu6xs"]
+[ext_resource type="Script" uid="uid://t7gfalwvrwp3" path="res://energy_bar.gd" id="3_r0du0"]
+
+[sub_resource type="Environment" id="Environment_aloso"]
+background_mode = 2
+ssr_enabled = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aloso"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_r0du0"]
+size = Vector3(0.06201172, 2.0908203, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cm0pq"]
+albedo_color = Color(1, 0.41568628, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fos0i"]
+material = SubResource("StandardMaterial3D_cm0pq")
+size = Vector3(0.068060055, 0.08483887, 1.9945431)
+
+[sub_resource type="Animation" id="Animation_xj22b"]
+resource_name = "Ouverture porte"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Porte/PivotGauche:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 2.1293018, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Porte/PivotDroit:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -2.1293018, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tlamj"]
+length = 1.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Porte/PivotGauche:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Porte/PivotDroit:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3dxm6"]
+_data = {
+&"Ouverture porte": SubResource("Animation_xj22b"),
+&"RESET": SubResource("Animation_tlamj")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lgr22"]
+albedo_color = Color(0.61810786, 0.61810786, 0.61810786, 1)
+roughness = 0.9
+
+[node name="Level" type="Node3D" unique_id=1618650316]
+
+[node name="Sol" type="CSGBox3D" parent="." unique_id=1073356760]
+transform = Transform3D(0.9999266, -0.012115431, 0, 0.012115431, 0.9999266, 0, 0, 0, 1, 0.26291847, -0.31538796, 0.15512848)
+use_collision = true
+size = Vector3(20, 1, 20)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=583242702]
+environment = SubResource("Environment_aloso")
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=641514628]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_glv2v")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=1123428155]
+shape = SubResource("CapsuleShape3D_aloso")
+
+[node name="Head" type="Node3D" parent="Player" unique_id=82651158]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -2.3559558)
+
+[node name="Camera3D" type="Camera3D" parent="Player/Head" unique_id=1709636960]
+transform = Transform3D(-0.0045546573, 0, 0.9999896, 0, 1, 0, -0.9999896, 0, -0.0045546573, 1.5588548, 0, 0)
+
+[node name="Lantern" type="SpotLight3D" parent="Player/Head/Camera3D" unique_id=352713563]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.2, 0)
+light_energy = 3.0
+shadow_enabled = true
+spot_range = 15.0
+spot_angle = 35.0
+script = ExtResource("2_uu6xs")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=416986542]
+
+[node name="EnergyBar" type="ProgressBar" parent="HUD" unique_id=881944649]
+custom_minimum_size = Vector2(300, 30)
+offset_right = 4.0
+offset_bottom = 27.0
+script = ExtResource("3_r0du0")
+
+[node name="Node3D" type="Node3D" parent="." unique_id=2101829592]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.395762, 0, -2.3502483)
+
+[node name="Porte" type="Node3D" parent="Node3D" unique_id=504257434]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01388967, 0)
+
+[node name="PivotDroit" type="Node3D" parent="Node3D/Porte" unique_id=1947710360]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.062, 2.106, 0.98)
+
+[node name="Modèle de la Porte2" type="MeshInstance3D" parent="Node3D/Porte/PivotDroit" unique_id=2125115539]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, -1.053, -0.49)
+mesh = SubResource("BoxMesh_r0du0")
+skeleton = NodePath("../..")
+
+[node name="PivotGauche" type="Node3D" parent="Node3D/Porte" unique_id=254212112]
+transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1.0000001, -0.062, 2.096, -1.02)
+
+[node name="Modèle de la Porte" type="MeshInstance3D" parent="Node3D/Porte/PivotGauche" unique_id=22451740]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.025, -1.045, 0.51)
+mesh = SubResource("BoxMesh_r0du0")
+skeleton = NodePath("../../..")
+
+[node name="Pas de porte" type="MeshInstance3D" parent="Node3D" unique_id=449782324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.041357756, 2.135384, -0.013256609)
+mesh = SubResource("BoxMesh_fos0i")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node3D" unique_id=268842995]
+libraries/ = SubResource("AnimationLibrary_3dxm6")
+autoplay = &"Ouverture porte"
+
+[node name="Mur" type="CSGBox3D" parent="." unique_id=160424972]
+transform = Transform3D(-0.9933254, 0.085177526, -0.077777736, -0.06040269, -0.9585775, -0.27835363, -0.09826546, -0.2717977, 0.9573243, 0.97340477, 4.4337063, 5.926522)
+use_collision = true
+size = Vector3(20, 3.6640625, 1.0039063)
+material = SubResource("StandardMaterial3D_lgr22")

@@ -8,6 +8,10 @@ corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_og4jd"]
+albedo_color = Color(0.61810786, 0.61810786, 0.61810786, 1)
+roughness = 0.9
+
 [node name="StartScreen" type="Node2D" unique_id=1676421136]
 script = ExtResource("1_og4jd")
 
@@ -69,5 +73,21 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 128
 text = " Start Game "
+
+[node name="Mur" type="CSGBox3D" parent="." unique_id=1321838438]
+transform = Transform3D(1, 0, 0, 0, -0.6743023, -0.7384554, 0, 0.7384554, -0.6743023, 0.9877119, 4.3204446, 3.221671)
+use_collision = true
+size = Vector3(20, 4, 1.0039063)
+material = SubResource("StandardMaterial3D_og4jd")
+
+[node name="Mur2" type="CSGBox3D" parent="." unique_id=333944410]
+transform = Transform3D(0.75463116, 0.36537912, 0.5450044, 0.01006835, 0.8240647, -0.56640625, -0.65607184, 0.43291512, 0.6181862, -2.2705214, 4.5633264, -9.527082)
+use_collision = true
+size = Vector3(19.776855, 4.0039063, 1)
+
+[node name="Mur3" type="CSGBox3D" parent="." unique_id=1487875010]
+transform = Transform3D(0.84614354, 0.52882797, -0.06619631, -0.0014888643, -0.12186023, -0.99254614, -0.53295285, 0.8399351, -0.1023239, 5.860432, 7.3367004, -9.23076)
+use_collision = true
+size = Vector3(8.95874, 2.637207, 1)
 
 [connection signal="pressed" from="Control/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]

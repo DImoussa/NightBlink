@@ -3,38 +3,61 @@
 [sub_resource type="BoxMesh" id="BoxMesh_k0vqr"]
 size = Vector3(0.06201172, 2.0908203, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tlamj"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ds6ve"]
 albedo_color = Color(1, 0.41568628, 1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_xj22b"]
-material = SubResource("StandardMaterial3D_tlamj")
-size = Vector3(0.001, 0.0690918, 1.1405029)
+material = SubResource("StandardMaterial3D_ds6ve")
+size = Vector3(0.068060055, 0.08483887, 1.9945431)
 
 [sub_resource type="Animation" id="Animation_xj22b"]
 resource_name = "Ouverture porte"
-length = 3.0000000000000004
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Porte:rotation")
+tracks/0/path = NodePath("Porte/PivotGauche:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2.4666667),
+"times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, -5.756096, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0, 2.1293018, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Porte/PivotDroit:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -2.1293018, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_tlamj"]
-length = 0.001
+length = 1.0333333
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Porte:rotation")
+tracks/0/path = NodePath("Porte/PivotGauche:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Porte/PivotDroit:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -50,18 +73,31 @@ _data = {
 [node name="Porte-métalique" type="Node3D" unique_id=755542816]
 
 [node name="Porte" type="Node3D" parent="." unique_id=610283774]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01388967, 0)
 
-[node name="Modèle de la Porte" type="MeshInstance3D" parent="Porte" unique_id=1810030941]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.03208813, 1.0431265, -0.51287353)
+[node name="PivotDroit" type="Node3D" parent="Porte" unique_id=1643669425]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.062, 2.106, 0.98)
+
+[node name="Modèle de la Porte2" type="MeshInstance3D" parent="Porte/PivotDroit" unique_id=1515968869]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, -1.053, -0.49)
 mesh = SubResource("BoxMesh_k0vqr")
 skeleton = NodePath("../..")
 
+[node name="PivotGauche" type="Node3D" parent="Porte" unique_id=1343430927]
+transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1.0000001, -0.062, 2.096, -1.02)
+
+[node name="Modèle de la Porte" type="MeshInstance3D" parent="Porte/PivotGauche" unique_id=1810030941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.025, -1.045, 0.51)
+mesh = SubResource("BoxMesh_k0vqr")
+skeleton = NodePath("../../..")
+
 [node name="Pas de porte" type="MeshInstance3D" parent="." unique_id=536117082]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012277067, 2.1686668, 0.070251465)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.041357756, 2.135384, -0.013256609)
 mesh = SubResource("BoxMesh_xj22b")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2113343218]
 libraries/ = SubResource("AnimationLibrary_tlamj")
+autoplay = &"Ouverture porte"
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=756308666]
-transform = Transform3D(0.13570811, 0, 0.9907489, 0, 1, 0, -0.9907489, 0, 0.13570811, 1.7608545, 1.068254, -0.29702556)
+[node name="Camera3D" type="Camera3D" parent="." unique_id=167452568]
+transform = Transform3D(-0.027280089, 0, 0.9996279, 0, 1, 0, -0.9996278, 0, -0.02728009, 3.0988579, 1.2465938, 0)
