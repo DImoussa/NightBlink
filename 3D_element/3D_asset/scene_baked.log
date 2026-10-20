@@ -1,82 +1,37 @@
-00:00.016  color_management | Using OCIO=/nix/store/4jwfi653kimwx4ybfxqyhgd1ic20s3ab-blender-5.1.1/share/blender/5.1/datafiles/colormanagement/config.ocio
-Traceback (most recent call last):
-  File "/nix/store/4jwfi653kimwx4ybfxqyhgd1ic20s3ab-blender-5.1.1/share/blender/5.1/scripts/modules/addon_utils.py", line 515, in enable
-    mod.register()
-    ~~~~~~~~~~~~^^
-  File "/nix/store/4jwfi653kimwx4ybfxqyhgd1ic20s3ab-blender-5.1.1/share/blender/5.1/scripts/addons_core/io_scene_gltf2/__init__.py", line 2222, in register
-    from .blender.com import gltf2_blender_ui as blender_ui
-  File "/nix/store/4jwfi653kimwx4ybfxqyhgd1ic20s3ab-blender-5.1.1/share/blender/5.1/scripts/addons_core/io_scene_gltf2/blender/com/gltf2_blender_ui.py", line 7, in <module>
-    from .gltf2_blender_utils import find_unused_name
-  File "/nix/store/4jwfi653kimwx4ybfxqyhgd1ic20s3ab-blender-5.1.1/share/blender/5.1/scripts/addons_core/io_scene_gltf2/blender/com/gltf2_blender_utils.py", line 5, in <module>
-    import numpy as np
-ModuleNotFoundError: No module named 'numpy'
-00:00.849  blend            | Read blend: "/tmp/blender_atlas_job_cui3j6w1/scene_snapshot.blend"
-00:00.853  reports          | WARNING Library file, loading empty scene
-Blender 5.1.1
-Exception in module register(): /nix/store/4jwfi653kimwx4ybfxqyhgd1ic20s3ab-blender-5.1.1/share/blender/5.1/scripts/addons_core/io_scene_gltf2/__init__.py
-[09:24:59] [SCENE BAKE INFO] Script 2026-10-20 - couleurs multi-materiaux corrigees; Blender 5.1.1; 1 visible mesh objects.
-[09:24:59] [SCENE BAKE INFO] Copy / evaluate: Circle
-[09:24:59] [SCENE BAKE INFO] Copy materials; keep source shaders, input images and original UV maps.
-/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py:175: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+00:00.032  color_management | Using OCIO=C:\Program Files\Blender Foundation\Blender 5.2\5.2\datafiles\colormanagement\config.ocio
+00:01.954  blend            | Read blend: "C:\Users\tomle\AppData\Local\Temp\blender_atlas_job__s0yov9o\scene_snapshot.blend"
+00:01.954  reports          | WARNING Library file, loading empty scene
+Blender 5.2.0 LTS (hash fbe6228777e7 built 2026-07-14 01:35:40)
+[09:29:39] [SCENE BAKE INFO] Script 2026-10-20 - couleurs multi-materiaux corrigees; Blender 5.2.0 LTS; 1 visible mesh objects.
+[09:29:39] [SCENE BAKE INFO] Copy / evaluate: Circle
+[09:29:39] [SCENE BAKE INFO] Copy materials; keep source shaders, input images and original UV maps.
+C:\Users\tomle\AppData\Local\Temp\blender_atlas_job__s0yov9o\atlas_worker.py:175: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
   material.use_nodes = True
-/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py:176: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+C:\Users\tomle\AppData\Local\Temp\blender_atlas_job__s0yov9o\atlas_worker.py:176: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
   if source is None or not source.use_nodes:
-[09:24:59] [SCENE BAKE INFO] Per-face source materials preserved: Circle.001: 2 used slot(s)
-[09:24:59] [SCENE BAKE INFO] Create and globally pack a non-overlapping atlas in UV tile 0-1.
-[09:24:59] [SCENE BAKE INFO] UV input: 1 meshes, 74 polygons; packer=AABB.
-[09:24:59] [SCENE BAKE INFO] Cycles Combined bake: 1024x1024, 16 samples, AUTO.
-00:00.875  cycles           | WARNING CUEW initialization failed: Error opening the library
-[09:24:59] [SCENE BAKE WARNING] No usable GPU found: using CPU.
+[09:29:39] [SCENE BAKE INFO] Per-face source materials preserved: Circle.001: 2 used slot(s)
+[09:29:39] [SCENE BAKE INFO] Create and globally pack a non-overlapping atlas in UV tile 0-1.
+[09:29:39] [SCENE BAKE INFO] UV input: 1 meshes, 74 polygons; packer=AABB.
+[09:29:39] [SCENE BAKE INFO] Cycles Combined bake: 1024x1024, 16 samples, AUTO.
+00:02.000  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+[09:29:39] [SCENE BAKE INFO] GPU OPTIX: NVIDIA GeForce RTX 3070
 Info: Baking map saved to internal image, save it externally or pack it
-[09:25:02] [SCENE BAKE INFO] Save PNG, including the current view transform.
-/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py:301: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+[09:29:39] [SCENE BAKE INFO] Save PNG, including the current view transform.
+C:\Users\tomle\AppData\Local\Temp\blender_atlas_job__s0yov9o\atlas_worker.py:301: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
   material.use_nodes = True
-[09:25:02] [SCENE BAKE INFO] Join AFTER baking; keep only the atlas UV and final unlit material.
-[09:25:02] [SCENE BAKE INFO] Export GLB and verify its embedded atlas / unlit extension.
-[09:25:02] [SCENE BAKE WARNING] FAILED. Full traceback follows; original scene restored.
-Traceback (most recent call last):
-  File "/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py", line 353, in export_glb
-    properties = bpy.ops.export_scene.gltf.get_rna_type().properties
-                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-KeyError: 'get_rna_type("EXPORT_SCENE_OT_gltf") not found'
+[09:29:40] [SCENE BAKE INFO] Join AFTER baking; keep only the atlas UV and final unlit material.
+[09:29:40] [SCENE BAKE INFO] Export GLB and verify its embedded atlas / unlit extension.
+INFO Draco is available, use library at C:\Program Files\Blender Foundation\Blender 5.2\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files\Blender Foundation\Blender 5.2\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+09:29:40 | INFO: Starting glTF 2.0 export
+09:29:40 | INFO: Extracting primitive: Scene_Baked_Mesh
+09:29:40 | INFO: Primitives created: 1
+09:29:40 | INFO: Finished glTF 2.0 export in 0.06413578987121582 s
 
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py", line 740, in <module>
-    run_worker_config()
-    ~~~~~~~~~~~~~~~~~^^
-  File "/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py", line 734, in run_worker_config
-    main()
-    ~~~~^^
-  File "/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py", line 494, in main
-    export_glb(work, result, temp_glb)
-    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py", line 355, in export_glb
-    raise RuntimeError('The bundled glTF 2.0 exporter is unavailable.') from error
-RuntimeError: The bundled glTF 2.0 exporter is unavailable.
-Traceback (most recent call last):
-  File "/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py", line 353, in export_glb
-    properties = bpy.ops.export_scene.gltf.get_rna_type().properties
-                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-KeyError: 'get_rna_type("EXPORT_SCENE_OT_gltf") not found'
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py", line 740, in <module>
-    run_worker_config()
-    ~~~~~~~~~~~~~~~~~^^
-  File "/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py", line 734, in run_worker_config
-    main()
-    ~~~~^^
-  File "/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py", line 494, in main
-    export_glb(work, result, temp_glb)
-    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py", line 355, in export_glb
-    raise RuntimeError('The bundled glTF 2.0 exporter is unavailable.') from error
-RuntimeError: The bundled glTF 2.0 exporter is unavailable.
-
-Error: script failed, file: '/tmp/blender_atlas_job_cui3j6w1/atlas_worker.py', exiting.
+[09:29:40] [SCENE BAKE INFO] GLB verified: one mesh, one material, one embedded image, KHR_materials_unlit.
+[09:29:40] [SCENE BAKE INFO] DONE in 1.5s
+  D:\BUREAU\NightBlink\3D_element\3D_asset\scene_baked.png
+  D:\BUREAU\NightBlink\3D_element\3D_asset\scene_baked.glb
+[09:29:40] [SCENE BAKE INFO] Worker finished. The original Blender document was not modified.
 
 Blender quit
