@@ -4,7 +4,7 @@
 // LED aimant : pin 13 ; LEDs lampe : verte pin 2, orange pin 4, rouge pin 12
 // Gyroscope I2C (BMI160 / MPU / LSM6DS3) : VIN -> 5V, GND -> GND, SCL -> A5, SDA -> A4 (CS, SAD, OCS, INT1, INT2, SCX, SDX non branchés)
 //
-// Envoie : FWD:1/0, MAG:1/0, imu:<pitch>,<roll> (angles en degrés), imu:err + i2c:<adresses> si le capteur est absent, imu:type:<n> à la connexion
+// Envoie : FWD:1/0, MAG:1/0, imu:<pitch>,<roll>,<yaw> (angles en degrés, yaw = rotation gauche/droite, sert à tourner la caméra), imu:err + i2c:<adresses> si le capteur est absent, imu:type:<n> à la connexion
 // Reçoit : DISCOVER (pairing avec Godot), L1 / L0 (LED aimant), energy:0..3 (LEDs de la lampe)
 // Librairie : Wire (incluse avec l'IDE Arduino, rien à installer)
 
@@ -30,7 +30,12 @@ byte imuAdresse = 0;         // 0 = pas trouvé
 byte imuType = 0;            // 1 = BMI160, 2 = MPU-60x0/65x0/9250, 3 = LSM6DS3
 float gyroEchelle = 1;       // conversion en °/s
 float pitch = 0, roll = 0;   // angles filtrés (degrés)
-float pitchEnvoye = 999, rollEnvoye = 999;
+float yaw = 0;               // rotation gauche/droite intégrée depuis le gyro Z (degrés)
+float biaisZ = 0;            // dérive du gyro Z mesurée au démarrage (°/s)
+const int MESURES_CALIBRATION = 50;  // 1 s : la manette doit rester immobile au démarrage
+int nCalibration = 0;
+float sommeCalibration = 0;
+const float ZONE_MORTE_Z = 0.8;  // en dessous (°/s), on considère que la manette ne tourne pas
 unsigned long dernierImu = 0;
 
 void ecrireRegistre(byte reg, byte valeur) {
@@ -95,28 +100,40 @@ bool lireBloc(byte reg, int16_t *v, int n, bool grandBoutiste) {
   return true;
 }
 
-void lireImu() {
-  int16_t g[3], acc[3];
+// Lit gyro (g) et accéléro (acc) bruts
+bool lireBrut(int16_t *g, int16_t *acc) {
   if (imuType == 2) {
     int16_t v[7];                              // accéléro X,Y,Z, température, gyro X,Y,Z
-    if (!lireBloc(0x3B, v, 7, true)) return;
-    int16_t v2[3];
-    if (!lireBloc(0x43, v2, 3, true)) return;
-    for (int i = 0; i < 3; i++) { acc[i] = v[i]; g[i] = v2[i]; }
+    if (!lireBloc(0x3B, v, 7, true)) return false;
+    for (int i = 0; i < 3; i++) { acc[i] = v[i]; g[i] = v[i + 4]; }
   } else {
     int16_t v[6];                              // gyro X,Y,Z puis accéléro X,Y,Z
-    if (!lireBloc(imuType == 1 ? 0x0C : 0x22, v, 6, false)) return;
+    if (!lireBloc(imuType == 1 ? 0x0C : 0x22, v, 6, false)) return false;
     for (int i = 0; i < 3; i++) { g[i] = v[i]; acc[i] = v[i + 3]; }
   }
+  return true;
+}
+
+void lireImu(float dt) {
+  int16_t g[3], acc[3];
+  if (!lireBrut(g, acc)) return;
   float gx = g[0] * gyroEchelle, gy = g[1] * gyroEchelle;   // °/s
   float ax = acc[0], ay = acc[1], az = acc[2];            // l'échelle n'importe pas pour les angles
 
   float pitchAcc = atan2(-ax, sqrt(ay * ay + az * az)) * 180.0 / PI;
   float rollAcc  = atan2(ay, az) * 180.0 / PI;
-  float dt = IMU_PERIODE_MS / 1000.0;
   // Filtre complémentaire : le gyro pour la réactivité, l'accéléro pour ne pas dériver
   pitch = 0.96 * (pitch + gy * dt) + 0.04 * pitchAcc;
   roll  = 0.96 * (roll  + gx * dt) + 0.04 * rollAcc;
+  // Lacet : pas de référence absolue (pas de boussole), on intègre la vitesse du gyro Z
+  // Les premières mesures servent à calculer la dérive (sans bloquer la carte, pour que Godot puisse se connecter)
+  if (nCalibration < MESURES_CALIBRATION) {
+    sommeCalibration += g[2] * gyroEchelle;
+    if (++nCalibration == MESURES_CALIBRATION) biaisZ = sommeCalibration / MESURES_CALIBRATION;
+    return;
+  }
+  float gz = g[2] * gyroEchelle - biaisZ;
+  if (abs(gz) > ZONE_MORTE_Z) yaw += gz * dt;
 }
 
 // Diagnostic : liste les appareils I2C vus sur A4/A5 ("i2c:aucun" si rien n'est branché)
@@ -170,11 +187,9 @@ void loop() {
       Serial.println("GDSERIAL_ACK:arduino_uno");
       if (imuAdresse != 0) { Serial.print("imu:type:"); Serial.println(imuType); }
       digitalWrite(PIN_LED_GREEN, HIGH);     // LED aimant allumée = connectée à Godot
-      if (imuAdresse == 0 && !trouverImu()) {
-        Serial.println("imu:err");
-        scannerI2C();
+      if (imuAdresse == 0) {
+        if (!trouverImu()) { Serial.println("imu:err"); scannerI2C(); }
       }
-      pitchEnvoye = 999;                     // renvoie les angles tout de suite
     }
     else if (msg == "L1") digitalWrite(PIN_LED_GREEN, HIGH);
     else if (msg == "L0") digitalWrite(PIN_LED_GREEN, LOW);
@@ -187,16 +202,15 @@ void loop() {
   }
 
   if (imuAdresse != 0 && millis() - dernierImu >= IMU_PERIODE_MS) {
+    float dt = (millis() - dernierImu) / 1000.0;
     dernierImu = millis();
-    lireImu();
-    // N'envoie que si l'angle a bougé d'au moins 1°
-    if (abs(pitch - pitchEnvoye) >= 1 || abs(roll - rollEnvoye) >= 1) {
-      pitchEnvoye = pitch;
-      rollEnvoye = roll;
-      Serial.print("imu:");
-      Serial.print(pitch, 1);
-      Serial.print(',');
-      Serial.println(roll, 1);
-    }
+    lireImu(dt);
+    // Envoi continu (50 fois/s) pour que la caméra tourne sans à-coups
+    Serial.print("imu:");
+    Serial.print(pitch, 2);
+    Serial.print(',');
+    Serial.print(roll, 2);
+    Serial.print(',');
+    Serial.println(yaw, 2);
   }
 }

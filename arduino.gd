@@ -4,18 +4,21 @@ extends Node
 ## Ici on traduit les trames de la carte en actions, comme si on appuyait sur les touches :
 ##   FWD:1/0  (bouton pin 8) -> "move_up" (touche Z), maintenu tant que le bouton est appuyé
 ##   MAG:1/0  (bouton pin 7) -> "magnet"  (touche E)
-##   imu:<pitch>,<roll>  (gyroscope LSM6DS3) -> puissance de la lanterne (incliner la manette)
+##   imu:<pitch>,<roll>,<yaw>  (gyroscope) -> tourne la caméra (pencher = haut/bas, pivoter = gauche/droite)
 ## Et dans l'autre sens : L1 / L0 pour la LED pin 13 (aimant actif).
 
-signal imu_changed(pitch: float, roll: float)  # angles en degrés, pour d'autres usages
+signal imu_changed(pitch: float, roll: float, yaw: float)  # angles en degrés, pour d'autres usages
 
-@export var angle_min := -45.0   # inclinaison qui donne la lanterne au minimum
-@export var angle_max := 45.0    # inclinaison qui donne la lanterne au maximum
-@export var utiliser_roll := false  # true si la manette se penche plutôt sur le côté
+@export var sensibilite_horizontale := 1.0  # 1 = la caméra tourne d'autant de degrés que la manette
+@export var sensibilite_verticale := 1.0
+@export var inverser_horizontal := false
+@export var inverser_vertical := false
+@export var utiliser_roll := false  # true si la manette se penche sur le côté pour regarder haut/bas
 
 var manager: Node = null
 var pitch := 0.0
 var roll := 0.0
+var yaw := 0.0
 var imu_ok := false
 
 
@@ -37,13 +40,20 @@ func _message(cle: String, valeur: String):
 				push_warning("[Arduino] Gyroscope LSM6DS3 non détecté (vérifier SDA -> A4, SCL -> A5)")
 				return
 			var angles := valeur.split(",")
-			if angles.size() < 2:
+			if angles.size() < 3:
 				return
+			var p := angles[0].to_float()
+			var r := angles[1].to_float()
+			var y := angles[2].to_float()
+			# La caméra suit la VARIATION des angles : la souris continue de fonctionner en même temps
+			if imu_ok:
+				var haut_bas := (r - roll) if utiliser_roll else (p - pitch)
+				_tourner_camera(y - yaw, haut_bas)
 			imu_ok = true
-			pitch = angles[0].to_float()
-			roll = angles[1].to_float()
-			imu_changed.emit(pitch, roll)
-			_regler_lanterne(roll if utiliser_roll else pitch)
+			pitch = p
+			roll = r
+			yaw = y
+			imu_changed.emit(pitch, roll, yaw)
 
 
 var niveau_envoye := -1  # dernier niveau envoyé aux LEDs de la lampe
@@ -63,13 +73,13 @@ func _process(_delta):
 		manager._send("energy:" + str(niveau))
 
 
-func _regler_lanterne(angle: float):
-	var lanterne = get_tree().get_first_node_in_group("lantern")
-	if lanterne == null:
+func _tourner_camera(delta_yaw: float, delta_pitch: float):
+	var joueur = get_tree().get_first_node_in_group("player")
+	if joueur == null:
 		return
-	var t := inverse_lerp(angle_min, angle_max, angle)
-	lanterne.power = clamp(lerp(0.1, 1.0, t), 0.1, 1.0)
-	lanterne.update_light()
+	var h := delta_yaw * sensibilite_horizontale * (-1.0 if inverser_horizontal else 1.0)
+	var v := delta_pitch * sensibilite_verticale * (-1.0 if inverser_vertical else 1.0)
+	joueur.tourner_camera(deg_to_rad(h), deg_to_rad(v))
 
 
 func _action(nom: String, appuye: bool):

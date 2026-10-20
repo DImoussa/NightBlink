@@ -17,14 +17,13 @@ func _ready():
 	# On cherche l'autoload Arduino. S'il est désactivé, on joue au clavier.
 	# (Le bouton de la carte déclenche directement l'action "magnet", voir arduino.gd)
 	arduino = get_node_or_null("/root/Arduino")
+	add_to_group("player")   # pour que le gyroscope (arduino.gd) retrouve le joueur
 
 
 func _unhandled_input(event):
 	# Regarder avec la souris
 	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * mouse_sensitivity)
-		head.rotate_x(-event.relative.y * mouse_sensitivity)
-		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-80), deg_to_rad(80))
+		tourner_camera(-event.relative.x * mouse_sensitivity, -event.relative.y * mouse_sensitivity)
 
 	# Action "magnet" (touche E) : même effet que le bouton de la carte
 	if event.is_action_pressed("magnet"):
@@ -33,6 +32,13 @@ func _unhandled_input(event):
 	# Échap pour libérer la souris
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+
+func tourner_camera(gauche_droite: float, haut_bas: float):
+	# Utilisé par la souris et par le gyroscope de la manette (angles en radians)
+	rotate_y(gauche_droite)
+	head.rotate_x(haut_bas)
+	head.rotation.x = clamp(head.rotation.x, deg_to_rad(-80), deg_to_rad(80))
 
 
 func allumer_led(allumee: bool):
