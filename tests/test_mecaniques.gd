@@ -119,5 +119,51 @@ func _lancer() -> void:
 		verifier(obstacle.is_empty() or not battant.is_ancestor_of(obstacle.collider),
 			"%s : battant pivoté (%.0f°), passage libre" % [nom, rad_to_deg(battant.global_basis.z.signed_angle_to(b.z, Vector3.UP))])
 
+	# --- Imprimante : retirée de la map, posée au sol, attrapée avec E maintenu, suit en reculant sans traverser les murs
+	var imp: CharacterBody3D = _scene.get_node("Imprimante")
+	var pos_imp := imp.global_position
+	var vers_bas := PhysicsRayQueryParameters3D.create(pos_imp + Vector3(0, 1.8, 0), pos_imp + Vector3(0, -1, 0))
+	vers_bas.exclude = [imp.get_rid()]
+	var sol_imp := espace.intersect_ray(vers_bas)
+	verifier(sol_imp and absf(sol_imp.position.y - 5.98) < 0.05, "imprimante retirée de la map (sol trouvé dessous à y=%.2f)" % (sol_imp.position.y if sol_imp else -1.0))
+	verifier(imp.is_on_floor() and absf(imp.global_position.y - pos_imp.y) < 0.05, "imprimante posée au sol (y=%.2f)" % imp.global_position.y)
+	# Le joueur arrive par la salle à l'est (+x) et vise le haut du chariot
+	placer_joueur(Vector3(pos_imp.x + 1.15, 6.98, pos_imp.z), PI / 2)
+	await attendre_physique(3)
+	var vise: Vector3 = Vector3(pos_imp.x + 0.45, 7.25, pos_imp.z) - _joueur.camera.global_position
+	_joueur.get_node("Head").rotation.x = atan2(vise.y, Vector2(vise.x, vise.z).length())
+	appuyer_e()
+	verifier(_joueur.objet_tenu == imp, "E maintenu sur l'imprimante -> attrapée")
+	var penetration_max := 0.0
+	var forme_imp := PhysicsShapeQueryParameters3D.new()
+	forme_imp.shape = imp.get_node("CollisionShape3D").shape
+	forme_imp.exclude = [imp.get_rid(), _joueur.get_rid()]
+	# Recule 1,2 s puis tourne de 120° : l'imprimante suit et doit buter contre les murs
+	Input.action_press("move_down")
+	for i in 72:
+		if i >= 30:
+			_joueur.tourner_camera(deg_to_rad(120.0) / 42.0, 0)
+		await physics_frame
+		forme_imp.transform = imp.global_transform.translated(Vector3.UP * 0.05)
+		if not espace.intersect_shape(forme_imp, 1).is_empty():
+			penetration_max += 1
+	Input.action_release("move_down")
+	var deplacement := Vector2(imp.global_position.x - pos_imp.x, imp.global_position.z - pos_imp.z).length()
+	verifier(deplacement > 0.8, "imprimante tirée en reculant (déplacée de %.2f m)" % deplacement)
+	verifier(penetration_max == 0, "imprimante jamais dans un mur pendant le transport (%d images en collision)" % penetration_max)
+	var sous_imp := PhysicsRayQueryParameters3D.create(imp.global_position + Vector3(0, 1.8, 0), imp.global_position + Vector3(0, -1, 0))
+	sous_imp.exclude = [imp.get_rid()]
+	var sol_fin := espace.intersect_ray(sous_imp)
+	print("   imprimante en ", imp.global_position, " sol dessous ", sol_fin.position if sol_fin else null, " sur le sol ", imp.is_on_floor(), " ; joueur en ", _joueur.global_position)
+	verifier(absf(imp.global_position.y - (sol_fin.position.y if sol_fin else 0.0)) < 0.1, "imprimante reste au sol (y=%.2f)" % imp.global_position.y)
+	var relache := InputEventAction.new()
+	relache.action = "magnet"
+	relache.pressed = false
+	_joueur._unhandled_input(relache)
+	var pos_lachee := imp.global_position
+	await attendre_physique(20)
+	print("   apres lacher : tenu ", _joueur.objet_tenu, " deplacement ", imp.global_position.distance_to(pos_lachee), " vitesse ", imp.velocity)
+	verifier(_joueur.objet_tenu == null and imp.global_position.distance_to(pos_lachee) < 0.3, "E relâché -> imprimante lâchée et immobile")
+
 	print("TOUS LES TESTS PASSENT" if _ok else "DES TESTS ECHOUENT")
 	quit(0 if _ok else 1)

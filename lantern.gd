@@ -14,13 +14,13 @@ func _ready() -> void:
 	is_on = true
 	update_light()
 
-func _process(delta: float) -> void:
-	if is_on and energy > 0:
-		energy -= drain_rate * delta
-		if energy <= 0:
-			energy = 0
-			is_on = false
-			update_light()
+#func _process(delta: float) -> void:
+#	if is_on and energy > 0:
+#		energy -= drain_rate * delta
+	#	if energy <= 0:
+			#energy = 0
+			#is_on = false
+			#update_light()
 
 func update_light() -> void:
 	visible = is_on and energy > 0

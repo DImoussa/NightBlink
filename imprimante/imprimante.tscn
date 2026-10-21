@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://objet_aimante.gd" id="1_c4w1s"]
+[ext_resource type="ArrayMesh" path="res://imprimante/imprimante_mesh.res" id="2_12rtw"]
+[ext_resource type="Shape3D" path="res://imprimante/imprimante_forme.res" id="3_txbi1"]
+
+[node name="Imprimante" type="CharacterBody3D" unique_id=503238110]
+script = ExtResource("1_c4w1s")
+
+[node name="Modele" type="MeshInstance3D" parent="." unique_id=275314942]
+mesh = ExtResource("2_12rtw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=54553380]
+shape = ExtResource("3_txbi1")
