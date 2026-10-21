@@ -25,61 +25,63 @@
 [ext_resource type="Texture2D" uid="uid://cwhn08g4aoswl" path="res://icones/lampe.png" id="icone_lampe"]
 [ext_resource type="Script" uid="uid://0odxuwcfsn1s" path="res://inventaire_hud.gd" id="inventaire_hud"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gy0ha"]
+[ext_resource type="Shader" path="res://mur_carte.gdshader" id="mur_shader"]
+
+[sub_resource type="ShaderMaterial" id="StandardMaterial3D_gy0ha"]
 resource_name = "Cycles_Lighting_01"
-cull_mode = 2
-albedo_texture = ExtResource("2_c4b30")
-texture_repeat = false
-metadata/_gltf_primary_texture_coord = 0
+render_priority = 0
+shader = ExtResource("mur_shader")
+shader_parameter/texture_mur = ExtResource("2_c4b30")
+shader_parameter/luminosite = Color(2, 2, 2, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jqt6h"]
+[sub_resource type="ShaderMaterial" id="StandardMaterial3D_jqt6h"]
 resource_name = "Cycles_Lighting_02"
-cull_mode = 2
-albedo_texture = ExtResource("3_nb2vr")
-texture_repeat = false
-metadata/_gltf_primary_texture_coord = 0
+render_priority = 0
+shader = ExtResource("mur_shader")
+shader_parameter/texture_mur = ExtResource("3_nb2vr")
+shader_parameter/luminosite = Color(2, 2, 2, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fywtj"]
+[sub_resource type="ShaderMaterial" id="StandardMaterial3D_fywtj"]
 resource_name = "Cycles_Lighting_03"
-cull_mode = 2
-albedo_texture = ExtResource("4_dhm0a")
-texture_repeat = false
-metadata/_gltf_primary_texture_coord = 0
+render_priority = 0
+shader = ExtResource("mur_shader")
+shader_parameter/texture_mur = ExtResource("4_dhm0a")
+shader_parameter/luminosite = Color(2, 2, 2, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kfjy2"]
+[sub_resource type="ShaderMaterial" id="StandardMaterial3D_kfjy2"]
 resource_name = "Cycles_Lighting_04"
-cull_mode = 2
-albedo_texture = ExtResource("5_nmbvh")
-texture_repeat = false
-metadata/_gltf_primary_texture_coord = 0
+render_priority = 0
+shader = ExtResource("mur_shader")
+shader_parameter/texture_mur = ExtResource("5_nmbvh")
+shader_parameter/luminosite = Color(2, 2, 2, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8kb4a"]
+[sub_resource type="ShaderMaterial" id="StandardMaterial3D_8kb4a"]
 resource_name = "Cycles_Lighting_05"
-cull_mode = 2
-albedo_texture = ExtResource("6_y82vv")
-texture_repeat = false
-metadata/_gltf_primary_texture_coord = 0
+render_priority = 0
+shader = ExtResource("mur_shader")
+shader_parameter/texture_mur = ExtResource("6_y82vv")
+shader_parameter/luminosite = Color(2, 2, 2, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o4r7m"]
+[sub_resource type="ShaderMaterial" id="StandardMaterial3D_o4r7m"]
 resource_name = "Cycles_Lighting_06"
-cull_mode = 2
-albedo_texture = ExtResource("7_67hm2")
-texture_repeat = false
-metadata/_gltf_primary_texture_coord = 0
+render_priority = 0
+shader = ExtResource("mur_shader")
+shader_parameter/texture_mur = ExtResource("7_67hm2")
+shader_parameter/luminosite = Color(2, 2, 2, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pkedk"]
+[sub_resource type="ShaderMaterial" id="StandardMaterial3D_pkedk"]
 resource_name = "Cycles_Lighting_07"
-cull_mode = 2
-albedo_texture = ExtResource("8_wee5g")
-texture_repeat = false
-metadata/_gltf_primary_texture_coord = 0
+render_priority = 0
+shader = ExtResource("mur_shader")
+shader_parameter/texture_mur = ExtResource("8_wee5g")
+shader_parameter/luminosite = Color(2, 2, 2, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kr2xi"]
+[sub_resource type="ShaderMaterial" id="StandardMaterial3D_kr2xi"]
 resource_name = "Cycles_Lighting_08"
-cull_mode = 2
-albedo_texture = ExtResource("9_mnu6w")
-texture_repeat = false
-metadata/_gltf_primary_texture_coord = 0
+render_priority = 0
+shader = ExtResource("mur_shader")
+shader_parameter/texture_mur = ExtResource("9_mnu6w")
+shader_parameter/luminosite = Color(2, 2, 2, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_vwqwb"]
 _surfaces = [{
@@ -433,6 +435,12 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(1, 1, 1, 0.4)
 
+[sub_resource type="Environment" id="Environment_noir"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_energy = 0.0
+reflected_light_source = 1
+
 [node name="Node3D" type="Node3D" unique_id=195803458]
 
 [node name="scene_cycles (4)" parent="." unique_id=1591898984 instance=ExtResource("1_ptvmm")]
@@ -662,6 +670,16 @@ mouse_filter = 2
 texture = ExtResource("icone_cle")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1987650001]
+environment = SubResource("Environment_noir")
+
+[node name="LumiereHautEscalier" type="OmniLight3D" parent="." unique_id=1987650002]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.8, 7, -17.5)
+light_color = Color(1, 0.78, 0.55, 1)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 7.0
 
 [editable path="scene_cycles (4)"]
 [editable path="CleDoublePorte"]
