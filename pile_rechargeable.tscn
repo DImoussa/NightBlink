@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://beeyxc23s0obc"]
+
+[ext_resource type="Script" uid="uid://d1p1lfkmlk17f" path="res://pile_rechargeable.gd" id="1_u3ila"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_k0vqr"]
+radius = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_k0vqr"]
+top_radius = 0.046875
+bottom_radius = 0.046875
+height = 0.18139648
+
+[node name="PileRechargeable" type="Area3D" unique_id=1043736103]
+script = ExtResource("1_u3ila")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1392836462]
+transform = Transform3D(0.197, 0, 0, 0, 0.216, 0, 0, 0, 0.15, 0, 0.542005, 0)
+shape = SubResource("SphereShape3D_k0vqr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2076020166]
+transform = Transform3D(0.9996586, 0.026051395, -0.0020494696, -0.02605091, 0.99966073, 0.0002544693, 0.0020554033, -0.00020099178, 0.99999785, 0, 0.5562744, 0)
+mesh = SubResource("CylinderMesh_k0vqr")

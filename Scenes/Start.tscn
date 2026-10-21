@@ -12,8 +12,12 @@ script = ExtResource("1_og4jd")
 
 [node name="Control" type="CanvasLayer" parent="." unique_id=714779241]
 
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="Control" unique_id=10811052]
+offset_right = 1923.0
+offset_bottom = 1085.0
+
 [node name="TextureRect" type="TextureRect" parent="Control" unique_id=1056926926]
-offset_left = 14.0
+offset_left = 14.000015
 offset_top = -7.0
 offset_right = 3881.0
 offset_bottom = 4827.0
