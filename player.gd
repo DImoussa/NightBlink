@@ -3,8 +3,8 @@ extends CharacterBody3D
 @export var speed := 4.0
 @export var mouse_sensitivity := 0.002
 @export var portee_aimant := 30.0   # distance max pour attraper un mur
-@export var portee_porte := 0.4     # distance max entre l'aimant et une porte métallique pour l'ouvrir
-@export var portee_objet := 0.6     # distance max entre l'aimant et un objet à attraper (imprimante...)
+@export var portee_porte := 2.5     # distance max entre l'aimant et une porte métallique pour l'ouvrir
+@export var portee_objet := 2.5     # distance max entre l'aimant et un objet à attraper (imprimante...)
 @export var portee_ramassage := 1.0 # distance max entre l'aimant et un objet à ramasser (clé...)
 @export var tolerance_visee := 0.4  # on ramasse aussi si on vise à moins de ça de l'objet (ex. le lavabo autour)
 @export var vitesse_echelle := 2.5  # m/s pour monter/descendre une échelle
