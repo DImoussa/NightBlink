@@ -165,5 +165,72 @@ func _lancer() -> void:
 	print("   apres lacher : tenu ", _joueur.objet_tenu, " deplacement ", imp.global_position.distance_to(pos_lachee), " vitesse ", imp.velocity)
 	verifier(_joueur.objet_tenu == null and imp.global_position.distance_to(pos_lachee) < 0.3, "E relâché -> imprimante lâchée et immobile")
 
+	# --- Visuels : lampe en main droite, batteries, barre d'inventaire
+	var lampe_main: Node3D = _joueur.get_node("Head/Camera3D/Lampe")
+	verifier(lampe_main.position.x > 0 and _joueur.aimant.position.x < 0, "lampe dans la main droite, aimant dans la gauche")
+	verifier(_scene.get_node("PileRechargeable2/Modele") != null, "pile affichée avec le modèle de batterie")
+	var barre: HBoxContainer = _joueur.get_node("InventaireHUD").get_child(0)
+	verifier(barre.get_children().map(func(c): return str(c.name)) == ["lampe", "aimant"], "inventaire de départ : %s" % [barre.get_children().map(func(c): return str(c.name))])
+
+	# --- Grilles : l'aimant ne les ouvre pas
+	var grille_g: Node3D = _scene.get_node("porte_gauche")
+	var grille_d: Node3D = _scene.get_node("porte_droite")
+	var bat_g: MeshInstance3D = grille_g.get_child(0)
+	placer_joueur(Vector3(bat_g.global_position.x + 0.85, 7.0, bat_g.global_position.z), PI / 2)
+	await attendre_physique(3)
+	appuyer_e()
+	verifier(not grille_g.ouverte and not grille_d.ouverte, "E sur la grille : reste fermée (il faut la clé)")
+
+	# --- Clé : visée avec l'aimant + E -> inventaire
+	var cle: Node3D = _scene.get_node("CleDoublePorte")
+	var centre_cle: Vector3 = cle.get_child(cle.get_child_count() - 1).global_position
+	placer_joueur(Vector3(centre_cle.x, 7.0, centre_cle.z + 1.0), 0.0)
+	await attendre_physique(3)
+	# On vise le lavabo à 30 cm à côté de la clé, pas la clé elle-même
+	var cible_lavabo: Vector3 = centre_cle + Vector3(0.3, 0, 0)
+	var vers_cle: Vector3 = cible_lavabo - _joueur.camera.global_position
+	_joueur.rotation.y = atan2(-vers_cle.x, -vers_cle.z)
+	_joueur.get_node("Head").rotation.x = atan2(vers_cle.y, Vector2(vers_cle.x, vers_cle.z).length())
+	await attendre_physique(1)
+	var rayon_cle := PhysicsRayQueryParameters3D.create(_joueur.camera.global_position, _joueur.camera.global_position - _joueur.camera.global_basis.z * 3.0)
+	rayon_cle.exclude = [_joueur.get_rid()]
+	var vise_cle := espace.intersect_ray(rayon_cle)
+	print("   rayon de l'aimant touche : ", vise_cle.collider.get_path() if vise_cle else "rien", " à %.2f m de la clé" % (vise_cle.position.distance_to(centre_cle) if vise_cle else -1.0))
+	appuyer_e()
+	await attendre_physique(2)
+	verifier("cle" in _joueur.inventaire and not is_instance_valid(cle), "clé ramassée en visant le lavabo à côté (inventaire : %s)" % [_joueur.inventaire])
+	verifier(barre.get_children().map(func(c): return str(c.name)) == ["lampe", "aimant", "cle"], "clé affichée dans la barre du bas")
+
+	# --- Serrure : tout près avec la clé -> les deux grilles s'ouvrent
+	var serrure: Area3D = _scene.get_node("Serrure")
+	placer_joueur(Vector3(serrure.global_position.x + 1.3, 7.0, serrure.global_position.z), PI / 2)
+	await attendre_physique(5)
+	verifier(not grille_g.ouverte, "à 1,3 m de la serrure : rien ne se passe")
+	placer_joueur(Vector3(serrure.global_position.x + 0.6, 7.0, serrure.global_position.z), PI / 2)
+	await attendre_physique(5)
+	verifier(grille_g.ouverte and grille_d.ouverte and not "cle" in _joueur.inventaire and serrure.get_node("CleInseree").visible,
+		"clé insérée dans la serrure -> les deux grilles s'ouvrent")
+	await create_timer(1.5).timeout
+	var passage := PhysicsRayQueryParameters3D.create(Vector3(20.0, 7.2, -0.15), Vector3(17.4, 7.2, -0.15))
+	passage.exclude = [_joueur.get_rid()]
+	var bloque := espace.intersect_ray(passage)
+	verifier(bloque.is_empty(), "passage libre entre les grilles" + ("" if bloque.is_empty() else " (bloqué par %s)" % bloque.collider.get_path()))
+
+	# --- Échelle : avancer fait monter jusqu'à la mezzanine
+	placer_joueur(Vector3(-11.53, 7.0, -4.98), 0.672)
+	await attendre_physique(5)
+	Input.action_press("move_up")
+	for i in 240:
+		await physics_frame
+	print("   en haut de l'échelle : ", _joueur.global_position.snapped(Vector3.ONE * 0.01))
+	# En haut, on se tourne vers la mezzanine (sud-ouest) et on avance
+	var vers_mezzanine := Vector3(-13.3, 0, -4.3) - Vector3(_joueur.global_position.x, 0, _joueur.global_position.z)
+	_joueur.rotation.y = atan2(-vers_mezzanine.x, -vers_mezzanine.z)
+	for i in 60:
+		await physics_frame
+	Input.action_release("move_up")
+	await attendre_physique(30)
+	verifier(_joueur.global_position.y > 11.3 and _joueur.is_on_floor(), "échelle montée : joueur sur la mezzanine (y=%.2f, au sol=%s, en %s)" % [_joueur.global_position.y, _joueur.is_on_floor(), _joueur.global_position.snapped(Vector3.ONE * 0.01)])
+
 	print("TOUS LES TESTS PASSENT" if _ok else "DES TESTS ECHOUENT")
 	quit(0 if _ok else 1)

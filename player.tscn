@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://263857itgir0" path="res://player.gd" id="1_i3pqv"]
 [ext_resource type="Script" uid="uid://mcsitmp0c4ak" path="res://lantern.gd" id="2_hqtel"]
 [ext_resource type="PackedScene" uid="uid://b74d812ubhn78" path="res://scene_baked.glb" id="3_sweqy"]
+[ext_resource type="PackedScene" uid="uid://b6264eu23m8w6" path="res://Lampe.glb" id="4_lampe"]
+[ext_resource type="Script" path="res://inventaire_hud.gd" id="5_inventaire"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aloso"]
 
@@ -19,7 +21,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 [node name="Camera3D" type="Camera3D" parent="Head" unique_id=1500617760]
 
 [node name="Lantern" type="SpotLight3D" parent="Head/Camera3D" unique_id=744613279]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, -0.2, -0.68)
 light_energy = 3.0
 shadow_enabled = true
 spot_range = 15.0
@@ -34,5 +36,11 @@ transform = Transform3D(0.009727404, 0.0006109037, 0.071350455, -0.0040993555, 0
 
 [node name="Scene_Baked" parent="Head/Camera3D/Aimant" index="0" unique_id=736891497]
 transform = Transform3D(0.5901135, -1.3969839e-08, 0, -5.820766e-08, 0.7748775, 5.5879354e-09, -1.1920929e-07, -6.9849193e-09, 1.099418, -2.9902215, -0.24503517, 0.1245842)
+
+[node name="Lampe" parent="Head/Camera3D" unique_id=1946211873 instance=ExtResource("4_lampe")]
+transform = Transform3D(-0.45, 0, 0, 0, 0.45, 0, 0, 0, -0.45, 0.3025, -0.5227, -0.6719)
+
+[node name="InventaireHUD" type="CanvasLayer" parent="." unique_id=1386542207]
+script = ExtResource("5_inventaire")
 
 [editable path="Head/Camera3D/Aimant"]
