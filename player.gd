@@ -3,9 +3,11 @@ extends CharacterBody3D
 @export var speed := 4.0
 @export var mouse_sensitivity := 0.002
 @export var portee_aimant := 30.0   # distance max pour attraper un mur
+@export var portee_porte := 0.4     # distance max entre l'aimant et une porte métallique pour l'ouvrir
 
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera3D
+@onready var aimant: Node3D = $Head/Camera3D/Aimant
 
 var mur_tenu: Node3D = null          # le mur attrapé par l'aimant
 var decalage_mur: Transform3D        # position du mur par rapport à la caméra
@@ -59,10 +61,28 @@ func basculer_aimant():
 	var requete := PhysicsRayQueryParameters3D.create(origine, fin)
 	requete.exclude = [get_rid()]
 	var resultat := get_world_3d().direct_space_state.intersect_ray(requete)
+	# Porte métallique visée : on l'ouvre si l'aimant est assez près
+	var porte := trouver_porte(resultat.collider if resultat else null)
+	if porte:
+		# L'aimant dépasse devant la caméra : on retire ce bout pour avoir la distance aimant -> porte
+		var distance_porte: float = origine.distance_to(resultat.position) + aimant.position.z
+		if distance_porte <= portee_porte:
+			porte.ouvrir(global_position)
+		return
 	if resultat and resultat.collider is Node3D and str(resultat.collider.name).begins_with("Mur"):
 		mur_tenu = resultat.collider
 		decalage_mur = camera.global_transform.affine_inverse() * mur_tenu.global_transform
 		allumer_led(true)   # LED allumée = aimant actif
+
+
+func trouver_porte(objet: Object) -> Node:
+	# La collision touchée est dans le modèle de la porte : on remonte jusqu'au nœud porte_metal.gd
+	var noeud := objet as Node
+	while noeud:
+		if noeud.is_in_group("porte_metal"):
+			return noeud
+		noeud = noeud.get_parent()
+	return null
 
 
 func _physics_process(delta):

@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://btqmtw8fbyabk" path="res://player.tscn" id="11_6f1mv"]
 [ext_resource type="PackedScene" uid="uid://bsfj7o4pcbvy" path="res://Scenes/PapierOuvrant/NotePapier.tscn" id="12_gp0gh"]
 [ext_resource type="PackedScene" uid="uid://bfyr48hr1k04q" path="res://portemetal.glb" id="15_56mp6"]
+[ext_resource type="Script" path="res://porte_metal.gd" id="16_porte"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7v4po"]
 resource_name = "Cycles_Lighting_01"
@@ -276,32 +277,36 @@ shadow_mesh = SubResource("ArrayMesh_iirtr")
 [sub_resource type="SphereShape3D" id="SphereShape3D_so34w"]
 radius = 0.8
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_so34w"]
+albedo_color = Color(0.61810786, 0.61810786, 0.61810786, 1)
+roughness = 0.9
+
 [node name="scene_finalversion" unique_id=2125649519 instance=ExtResource("1_843ry")]
 
 [node name="porte_gauche" parent="." index="0" unique_id=2141515074 instance=ExtResource("2_uqyjh")]
 
-[node name="Scene_Cycles_Baked_001" parent="porte_gauche" index="0" unique_id=1431619278]
+[node name="Scene_Cycles_Baked_001" parent="porte_gauche" index="0" unique_id=1280315669]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.719995, 7.174866, 0.4250177)
 
 [node name="porte_droite" parent="." index="1" unique_id=286341489 instance=ExtResource("2_uqyjh")]
 
-[node name="Scene_Cycles_Baked_001" parent="porte_droite" index="0" unique_id=1431619278]
+[node name="Scene_Cycles_Baked_001" parent="porte_droite" index="0" unique_id=1280315669]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.719995, 7.174866, -0.7190703)
 
 [node name="PileRechargeable" parent="." index="2" unique_id=1043736103 instance=ExtResource("2_tnqvk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.23134, 0.3233781, -37.779377)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.55, 0.3233781, -37.779377)
 
-[node name="Scene_Cycles_Baked" parent="." index="3" unique_id=1514723064]
+[node name="Scene_Cycles_Baked" parent="." index="3" unique_id=1857373929]
 mesh = SubResource("ArrayMesh_ivbla")
 
-[node name="CollisionShape3D" parent="Scene_Cycles_Baked/StaticBody3D" parent_id_path=PackedInt32Array(1155672630) index="0" unique_id=175496996]
+[node name="CollisionShape3D" parent="Scene_Cycles_Baked/StaticBody3D" parent_id_path=PackedInt32Array(258249320) index="0" unique_id=1127006212]
 visible = false
 
-[node name="NavigationRegion3D" parent="Scene_Cycles_Baked" index="1" unique_id=1499442778]
+[node name="NavigationRegion3D" parent="Scene_Cycles_Baked" index="1" unique_id=492746130]
 visible = false
 
 [node name="Player" parent="." index="4" unique_id=502473477 instance=ExtResource("11_6f1mv")]
-transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, 43.51978, 1.0479543, -36.940475)
+transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, -0.41351008, 7.272451, 38.741756)
 
 [node name="Node3D2" parent="." index="5" unique_id=1596967186 instance=ExtResource("12_gp0gh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.871952, 1.3648002, -32.1935)
@@ -309,25 +314,57 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.871952, 1.3648002, -32.193
 [node name="CollisionShape3D" parent="Node3D2/NotePapier" parent_id_path=PackedInt32Array(1596967186, 2006595968) index="0" unique_id=663555539]
 shape = SubResource("SphereShape3D_so34w")
 
-[node name="FondPapier" parent="Node3D2/NotePapier/CanvasLayer/Feuille" parent_id_path=PackedInt32Array(1596967186, 1639185185) index="0" unique_id=774120953]
-layout_mode = 0
-anchors_preset = 0
-
-[node name="TexteNote" parent="Node3D2/NotePapier/CanvasLayer/Feuille" parent_id_path=PackedInt32Array(1596967186, 1639185185) index="1" unique_id=541725541]
-layout_mode = 0
-anchors_preset = 0
-
 [node name="portemetalentree" parent="." index="6" unique_id=1560398616 instance=ExtResource("15_56mp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4066608, 0)
+script = ExtResource("16_porte")
 
-[node name="Scene_Cycles_Baked" parent="portemetalentree" index="0" unique_id=1206415484]
+[node name="Scene_Cycles_Baked" parent="portemetalentree" index="0" unique_id=1187978702]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.696037, 1.2577634, -31.87)
 
 [node name="portemetalsortie" parent="." index="7" unique_id=1659996280 instance=ExtResource("15_56mp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8133216, 0)
+script = ExtResource("16_porte")
 
-[node name="Scene_Cycles_Baked" parent="portemetalsortie" index="0" unique_id=1206415484]
+[node name="Scene_Cycles_Baked" parent="portemetalsortie" index="0" unique_id=1187978702]
 transform = Transform3D(-0.062060904, 0, 0.9980724, 0, 1, 0, -0.9980724, 0, -0.062060904, 1.8731952, 6.452925, 38.895927)
+
+[node name="Mur" type="CSGBox3D" parent="." index="8" unique_id=1360255825]
+transform = Transform3D(0.009585674, 0.5321418, -0.0057137622, -0.41798672, -0.00020630262, -0.92056596, -0.8367074, 0.0061995042, 0.4598137, 41.83135, 2.55, -23.693)
+visible = false
+use_collision = true
+size = Vector3(12.399414, 3.9139404, 1.0039063)
+material = SubResource("StandardMaterial3D_so34w")
+
+[node name="Mur2" type="CSGBox3D" parent="." index="9" unique_id=359369437]
+transform = Transform3D(0.38990158, -0.0022084897, 0.029538587, 0.00090693467, -0.15318194, -0.48186657, 0.012257469, 0.0815827, -0.90396637, 27.988, 5.45, -2.826)
+visible = false
+use_collision = true
+size = Vector3(12.399414, 3.9139404, 1.0039063)
+material = SubResource("StandardMaterial3D_so34w")
+
+[node name="PileRechargeable2" parent="." unique_id=1043736105 instance=ExtResource("2_tnqvk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.5, 5.5, -11)
+
+[node name="PileRechargeable3" parent="." unique_id=1043736106 instance=ExtResource("2_tnqvk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 5.45, -4)
+
+[node name="PileRechargeable4" parent="." unique_id=1043736107 instance=ExtResource("2_tnqvk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 5.93, 0)
+
+[node name="PileRechargeable5" parent="." unique_id=1043736108 instance=ExtResource("2_tnqvk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 5.91, -1)
+
+[node name="PileRechargeable6" parent="." unique_id=1043736109 instance=ExtResource("2_tnqvk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 5.92, 12)
+
+[node name="PileRechargeable7" parent="." unique_id=1043736110 instance=ExtResource("2_tnqvk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 5.92, 24)
+
+[node name="PileRechargeable8" parent="." unique_id=1043736111 instance=ExtResource("2_tnqvk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 5.91, 31)
+
+[node name="PileRechargeable9" parent="." unique_id=1043736112 instance=ExtResource("2_tnqvk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5.91, 34)
 
 [editable path="porte_gauche"]
 [editable path="porte_droite"]

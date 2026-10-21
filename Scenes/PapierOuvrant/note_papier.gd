@@ -3,7 +3,7 @@ extends Area3D
 # Écris le texte de ta note directement dans l'Inspecteur de Godot
 @export_multiline var contenu_texte: String = "Jour 14 : Ils ne m'ont pas cru...\nLe monstre craint la lumière directe de la torche."
 @export var son_papier: AudioStream # Optionnel : bruit de feuille joué à l'ouverture/fermeture
-@export var portee: float = 0.8 # Distance (en mètres) à laquelle la note s'ouvre
+@export var portee: float = 0.45 # Distance (en mètres) à laquelle la note s'ouvre
 
 @export_group("Animation")
 @export var duree_ouverture: float = 0.65
