@@ -1,6 +1,5 @@
 extends Area3D
 
-@export var quantite_recharge: float = 40.0
 @export var distance_lueur_min: float = 1.0 
 @export var distance_lueur_max: float = 3.0 
 
@@ -23,7 +22,7 @@ func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player") or body.name == "Player":
 		var lanterne = get_tree().get_first_node_in_group("lantern")
 		if lanterne and lanterne.has_method("recharger"):
-			lanterne.recharger(quantite_recharge)
+			lanterne.recharger(lanterne.max_energy)   # recharge au max
 			print("Pile ramassée en étant collé !")
 			
 			collision_shape.set_deferred("disabled", true)
