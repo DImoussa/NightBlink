@@ -301,7 +301,7 @@ visible = false
 visible = false
 
 [node name="Player" parent="." index="4" unique_id=502473477 instance=ExtResource("11_6f1mv")]
-transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, 43.51978, 1.0479543, -36.940475)
+transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, -2.0690494, 7.218755, 41.450172)
 
 [node name="Node3D2" parent="." index="5" unique_id=1596967186 instance=ExtResource("12_gp0gh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.871952, 1.3648002, -32.1935)

@@ -12,6 +12,7 @@ func _ready() -> void:
 	StatusDot.modulate = Color.RED
 	StatusLabel.text = "Arduino Pas Connectée"
 	StartButton.disabled = true
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
