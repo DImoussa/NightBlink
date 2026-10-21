@@ -1,4 +1,4 @@
-# tests/test_mecaniques.gd — vérifie dans scene_finalversion.tscn : portes métalliques (touche E à 0,4 m de l'aimant),
+# tests/test_mecaniques.gd — vérifie dans sceneFinalVersion2.tscn (ou la scène passée après "--") : portes métalliques (touche E à 0,4 m de l'aimant),
 # piles (placement, recharge au max, ramassage au contact), durée de la lampe et portée réduite de la note. Lancer :
 #   "<Godot>_console.exe" --headless --path <projet> -s res://tests/test_mecaniques.gd
 # Attendu : que des lignes "[OK]", puis "TOUS LES TESTS PASSENT", code de sortie 0.
@@ -39,7 +39,10 @@ func appuyer_e() -> void:
 
 
 func _lancer() -> void:
-	_scene = load("res://scene_finalversion.tscn").instantiate()
+	# Scène testée : la nouvelle map par défaut, ou celle passée après "--" (ex. -- res://scene_finalversion.tscn)
+	var chemin := OS.get_cmdline_user_args()[0] if OS.get_cmdline_user_args().size() > 0 else "res://sceneFinalVersion2.tscn"
+	print("Scène testée : ", chemin)
+	_scene = load(chemin).instantiate()
 	root.add_child(_scene)
 	await attendre_physique(10)
 	_joueur = _scene.get_node("Player")
@@ -90,13 +93,20 @@ func _lancer() -> void:
 	var texte: Label = note.get_node("CanvasLayer/Feuille/TexteNote")
 	verifier(texte.text != "" and texte.size.x > 100 and texte.size.y > 100,
 		"texte de la note visible (%d x %d px)" % [texte.size.x, texte.size.y])
+	await create_timer(1.0).timeout
+	var feuille: Control = note.get_node("CanvasLayer/Feuille")
+	var fond: Control = note.get_node("CanvasLayer/FondNoir")
+	verifier(absf(feuille.position.y - 200) <= 6 and is_equal_approx(fond.modulate.a, 1.0) and note.get_node("AnimationPlayer").current_animation == "flottement",
+		"animation : feuille au centre (%s), fond noir visible, puis flottement (%s)" % [feuille.position.round(), note.get_node("AnimationPlayer").current_animation])
 	placer_joueur(Vector3(pos_note.x, 1.4, pos_note.z - 2.5))
 	await attendre_physique(10)
+	await create_timer(0.5).timeout
+	verifier(not note.get_node("CanvasLayer").visible, "en s'éloignant : animation fermer, feuille cachée")
 
 	# --- Portes métalliques : E trop loin = rien, E à moins de 0,4 m de l'aimant = ouverture
 	for nom in ["portemetalentree", "portemetalsortie"]:
 		var porte: Node3D = _scene.get_node(nom)
-		var battant: MeshInstance3D = porte.get_child(0)
+		var battant: MeshInstance3D = porte.get_node("Modele").get_child(0)
 		var b := battant.global_basis
 		# Face de la porte côté joueur, joueur tourné vers elle (la caméra regarde -Z)
 		var normale := b.z.normalized()
@@ -169,13 +179,13 @@ func _lancer() -> void:
 	var lampe_main: Node3D = _joueur.get_node("Head/Camera3D/Lampe")
 	verifier(lampe_main.position.x > 0 and _joueur.aimant.position.x < 0, "lampe dans la main droite, aimant dans la gauche")
 	verifier(_scene.get_node("PileRechargeable2/Modele") != null, "pile affichée avec le modèle de batterie")
-	var barre: HBoxContainer = _joueur.get_node("InventaireHUD").get_child(0)
-	verifier(barre.get_children().map(func(c): return str(c.name)) == ["lampe", "aimant"], "inventaire de départ : %s" % [barre.get_children().map(func(c): return str(c.name))])
+	var barre: HBoxContainer = _scene.get_node("Inventaire/Barre")
+	verifier(barre.get_children().filter(func(c): return c.visible).map(func(c): return str(c.name)) == ["lampe", "aimant"], "inventaire de départ : %s" % [barre.get_children().filter(func(c): return c.visible).map(func(c): return str(c.name))])
 
 	# --- Grilles : l'aimant ne les ouvre pas
 	var grille_g: Node3D = _scene.get_node("porte_gauche")
 	var grille_d: Node3D = _scene.get_node("porte_droite")
-	var bat_g: MeshInstance3D = grille_g.get_child(0)
+	var bat_g: MeshInstance3D = grille_g.get_node("Modele").get_child(0)
 	placer_joueur(Vector3(bat_g.global_position.x + 0.85, 7.0, bat_g.global_position.z), PI / 2)
 	await attendre_physique(3)
 	appuyer_e()
@@ -199,7 +209,7 @@ func _lancer() -> void:
 	appuyer_e()
 	await attendre_physique(2)
 	verifier("cle" in _joueur.inventaire and not is_instance_valid(cle), "clé ramassée en visant le lavabo à côté (inventaire : %s)" % [_joueur.inventaire])
-	verifier(barre.get_children().map(func(c): return str(c.name)) == ["lampe", "aimant", "cle"], "clé affichée dans la barre du bas")
+	verifier(barre.get_children().filter(func(c): return c.visible).map(func(c): return str(c.name)) == ["lampe", "aimant", "cle"], "clé affichée dans la barre du bas")
 
 	# --- Serrure : tout près avec la clé -> les deux grilles s'ouvrent
 	var serrure: Area3D = _scene.get_node("Serrure")

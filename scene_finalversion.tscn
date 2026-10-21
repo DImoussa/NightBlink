@@ -14,6 +14,10 @@
 [ext_resource type="Script" uid="uid://1s21tedm3dgy" path="res://objet_ramassable.gd" id="20_ramassable"]
 [ext_resource type="Script" uid="uid://or5l6ig1lwvk" path="res://serrure.gd" id="21_serrure"]
 [ext_resource type="Script" uid="uid://belvapldy5r2m" path="res://echelle.gd" id="22_echelle"]
+[ext_resource type="Texture2D" uid="uid://brfba8boywhc8" path="res://icones/aimant.png" id="icone_aimant"]
+[ext_resource type="Texture2D" uid="uid://cgc4myehnx135" path="res://icones/cle.png" id="icone_cle"]
+[ext_resource type="Texture2D" uid="uid://cwhn08g4aoswl" path="res://icones/lampe.png" id="icone_lampe"]
+[ext_resource type="Script" uid="uid://0odxuwcfsn1s" path="res://inventaire_hud.gd" id="inventaire_hud"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uqyjh"]
 resource_name = "Golden"
@@ -73,6 +77,98 @@ radius = 0.35
 [sub_resource type="BoxShape3D" id="BoxShape3D_echelle"]
 size = Vector3(1, 4.9, 1.7)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_case"]
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.4)
+
+[sub_resource type="Animation" id="Animation_portemetalentree"]
+resource_name = "ouvrir"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(0.4, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.745329, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_portemetalentree"]
+_data = {
+&"ouvrir": SubResource("Animation_portemetalentree")
+}
+
+[sub_resource type="Animation" id="Animation_portemetalsortie"]
+resource_name = "ouvrir"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(0.4, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1.745329, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_portemetalsortie"]
+_data = {
+&"ouvrir": SubResource("Animation_portemetalsortie")
+}
+
+[sub_resource type="Animation" id="Animation_porte_gauche"]
+resource_name = "ouvrir"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(0.4, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.745329, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_porte_gauche"]
+_data = {
+&"ouvrir": SubResource("Animation_porte_gauche")
+}
+
+[sub_resource type="Animation" id="Animation_porte_droite"]
+resource_name = "ouvrir"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(0.4, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1.745329, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_porte_droite"]
+_data = {
+&"ouvrir": SubResource("Animation_porte_droite")
+}
+
 [node name="scene_finalversion" unique_id=2125649519 instance=ExtResource("1_843ry")]
 
 [node name="CleDoublePorte" parent="." index="0" unique_id=825424458 instance=ExtResource("2_o0jl1")]
@@ -86,20 +182,37 @@ transform = Transform3D(1, 0, -3.7252903e-09, 0, 0.8760972, 0, -3.7252903e-09, 0
 transform = Transform3D(100.00001, 0, 0, 0, -1.1920931e-05, 100, 0, -100.00001, -1.1920931e-05, 0, -0.17595863, 0)
 mesh = SubResource("ArrayMesh_2h5ct")
 
-[node name="porte_gauche" parent="." index="1" unique_id=2141515074 instance=ExtResource("2_uqyjh")]
+[node name="porte_gauche" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.72, 7.1749, 0.983)
 script = ExtResource("16_porte")
 ouverture_aimant = false
-charniere_au_max = true
 
-[node name="Scene_Cycles_Baked_001" parent="porte_gauche" index="0" unique_id=1280315669]
+[node name="Modele" parent="porte_gauche" unique_id=2141515074 instance=ExtResource("2_uqyjh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.72, -7.1749, -0.983)
+
+[node name="Scene_Cycles_Baked_001" parent="porte_gauche/Modele" index="0" unique_id=1280315669]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.719995, 7.174866, 0.4250177)
 
-[node name="porte_droite" parent="." index="2" unique_id=286341489 instance=ExtResource("2_uqyjh")]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="porte_gauche"]
+libraries = {
+&"": SubResource("AnimationLibrary_porte_gauche")
+}
+
+[node name="porte_droite" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.72, 7.1749, -1.281)
 script = ExtResource("16_porte")
 ouverture_aimant = false
 
-[node name="Scene_Cycles_Baked_001" parent="porte_droite" index="0" unique_id=1280315669]
+[node name="Modele" parent="porte_droite" unique_id=286341489 instance=ExtResource("2_uqyjh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.72, -7.1749, 1.281)
+
+[node name="Scene_Cycles_Baked_001" parent="porte_droite/Modele" index="0" unique_id=1280315669]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.719995, 7.174866, -0.7190703)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="porte_droite"]
+libraries = {
+&"": SubResource("AnimationLibrary_porte_droite")
+}
 
 [node name="PileRechargeable" parent="." index="3" unique_id=1043736103 instance=ExtResource("2_tnqvk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.55, 0.3233781, -37.779377)
@@ -116,7 +229,7 @@ shape = ExtResource("18_collision")
 visible = false
 
 [node name="Player" parent="." index="5" unique_id=502473477 instance=ExtResource("11_6f1mv")]
-transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, 21.684546, 7.1572285, 0.65404546)
+transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, 44.40052, 0.8892344, -34.928787)
 
 [node name="Node3D2" parent="." index="6" unique_id=1596967186 instance=ExtResource("12_gp0gh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.871952, 1.3648002, -32.1935)
@@ -124,19 +237,35 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.871952, 1.3648002, -32.193
 [node name="CollisionShape3D" parent="Node3D2/NotePapier" parent_id_path=PackedInt32Array(1596967186, 2006595968) index="0" unique_id=663555539]
 shape = SubResource("SphereShape3D_so34w")
 
-[node name="portemetalentree" parent="." index="7" unique_id=1560398616 instance=ExtResource("15_56mp6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4066608, 0)
+[node name="portemetalentree" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.13, 1.6644, -31.87)
 script = ExtResource("16_porte")
 
-[node name="Scene_Cycles_Baked" parent="portemetalentree" index="0" unique_id=1187978702]
+[node name="Modele" parent="portemetalentree" unique_id=1560398616 instance=ExtResource("15_56mp6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.13, -1.257739, 31.87)
+
+[node name="Scene_Cycles_Baked" parent="portemetalentree/Modele" index="0" unique_id=1187978702]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.696037, 1.2577634, -31.87)
 
-[node name="portemetalsortie" parent="." index="8" unique_id=1659996280 instance=ExtResource("15_56mp6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8133216, 0)
+[node name="AnimationPlayer" type="AnimationPlayer" parent="portemetalentree"]
+libraries = {
+&"": SubResource("AnimationLibrary_portemetalentree")
+}
+
+[node name="portemetalsortie" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9083, 7.2662, 38.331)
 script = ExtResource("16_porte")
 
-[node name="Scene_Cycles_Baked" parent="portemetalsortie" index="0" unique_id=1187978702]
+[node name="Modele" parent="portemetalsortie" unique_id=1659996280 instance=ExtResource("15_56mp6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9083, -6.452878, -38.331)
+
+[node name="Scene_Cycles_Baked" parent="portemetalsortie/Modele" index="0" unique_id=1187978702]
 transform = Transform3D(-0.062060904, 0, 0.9980724, 0, 1, 0, -0.9980724, 0, -0.062060904, 1.8731952, 6.452925, 38.895927)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="portemetalsortie"]
+libraries = {
+&"": SubResource("AnimationLibrary_portemetalsortie")
+}
 
 [node name="Mur" type="CSGBox3D" parent="." index="9" unique_id=1360255825]
 transform = Transform3D(0.009585674, 0.5321418, -0.0057137622, -0.41798672, -0.00020630262, -0.92056596, -0.8367074, 0.0061995042, 0.4598137, 41.83135, 2.55, -23.693)
@@ -188,19 +317,104 @@ portes = Array[NodePath]([NodePath("../porte_gauche"), NodePath("../porte_droite
 shape = SubResource("SphereShape3D_serrure")
 
 [node name="CleInseree" parent="Serrure" index="1" unique_id=1598812209 instance=ExtResource("2_o0jl1")]
-transform = Transform3D(0, 0.4, 0, 0, 0, 0.4, 0.4, 0, 0, 0.03, 0, 0)
+transform = Transform3D(0, 0, 0.4, 0.4, 0, 0, 0, 0.4, 0, 0.03, 0, 0)
 visible = false
 
 [node name="Echelle" type="Area3D" parent="." index="21" unique_id=1598812210]
-transform = Transform3D(0.782, 0, -0.623, 0, 1, 0, 0.623, 0, 0.782, -11.91, 8.45, -5.46)
+transform = Transform3D(0.782, 0, 0.623, 0, 1, 0, -0.623, 0, 0.782, -11.91, 8.45, -5.46)
 script = ExtResource("22_echelle")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Echelle" index="0" unique_id=1598812211]
 shape = SubResource("BoxShape3D_echelle")
 
+[node name="Inventaire" type="CanvasLayer" parent="." index="22" unique_id=1777000001]
+script = ExtResource("inventaire_hud")
+
+[node name="Barre" type="HBoxContainer" parent="Inventaire" index="0" unique_id=1777000002]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -90.0
+offset_right = 120.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="lampe" type="Panel" parent="Inventaire/Barre" index="0" unique_id=1777000010]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_case")
+
+[node name="Icone" type="TextureRect" parent="Inventaire/Barre/lampe" index="0" unique_id=1777000011]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("icone_lampe")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="aimant" type="Panel" parent="Inventaire/Barre" index="1" unique_id=1777000012]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_case")
+
+[node name="Icone" type="TextureRect" parent="Inventaire/Barre/aimant" index="0" unique_id=1777000013]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("icone_aimant")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="cle" type="Panel" parent="Inventaire/Barre" index="2" unique_id=1777000014]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_case")
+
+[node name="Icone" type="TextureRect" parent="Inventaire/Barre/cle" index="0" unique_id=1777000015]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("icone_cle")
+expand_mode = 1
+stretch_mode = 5
+
 [editable path="CleDoublePorte"]
-[editable path="porte_gauche"]
-[editable path="porte_droite"]
+[editable path="porte_gauche/Modele"]
+[editable path="porte_droite/Modele"]
 [editable path="Node3D2"]
-[editable path="portemetalentree"]
-[editable path="portemetalsortie"]
+[editable path="portemetalentree/Modele"]
+[editable path="portemetalsortie/Modele"]

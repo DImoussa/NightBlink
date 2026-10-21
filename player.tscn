@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://mcsitmp0c4ak" path="res://lantern.gd" id="2_hqtel"]
 [ext_resource type="PackedScene" uid="uid://b74d812ubhn78" path="res://scene_baked.glb" id="3_sweqy"]
 [ext_resource type="PackedScene" uid="uid://b6264eu23m8w6" path="res://Lampe.glb" id="4_lampe"]
-[ext_resource type="Script" path="res://inventaire_hud.gd" id="5_inventaire"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aloso"]
 
@@ -39,8 +38,5 @@ transform = Transform3D(0.5901135, -1.3969839e-08, 0, -5.820766e-08, 0.7748775, 
 
 [node name="Lampe" parent="Head/Camera3D" unique_id=1946211873 instance=ExtResource("4_lampe")]
 transform = Transform3D(-0.45, 0, 0, 0, 0.45, 0, 0, 0, -0.45, 0.3025, -0.5227, -0.6719)
-
-[node name="InventaireHUD" type="CanvasLayer" parent="." unique_id=1386542207]
-script = ExtResource("5_inventaire")
 
 [editable path="Head/Camera3D/Aimant"]
