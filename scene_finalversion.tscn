@@ -44,25 +44,13 @@ shape = ExtResource("18_collision")
 visible = false
 
 [node name="Player" parent="." index="4" unique_id=502473477 instance=ExtResource("11_6f1mv")]
-<<<<<<< HEAD
-transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, -2.0690494, 7.218755, 41.450172)
-=======
 transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, -8.599452, 7.759098, -1.7167618)
->>>>>>> b408db9946834ea30c8a9be83bd234c281da454e
 
 [node name="Node3D2" parent="." index="5" unique_id=1596967186 instance=ExtResource("12_gp0gh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.871952, 1.3648002, -32.1935)
 
 [node name="CollisionShape3D" parent="Node3D2/NotePapier" parent_id_path=PackedInt32Array(1596967186, 2006595968) index="0" unique_id=663555539]
 shape = SubResource("SphereShape3D_so34w")
-
-[node name="FondPapier" parent="Node3D2/NotePapier/CanvasLayer/Feuille" parent_id_path=PackedInt32Array(1596967186, 1639185185) index="0" unique_id=774120953]
-layout_mode = 0
-anchors_preset = 0
-
-[node name="TexteNote" parent="Node3D2/NotePapier/CanvasLayer/Feuille" parent_id_path=PackedInt32Array(1596967186, 1639185185) index="1" unique_id=541725541]
-layout_mode = 0
-anchors_preset = 0
 
 [node name="portemetalentree" parent="." index="6" unique_id=1560398616 instance=ExtResource("15_56mp6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4066608, 0)
