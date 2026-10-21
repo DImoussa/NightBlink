@@ -9,6 +9,7 @@ roughness = 0.9
 
 [node name="StartScreen" type="Node2D" unique_id=1676421136]
 script = ExtResource("1_og4jd")
+metadata/_edit_horizontal_guides_ = [157.0]
 
 [node name="Control" type="CanvasLayer" parent="." unique_id=714779241]
 
@@ -17,10 +18,10 @@ offset_right = 1923.0
 offset_bottom = 1085.0
 
 [node name="TextureRect" type="TextureRect" parent="Control" unique_id=1056926926]
-offset_left = 14.000015
-offset_top = -7.0
-offset_right = 3881.0
-offset_bottom = 4827.0
+offset_left = 3.000001
+offset_top = 3.999998
+offset_right = 3908.61
+offset_bottom = 4762.9043
 scale = Vector2(0.49185655, 0.22637722)
 texture = ExtResource("2_nt0jr")
 
@@ -30,10 +31,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 349.0
-offset_top = -20.0
-offset_right = 1120.0
-offset_bottom = 463.99994
+offset_left = 398.99988
+offset_top = 24.000061
+offset_right = 1170.0
+offset_bottom = 508.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5754932, 0.58000636)
@@ -48,16 +49,30 @@ theme_override_constants/separation = 20
 
 [node name="StartButton" type="Button" parent="Control/VBoxContainer" unique_id=1252999707]
 unique_name_in_owner = true
+physics_interpolation_mode = 1
 layout_mode = 2
+accessibility_controls_nodes = Array[NodePath]([NodePath("")])
+theme_override_colors/font_color = Color(0.9298793, 0.8940737, 0.45369488, 1)
+theme_override_colors/font_focus_color = Color(0.97912353, 0.99711293, 7.70092e-07, 1)
+theme_override_colors/font_pressed_color = Color(0.67754686, 0.67754686, 0, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 0, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 0.15686275, 0.09019608, 0.4)
 theme_override_font_sizes/font_size = 128
 text = " Start Game "
 
 [node name="Label" type="Label" parent="Control" unique_id=1214011622]
-offset_left = 25.0
-offset_top = 402.0
-offset_right = 477.0
-offset_bottom = 603.0
-theme_override_colors/font_color = Color(0.7953939, 0.79539394, 0.7953939, 1)
+offset_left = 28.0
+offset_top = 419.0
+offset_right = 480.0
+offset_bottom = 620.0
 theme_override_font_sizes/font_size = 72
 text = "NightBlink
 "
