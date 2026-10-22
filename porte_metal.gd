@@ -14,7 +14,7 @@ const Surbrillance := preload("res://Scripts/surbrillance.gd")
 func _ready() -> void:
 	if ouverture_aimant:
 		add_to_group("porte_metal")
-		Surbrillance.appliquer(self)
+		Surbrillance.appliquer(self, true)
 
 
 func ouvrir(_position_joueur := Vector3.ZERO) -> void:

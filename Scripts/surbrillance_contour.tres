@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://Scripts/surbrillance.gdshader" id="1_halo"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_halo")
+shader_parameter/couleur = Color(1, 0.78, 0.2, 1)
+shader_parameter/epaisseur = 0.015
+shader_parameter/force = 0.1
