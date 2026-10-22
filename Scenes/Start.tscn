@@ -3,61 +3,68 @@
 [ext_resource type="Script" uid="uid://dd3m42c4741s4" path="res://Scripts/start_screen.gd" id="1_og4jd"]
 [ext_resource type="Texture2D" uid="uid://dy2mtjnv860r6" path="res://ecranaccueil.png" id="2_nt0jr"]
 
-[node name="StartScreen" type="Node2D" unique_id=1676421136]
+[node name="StartScreen" type="Node" unique_id=1676421136]
 script = ExtResource("1_og4jd")
-metadata/_edit_horizontal_guides_ = [157.0]
 
-[node name="Control" type="CanvasLayer" parent="." unique_id=714779241]
+[node name="Interface" type="CanvasLayer" parent="." unique_id=714779241]
 
-[node name="TextureRect" type="TextureRect" parent="Control" unique_id=1056926926]
-offset_left = 11.0
-offset_top = 4.0
-offset_right = 3916.61
-offset_bottom = 4762.9043
-scale = Vector2(0.48800096, 0.2255144)
+[node name="Fond" type="TextureRect" parent="Interface" unique_id=1056926926]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_nt0jr")
+expand_mode = 1
 
-[node name="Label" type="Label" parent="Control" unique_id=1214011622]
-offset_left = 723.0
+[node name="Titre" type="Label" parent="Interface" unique_id=1214011622]
+anchors_preset = 10
+anchor_right = 1.0
 offset_top = 151.0
-offset_right = 1175.0
 offset_bottom = 352.0
-theme_override_font_sizes/font_size = 72
-text = "NightBlink
-"
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 120
+text = "NighBlink"
 horizontal_alignment = 1
 
-[node name="Label" type="Label" parent="Control/Label" unique_id=1847899908]
-layout_mode = 0
-offset_left = -39.0
-offset_top = 121.0
-offset_right = 471.0
-offset_bottom = 322.0
-theme_override_colors/font_color = Color(0.4509804, 0, 0.03529412, 1)
-theme_override_font_sizes/font_size = 72
-text = "Tu es mort !
-"
-horizontal_alignment = 1
-
-[node name="Label2" type="Label" parent="Control/Label" unique_id=2055805626]
-layout_mode = 0
-offset_left = -287.0
-offset_top = 586.0
-offset_right = 702.0
-offset_bottom = 787.0
+[node name="BoutonJouer" type="Button" parent="Interface" unique_id=1252999707]
+unique_name_in_owner = true
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -500.0
+offset_top = 554.0
+offset_right = 500.0
+offset_bottom = 660.0
+grow_horizontal = 2
+focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 0, 0.56078434)
+theme_override_colors/font_hover_color = Color(1, 1, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 72
-text = "Retourner à l'écran d'accueil
-"
+text = "Jouer"
+flat = true
+
+[node name="EtatManette" type="Label" parent="Interface" unique_id=1214011700]
+unique_name_in_owner = true
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 700.0
+offset_bottom = 760.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="Control/Label/Label2" unique_id=943405022]
-layout_mode = 0
-offset_left = 8.0
-offset_top = -183.0
-offset_right = 997.0
-offset_bottom = 18.0
-theme_override_colors/font_color = Color(1, 1, 0, 0.56078434)
-theme_override_font_sizes/font_size = 72
-text = "Rejouer"
+[node name="Aide" type="Label" parent="Interface" unique_id=1214011701]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -120.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.6)
+theme_override_font_sizes/font_size = 36
+text = "Avancer : jouer"
 horizontal_alignment = 1

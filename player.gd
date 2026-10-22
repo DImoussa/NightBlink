@@ -3,17 +3,22 @@ extends CharacterBody3D
 @export var speed := 4.0
 @export var mouse_sensitivity := 0.002
 @export var portee_aimant := 30.0   # distance max pour attraper un mur
-@export var portee_porte := 2.5     # distance max entre l'aimant et une porte métallique pour l'ouvrir
-@export var portee_objet := 2.5     # distance max entre l'aimant et un objet à attraper (imprimante...)
+@export var portee_porte := 10     # distance max entre l'aimant et une porte métallique pour l'ouvrir
+@export var portee_objet := 10     # distance max entre l'aimant et un objet à attraper (imprimante...)
 @export var portee_ramassage := 1.0 # distance max entre l'aimant et un objet à ramasser (clé...)
 @export var tolerance_visee := 0.4  # on ramasse aussi si on vise à moins de ça de l'objet (ex. le lavabo autour)
 @export var vitesse_echelle := 2.5  # m/s pour monter/descendre une échelle
+@onready var lampe: SpotLight3D = get_tree().get_first_node_in_group("lantern")
+
 
 signal inventaire_change
 
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera3D
 @onready var aimant: Node3D = $Head/Camera3D/Aimant
+@onready var animation_player: AnimationPlayer = $Head/AnimationPlayer   # animation "marche" (balancement de la tête)
+
+const ECRAN_MORT := preload("res://Scenes/EcranMort.tscn")
 
 var inventaire: Array[String] = ["lampe", "aimant"]   # affiché par la barre du bas (inventaire_hud.gd)
 var sur_echelle := 0                 # nombre de zones d'échelle où se trouve le joueur (echelle.gd)
@@ -21,9 +26,10 @@ var mur_tenu: Node3D = null          # le mur attrapé par l'aimant
 var objet_tenu: Node3D = null        # l'objet tenu tant que E reste appuyé (objet_aimante.gd)
 var decalage_mur: Transform3D        # position du mur par rapport à la caméra
 var arduino: Node = null             # reste vide si la manette n'est pas activée
-
+var mort := false                    # vrai pendant l'écran de mort : le joueur ne bouge plus
 
 func _ready():
+	lampe.energie_vide.connect(mourir)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	# On cherche l'autoload Arduino. S'il est désactivé, on joue au clavier.
 	# (Le bouton de la carte déclenche directement l'action "magnet", voir arduino.gd)
@@ -32,9 +38,33 @@ func _ready():
 	# La lampe tenue en main ne doit pas faire d'ombre devant sa propre lumière
 	for maillage in $Head/Camera3D/Lampe.find_children("*", "GeometryInstance3D", true, false):
 		maillage.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	
+
+func mourir():
+	if mort:
+		return
+	mort = true
+	# On lâche tout ce qu'on tenait
+	mur_tenu = null
+	lacher_objet()
+	allumer_led(false)
+	velocity = Vector3.ZERO
+	animation_player.stop()
+	# Écran "Tu es mort !" : avancer = rejouer, aimant = retour à l'accueil (voir ecran_mort.gd)
+	var ecran := ECRAN_MORT.instantiate()
+	ecran.rejouer.connect(respawn)
+	add_child(ecran)
+
+
+func respawn():
+	# On recharge toute la scène : le joueur revient au spawn avec la lampe pleine,
+	# et les portes, le chariot, la clé, les piles... reprennent leur place de départ
+	get_tree().reload_current_scene()
 
 
 func _unhandled_input(event):
+	if mort:
+		return
 	# Regarder avec la souris
 	if event is InputEventMouseMotion:
 		tourner_camera(-event.relative.x * mouse_sensitivity, -event.relative.y * mouse_sensitivity)
@@ -88,7 +118,8 @@ func basculer_aimant():
 	# Objet métallique visé : on le tient tant que E reste appuyé
 	var objet := trouver_dans_groupe(collider, "attrapable")
 	if objet:
-		if distance_aimant <= portee_objet:
+		# Le chariot reste trop lourd tant que toutes les piles n'ont pas été ramassées
+		if distance_aimant <= portee_objet and objet.peut_etre_attrape():
 			objet_tenu = objet
 			objet.attraper(self)
 			allumer_led(true)
@@ -145,6 +176,8 @@ func trouver_dans_groupe(objet: Object, groupe: String) -> Node:
 
 
 func _physics_process(delta):
+	if mort:
+		return
 	# Déplacement ZQSD dans la direction du regard
 	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
@@ -158,6 +191,16 @@ func _physics_process(delta):
 	velocity.z = direction.z * speed
 
 	move_and_slide()
+
+	# Balancement de la tête quand on marche au sol (animation "marche" de player.tscn)
+	if is_on_floor() and sur_echelle == 0 and input_dir != Vector2.ZERO:
+		if animation_player.current_animation != "marche":
+			animation_player.play("marche")
+	else:
+		if animation_player.current_animation == "marche":
+			animation_player.stop()
+		# La caméra revient doucement à sa place pour ne pas rester penchée
+		camera.position = camera.position.lerp(Vector3.ZERO, delta * 10.0)
 
 	# Le mur attrapé suit la caméra (donc la souris)
 	if mur_tenu:
