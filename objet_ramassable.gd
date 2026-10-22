@@ -4,14 +4,18 @@ extends Node3D
 @export var nom_objet := "cle"
 @export var son_ramassage: AudioStream = preload("res://Son/Clé.wav")
 @export var volume_ramassage := 6.0   # dB : Clé.wav est enregistré bas, sinon le bruit de fond le couvre
+@export var son_reperage: AudioStream   # son 3D en boucle pour retrouver l'objet, lancé par une zone (zone_declencheur.gd)
+@export var portee_reperage := 20.0     # mètres
 
 const Sons := preload("res://Scripts/sons.gd")
+const Surbrillance := preload("res://Scripts/surbrillance.gd")
 
 var centre: Vector3   # centre du modèle dans le monde (pour viser à côté, voir player.gd)
 
 
 func _ready() -> void:
 	add_to_group("ramassable")
+	Surbrillance.appliquer(self)
 	# Le modèle n'a pas de collision : on ajoute une boîte autour pour que le rayon de l'aimant le touche
 	var boite := AABB()
 	var premier := true
@@ -29,6 +33,19 @@ func _ready() -> void:
 	add_child(corps)
 	centre = boite.get_center()
 	corps.global_transform = Transform3D(Basis(), centre)
+
+
+# Le son part du centre de l'objet et s'arrête quand on le ramasse (il disparaît avec lui)
+func commencer_reperage() -> void:
+	if not son_reperage or has_node("SonReperage"):
+		return
+	var lecteur: AudioStreamPlayer3D = Sons.boucle(self, son_reperage, true)
+	lecteur.name = "SonReperage"
+	lecteur.top_level = true   # pas d'échelle héritée du modèle
+	lecteur.global_position = centre
+	lecteur.max_distance = portee_reperage
+	lecteur.unit_size = portee_reperage / 3.0
+	lecteur.play()
 
 
 func ramasser(joueur: Node) -> void:

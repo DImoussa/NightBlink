@@ -32,14 +32,16 @@
 [ext_resource type="Script" uid="uid://bpdqk21yaghn5" path="res://Scripts/ambiance_sonore.gd" id="ambiance_sonore"]
 [ext_resource type="PackedScene" uid="uid://c5s3l8gq8dfam" path="res://Scenes/hospital_bed.glb" id="meuble_lit"]
 [ext_resource type="PackedScene" uid="uid://8okbydwjigc6" path="res://Scenes/table_basse.glb" id="meuble_table"]
+[ext_resource type="Script" uid="uid://dj7j68ksw8jl1" path="res://monstre_ombre.gd" id="monstre_ombre"]
+[ext_resource type="PackedScene" uid="uid://dlnv7gv1pcrj6" path="res://shadow_monster.glb" id="monstre_ombre_glb"]
 [ext_resource type="AudioStream" uid="uid://bc2wlexwdf0gt" path="res://Son/Chariot_roulant.wav" id="son_chariot"]
+[ext_resource type="AudioStream" uid="uid://dj0wfb7bp02xx" path="res://Son/PortesDoubleOuvrante.wav" id="son_double_porte"]
+[ext_resource type="AudioStream" uid="uid://7mcheoype3b6" path="res://Son/Metal_door.wav" id="son_porte_metal"]
+[ext_resource type="AudioStream" uid="uid://u6nq6r2oxtlq" path="res://Son/Suivre_clé.wav" id="son_suivre_cle"]
+[ext_resource type="Script" uid="uid://v883oftnymde" path="res://zone_declencheur.gd" id="zone_declencheur"]
 [ext_resource type="Script" uid="uid://cblw6qcrnrig3" path="res://zone_depart_lampe.gd" id="zone_depart_lampe"]
 [ext_resource type="Script" uid="uid://bibqcrwddu6dd" path="res://zone_fin.gd" id="zone_fin"]
 [ext_resource type="Script" uid="uid://cxdgwsmg8raen" path="res://zone_monstre.gd" id="zone_monstre"]
-[ext_resource type="AudioStream" path="res://Son/PortesDoubleOuvrante.wav" id="son_double_porte"]
-[ext_resource type="AudioStream" path="res://Son/Metal_door.wav" id="son_porte_metal"]
-[ext_resource type="PackedScene" path="res://shadow_monster.glb" id="monstre_ombre_glb"]
-[ext_resource type="Script" path="res://monstre_ombre.gd" id="monstre_ombre"]
 
 [sub_resource type="ShaderMaterial" id="StandardMaterial3D_gy0ha"]
 resource_name = "Cycles_Lighting_01"
@@ -328,6 +330,9 @@ size = Vector3(4, 3, 4)
 [sub_resource type="BoxShape3D" id="BoxShape3D_fin_tableau"]
 size = Vector3(2.2, 3, 0.6)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_marches_cle"]
+size = Vector3(6, 2, 0.8)
+
 [node name="Node3D" type="Node3D" unique_id=956417553]
 
 [node name="scene3jsp" parent="." unique_id=730180024 instance=ExtResource("1_gmjvt")]
@@ -350,6 +355,7 @@ visible = false
 [node name="CleDoublePorte" parent="." unique_id=825424458 instance=ExtResource("11_hdhgi")]
 transform = Transform3D(-0.010217815, 0, -0.37923014, 0, 0.9952929, 0, 0.43146676, 0, -0.00898077, 22.874405, 6.895144, -2.381432)
 script = ExtResource("12_bloks")
+son_reperage = ExtResource("son_suivre_cle")
 
 [node name="RootNode" parent="CleDoublePorte" index="0" unique_id=1968425476]
 transform = Transform3D(1, 0, -3.7252903e-09, 0, 0.8760972, 0, -3.7252903e-09, 0, 1, 0, 0.072368145, 0)
@@ -401,6 +407,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.871952, 1.3648002, -32.193
 
 [node name="NotePapier" parent="Node3D2" index="0" unique_id=2006595968]
 transform = Transform3D(1, 0, 0, 0, -7.586082e-05, -1, 0, 1, -7.586082e-05, 2.6108894, -0.28632092, -3.3118973)
+contenu_texte = "INSTRUCTIONS
+
+Ne perds jamais la lumière. Ta lampe s'use avec le temps : si elle s'éteint, tu meurs.
+
+Écoute bien autour de toi : les piles émettent un bruit. Suis ce son pour les retrouver et recharger ta lampe."
 portee = 0.7
 
 [node name="CollisionShape3D" parent="Node3D2/NotePapier" index="0" unique_id=663555539]
@@ -578,13 +589,6 @@ light_energy = 2.0
 shadow_enabled = true
 omni_range = 7.0
 
-[node name="NoteChariot" parent="." unique_id=1596967300 instance=ExtResource("17_2dqag")]
-transform = Transform3D(0.016531255, 0.99675953, 0.07872184, -0.03237416, 0.07922492, -0.99633086, -0.9993391, 0.013922051, 0.033578947, 5.938611, 6.3284965, 38.918)
-
-[node name="NotePapier" parent="NoteChariot" index="0" unique_id=2006595968]
-transform = Transform3D(1, 1.8626451e-09, 0, 0, 1, -1.3795216e-08, -7.450581e-09, 1.0477379e-09, 1.0000002, 0.016166687, 0.97465706, 0.0769763)
-contenu_texte = "Veuillez récupérer toutes les piles afin d'alimenter la puissance de votre aimant."
-
 [node name="LumiereHautEscalier2" type="OmniLight3D" parent="." unique_id=2040891638]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.781487, 2.8805783, -30.420122)
 light_color = Color(1, 0.78, 0.55, 1)
@@ -686,6 +690,68 @@ script = ExtResource("zone_fin")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ZoneFinTableau" unique_id=1770100401]
 shape = SubResource("BoxShape3D_fin_tableau")
 
+[node name="NoteLitSpawn" parent="." unique_id=1770100600 instance=ExtResource("17_2dqag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.5, 1.17, -36.8)
+
+[node name="NotePapier" parent="NoteLitSpawn" index="0" unique_id=2006595968]
+transform = Transform3D(1, 0, 0, 0, -7.586082e-05, -1, 0, 1, -7.586082e-05, 0, 0, 0)
+contenu_texte = "DOSSIER MÉDICAL — PATIENT N° 05
+
+Le patient affirme être poursuivi par une silhouette obscure depuis plusieurs semaines.
+
+Il présente des signes de paranoïa sévère et refuse de rester seul dans l'obscurité.
+
+Le patient possède également un aimant qu'il considère comme son porte-bonheur et dont il refuse catégoriquement de se séparer.
+
+Décision : Placement en chambre d'isolement n° 3 et administration d'un traitement sédatif."
+portee = 0.7
+
+[node name="NotePieceSpawn" parent="." unique_id=1770100601 instance=ExtResource("17_2dqag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.5, 0.4, -36.7)
+
+[node name="NotePapier" parent="NotePieceSpawn" index="0" unique_id=2006595968]
+transform = Transform3D(1, 0, 0, 0, -7.586082e-05, -1, 0, 1, -7.586082e-05, 0, 0, 0)
+contenu_texte = "RAPPORT D'INCIDENT — URGENT
+
+Plusieurs membres du personnel signalent des bruits étranges durant la nuit. Des infirmières affirment avoir aperçu une silhouette mystérieuse rôdant près de la chambre d'isolement n° 3, où se trouve le patient n° 05.
+
+Plus inquiétant encore, deux médecins partis chercher des médicaments ont été retrouvés morts dans la réserve. Selon les premiers témoignages, l'ampoule aurait grillé lorsqu'ils ont actionné l'interrupteur, plongeant la pièce dans l'obscurité.
+
+Le patient n° 05 n'était peut-être pas victime d'hallucinations…
+
+Quelque chose de sinistre rôde dans cet asile."
+portee = 0.7
+
+[node name="NoteTableFin" parent="." unique_id=1770100602 instance=ExtResource("17_2dqag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.03, 6.81, 38.78)
+
+[node name="NotePapier" parent="NoteTableFin" index="0" unique_id=2006595968]
+transform = Transform3D(1, 0, 0, 0, -7.586082e-05, -1, 0, 1, -7.586082e-05, 0, 0, 0)
+contenu_texte = "RAPPORT D'URGENCE — ÉVACUATION
+
+La créature ombrale est réelle !
+
+Une violente tempête a provoqué une coupure générale d'électricité, plongeant l'ensemble de l'asile dans l'obscurité.
+
+Profitant du chaos et de la pénombre, la créature a commencé à massacrer les membres du personnel et les patients un par un.
+
+Les communications sont coupées et toutes les tentatives d'évacuation ont échoué.
+
+Si quelqu'un retrouve ce document, trouvez une source de lumière et fuyez les lieux avant qu'il ne soit trop tard."
+portee = 1.1
+
+[node name="ZoneSonCle" type="Area3D" parent="." unique_id=1770100700]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 7, -2)
+script = ExtResource("zone_declencheur")
+cible = NodePath("../CleDoublePorte")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ZoneSonCle" unique_id=1770100701]
+shape = SubResource("BoxShape3D_marches_cle")
+
+[node name="MonstreOmbre" parent="." unique_id=1770100500 instance=ExtResource("monstre_ombre_glb")]
+transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 41.5, 4.2, -21.5)
+script = ExtResource("monstre_ombre")
+
 [editable path="scene3jsp"]
 [editable path="CleDoublePorte"]
 [editable path="porte_gauche/Modele"]
@@ -695,10 +761,8 @@ shape = SubResource("BoxShape3D_fin_tableau")
 [editable path="Node3D2"]
 [editable path="portemetalentree/Modele"]
 [editable path="portemetalsortie/Modele"]
-[editable path="NoteChariot"]
 [editable path="TableSpawn"]
 [editable path="TableEtage"]
-
-[node name="MonstreOmbre" parent="." unique_id=1770100500 instance=ExtResource("monstre_ombre_glb")]
-transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 41.5, 4.2, -21.5)
-script = ExtResource("monstre_ombre")
+[editable path="NoteLitSpawn"]
+[editable path="NotePieceSpawn"]
+[editable path="NoteTableFin"]
