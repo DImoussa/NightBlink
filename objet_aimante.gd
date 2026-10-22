@@ -18,7 +18,7 @@ var _decalage_angle := 0.0           # rotation de l'objet par rapport au joueur
 
 func _ready() -> void:
 	add_to_group("attrapable")
-	Surbrillance.appliquer(self)
+	Surbrillance.appliquer(self, true)
 	if son_deplacement:
 		son = Sons.boucle(self, son_deplacement, true)
 
