@@ -309,8 +309,8 @@ volumetric_fog_sky_affect = 0.9
 size = Vector3(2.3964, 2.1509, 5.824)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_table"]
-height = 1.8647
-radius = 1.0782
+height = 9.144264
+radius = 1.0043945
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_depart_lampe"]
 size = Vector3(3, 3, 1)
@@ -575,6 +575,7 @@ omni_range = 7.0
 transform = Transform3D(0.016531255, 0.99675953, 0.07872184, -0.03237416, 0.07922492, -0.99633086, -0.9993391, 0.013922051, 0.033578947, 5.938611, 6.3284965, 38.918)
 
 [node name="NotePapier" parent="NoteChariot" index="0" unique_id=2006595968]
+transform = Transform3D(1, 1.8626451e-09, 0, 0, 1, -1.3795216e-08, -7.450581e-09, 1.0477379e-09, 1.0000002, 0.016166687, 0.97465706, 0.0769763)
 contenu_texte = "Veuillez récupérer toutes les piles afin d'alimenter la puissance de votre aimant."
 
 [node name="LumiereHautEscalier2" type="OmniLight3D" parent="." unique_id=2040891638]
@@ -604,7 +605,7 @@ shape = SubResource("BoxShape3D_lit")
 [node name="TableSpawn" parent="." unique_id=1770100020 instance=ExtResource("meuble_table")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 45.55, 0.4189, -35)
 
-[node name="Sphere" parent="TableSpawn" index="0" unique_id=10553267]
+[node name="Sphere" parent="TableSpawn" index="0" unique_id=947049541]
 visible = false
 
 [node name="Collision" type="StaticBody3D" parent="TableSpawn" unique_id=1770100021]
@@ -625,17 +626,13 @@ shape = SubResource("BoxShape3D_lit")
 [node name="TableEtage" parent="." unique_id=1770100040 instance=ExtResource("meuble_table")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 4.6, 6.0189, -0.7)
 
-[node name="Sphere" parent="TableEtage" index="0" unique_id=10553267]
+[node name="Sphere" parent="TableEtage" index="0" unique_id=947049541]
 visible = false
 
-[node name="Cylinder_002" parent="TableEtage" index="1" unique_id=1751826647]
+[node name="Cylinder_002" parent="TableEtage" index="1" unique_id=1748090038]
 transform = Transform3D(2.6348653, 0, 0, 0, 1.7570345, 0, 0, 0, 2.7704194, -28.579636, 0, 131.95958)
 
 [node name="Collision" type="StaticBody3D" parent="TableEtage" unique_id=1770100041]
-
-[node name="Forme" type="CollisionShape3D" parent="TableEtage/Collision" unique_id=1770100042]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8361, 0)
-shape = SubResource("CylinderShape3D_table")
 
 [node name="LitCouloir" parent="." unique_id=1770100050 instance=ExtResource("meuble_lit")]
 transform = Transform3D(0, 0, 0.36, 0, 0.36, 0, -0.36, 0, 0, 35.7869, 5.5025, -2.747455)
