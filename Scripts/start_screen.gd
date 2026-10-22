@@ -15,6 +15,8 @@ var pret := false
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	# La partie se charge en arrière-plan pendant qu'on est sur l'accueil : "Jouer" démarre tout de suite
+	ResourceLoader.load_threaded_request(_scene_a_lancer())
 	bouton_jouer.pressed.connect(_jouer)
 	# État de la manette Arduino (indicatif : on peut aussi jouer au clavier)
 	var manager := get_node_or_null("/root/ArduinoManager")
@@ -43,7 +45,11 @@ func _jouer() -> void:
 	if not pret:
 		return
 	pret = false
-	# La scène où l'on est mort est retenue par l'écran de mort (ecran_mort.gd)
-	var scene: String = get_tree().get_meta("scene_a_relancer", scene_de_jeu)
+	var paquet := ResourceLoader.load_threaded_get(_scene_a_lancer()) as PackedScene
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	get_tree().change_scene_to_file(scene)
+	get_tree().change_scene_to_packed(paquet)
+
+
+# La scène où l'on est mort est retenue par l'écran de mort (ecran_mort.gd)
+func _scene_a_lancer() -> String:
+	return get_tree().get_meta("scene_a_relancer", scene_de_jeu)

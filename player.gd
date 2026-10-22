@@ -29,6 +29,9 @@ var arduino: Node = null             # reste vide si la manette n'est pas activ�
 var mort := false                    # vrai pendant l'écran de mort : le joueur ne bouge plus
 
 func _ready():
+	# Garde la scène en mémoire : "Rejouer" la recrée sans relire le fichier (beaucoup plus rapide)
+	if owner and owner.scene_file_path != "":
+		get_tree().set_meta("scene_jeu_en_memoire", load(owner.scene_file_path))
 	lampe.energie_vide.connect(mourir)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	# On cherche l'autoload Arduino. S'il est désactivé, on joue au clavier.
