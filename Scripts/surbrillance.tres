@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://di72dv202tsek"]
+
+[ext_resource type="Shader" uid="uid://bomkfmvj3hvrs" path="res://Scripts/surbrillance_voile.gdshader" id="1_voile"]
+[ext_resource type="Shader" uid="uid://mbgiqrp46qng" path="res://Scripts/surbrillance.gdshader" id="2_halo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_halo"]
+render_priority = 0
+shader = ExtResource("2_halo")
+shader_parameter/couleur = Color(1, 0.78, 0.2, 1)
+shader_parameter/epaisseur = 0.02
+shader_parameter/force = 0.35
+
+[resource]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_halo")
+shader = ExtResource("1_voile")
+shader_parameter/couleur = Color(1, 0.78, 0.2, 1)
+shader_parameter/force = 0.012
+shader_parameter/force_contour = 0.05

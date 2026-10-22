@@ -8,6 +8,7 @@ extends CharacterBody3D
 @export var son_deplacement: AudioStream        # joué en 3D en boucle tant que l'aimant tient l'objet (chariot qui roule)
 
 const Sons := preload("res://Scripts/sons.gd")
+const Surbrillance := preload("res://Scripts/surbrillance.gd")
 
 var porteur: Node3D = null           # le joueur qui tient l'objet
 var son: AudioStreamPlayer3D
@@ -17,6 +18,7 @@ var _decalage_angle := 0.0           # rotation de l'objet par rapport au joueur
 
 func _ready() -> void:
 	add_to_group("attrapable")
+	Surbrillance.appliquer(self)
 	if son_deplacement:
 		son = Sons.boucle(self, son_deplacement, true)
 

@@ -8,16 +8,20 @@ extends Node3D
 
 var ouverte := false
 
+const Surbrillance := preload("res://Scripts/surbrillance.gd")
+
 
 func _ready() -> void:
 	if ouverture_aimant:
 		add_to_group("porte_metal")
+		Surbrillance.appliquer(self)
 
 
 func ouvrir(_position_joueur := Vector3.ZERO) -> void:
 	if ouverte:
 		return
 	ouverte = true
+	Surbrillance.retirer(self)
 	$AnimationPlayer.play("ouvrir")
 	if son_ouverture:
 		var lecteur := AudioStreamPlayer3D.new()
