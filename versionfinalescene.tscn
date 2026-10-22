@@ -9,15 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://4b8ptg2pyg7" path="res://tableau_Retro picture frame5_Retro picture frame_Metallic-Retro picture frame5_Retro picture frame_Roughness.png" id="7_m8wg0"]
 [ext_resource type="Texture2D" uid="uid://cq63ofxskqvsp" path="res://tableau_Retro picture frame5_Retro picture frame_Normal.jpg" id="8_vvk0g"]
 
-[sub_resource type="Animation" id="Animation_1ru61"]
-resource_name = "marche"
-length = 0.6
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_dg1sa"]
-_data = {
-&"marche": SubResource("Animation_1ru61")
-}
-
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_mf88y"]
 panorama = ExtResource("2_1ru61")
 
@@ -34,7 +25,6 @@ reflected_light_source = 1
 fog_light_color = Color(0.04180686, 0.051706657, 0.0685966, 1)
 fog_density = 0.0
 fog_sky_affect = 0.831
-volumetric_fog_enabled = true
 volumetric_fog_density = 0.4219
 volumetric_fog_albedo = Color(0.057996348, 0.057996348, 0.05799634, 1)
 volumetric_fog_sky_affect = 0.9
@@ -128,10 +118,6 @@ visible = false
 
 [node name="Player" parent="." index="5" unique_id=502473477]
 transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, -1.8305788, 6.9355736, 41.113407)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/Head" parent_id_path=PackedInt32Array(502473477, 706645644) index="1" unique_id=1106757303]
-root_node = NodePath("../..")
-libraries/ = SubResource("AnimationLibrary_dg1sa")
 
 [node name="WorldEnvironment" parent="." index="23" unique_id=1987650001]
 environment = SubResource("Environment_7bhl0")
