@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://do1ovdm3i7v7r"
+path="res://.godot/imported/Musique Fin.wav-b8312005f317ddb1b585766ae06a30d8.sample"
+
+[deps]
+
+source_file="res://Son/Musique Fin.wav"
+dest_files=["res://.godot/imported/Musique Fin.wav-b8312005f317ddb1b585766ae06a30d8.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
