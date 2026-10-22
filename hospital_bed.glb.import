@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c6cwab1xhmsho"
-path="res://.godot/imported/scene_cycles (4).glb-fdd1558c396b48591608d9b26498c79b.scn"
+uid="uid://c0wv5qguna7kv"
+path="res://.godot/imported/hospital_bed.glb-f0d52f4f4db0f20c44ada1e0b4c12994.scn"
 
 [deps]
 
-source_file="res://scene_cycles (4).glb"
-dest_files=["res://.godot/imported/scene_cycles (4).glb-fdd1558c396b48591608d9b26498c79b.scn"]
+source_file="res://hospital_bed.glb"
+dest_files=["res://.godot/imported/hospital_bed.glb-f0d52f4f4db0f20c44ada1e0b4c12994.scn"]
 
 [params]
 
@@ -39,13 +39,7 @@ import_script/path=""
 materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
-_subresources={
-"nodes": {
-"PATH:Scene_Cycles_Baked": {
-"generate/physics": true
-}
-}
-}
+_subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
 gltf/texture_map_mode=1

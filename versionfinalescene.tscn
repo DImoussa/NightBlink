@@ -133,6 +133,12 @@ transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_dg1sa")
 
+[node name="Icone" parent="Inventaire/Barre/lampe" parent_id_path=PackedInt32Array(1777000010) index="0" unique_id=1777000011]
+offset_left = -1.0
+offset_top = 30.0
+offset_right = -13.0
+offset_bottom = 18.0
+
 [node name="WorldEnvironment" parent="." index="23" unique_id=1987650001]
 environment = SubResource("Environment_7bhl0")
 

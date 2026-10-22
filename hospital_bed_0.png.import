@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://p8kx1ggi61y3"
-path.s3tc="res://.godot/imported/scene_cycles (4)_cycles_lighting_06.png-a0ea042c7f3e992ca7037fee8e900fb5.s3tc.ctex"
+uid="uid://rxfnsd8uylcx"
+path.s3tc="res://.godot/imported/hospital_bed_0.png-60acfa221f7ac7ead2ec9ea3a6853c10.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "70a775af7605600feecf42f6d7f90a52"
+"md5": "df5d1c10c3c33deec1d9f9124b8d73cc"
 }
 
 [deps]
 
-source_file="res://scene_cycles (4)_cycles_lighting_06.png"
-dest_files=["res://.godot/imported/scene_cycles (4)_cycles_lighting_06.png-a0ea042c7f3e992ca7037fee8e900fb5.s3tc.ctex"]
+source_file="res://hospital_bed_0.png"
+dest_files=["res://.godot/imported/hospital_bed_0.png-60acfa221f7ac7ead2ec9ea3a6853c10.s3tc.ctex"]
 
 [params]
 
