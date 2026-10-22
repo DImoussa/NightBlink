@@ -9,7 +9,6 @@ export_presets.cfg
 *.tmp
 ~*.dll
 .DS_Store
-.claude/
 __pycache__/
 docs/logs/*.bak
 
