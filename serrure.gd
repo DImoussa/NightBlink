@@ -8,6 +8,7 @@ var deverrouillee := false
 
 
 func _ready() -> void:
+	add_to_group("serrure")   # les piles "apres_serrure" attendent qu'elle soit ouverte (pile_rechargeable.gd)
 	body_entered.connect(_on_body_entered)
 
 
@@ -17,6 +18,7 @@ func _on_body_entered(body: Node3D) -> void:
 	if not body.retirer_objet(objet_requis):
 		return
 	deverrouillee = true
+	get_tree().call_group("pile", "maj_son")   # la pile qui attendait la clé se met à sonner
 	# La clé reste plantée dans la serrure
 	var cle := get_node_or_null("CleInseree") as Node3D
 	if cle:

@@ -55,8 +55,7 @@ func _ready():
 	camera.add_child(oreille)
 	oreille.make_current()
 	son_marche = Sons.boucle(self, preload("res://Son/Walking.wav"))
-	# load et pas preload : le fichier du dossier Son est vide pour l'instant, le jeu doit marcher sans
-	son_echelle = Sons.boucle(self, load("res://Son/Grincement_bois_V1.wav"))
+	son_echelle = Sons.boucle(self, preload("res://Son/Grincement_bois_V1.wav"))
 	son_aimant = Sons.boucle(self, preload("res://Son/Aimant_continu.wav"))
 
 

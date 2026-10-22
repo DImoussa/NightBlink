@@ -1,7 +1,8 @@
 extends SpotLight3D
 
 @export var max_energy := 80.0
-@export var drain_rate := 2.0    
+@export var drain_rate := 2.0
+@export var duree_extinction := 5.0   # secondes : avant la mort, la lumière baisse peu à peu jusqu'à s'éteindre
 
 var energy := 40.0
 var is_on := true
@@ -24,6 +25,7 @@ signal energie_vide
 func _process(delta: float) -> void:
 	if is_on and energy > 0 and decharge_demarree and pauses == 0:
 		energy -= drain_rate * delta
+		update_light()
 		if energy <= 0:
 			energy = 0
 			is_on = false
@@ -32,7 +34,8 @@ func _process(delta: float) -> void:
 
 func update_light() -> void:
 	visible = is_on and energy > 0
-	light_energy = 2.5
+	# Pleine puissance, sauf pendant les dernières secondes d'énergie où elle diminue jusqu'à 0
+	light_energy = 2.5 * clampf(energy / (drain_rate * duree_extinction), 0.0, 1.0)
 	spot_range = 17.0
 	spot_angle = 38.5
 

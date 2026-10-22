@@ -3,6 +3,8 @@ extends Area3D
 @export var distance_lueur_min: float = 1.0 
 @export var distance_lueur_max: float = 3.0
 @export var ordre := 1   # les piles s'entendent une par une : seule la pile restante de plus petit ordre émet son son
+@export var apres_serrure := false   # muette tant que la clé n'est pas dans la serrure (serrure.gd)
+@export var portee_son := 25.0       # mètres : distance max à laquelle on entend la pile
 
 const Sons := preload("res://Scripts/sons.gd")
 
@@ -16,7 +18,8 @@ func _ready() -> void:
 	add_to_group("pile")   # le chariot ne s'attrape qu'une fois toutes les piles ramassées (objet_aimante.gd)
 	body_entered.connect(_on_body_entered)
 	son = Sons.boucle(self, preload("res://Son/Batterie_continu.wav"), true)
-	son.max_distance = 25.0
+	son.max_distance = portee_son
+	son.unit_size = portee_son / 3.0   # le son baisse moins vite avec la distance quand la portée est grande
 	maj_son.call_deferred()   # attend que toutes les piles soient dans le groupe
 
 
@@ -26,6 +29,8 @@ func maj_son() -> void:
 	for pile in get_tree().get_nodes_in_group("pile"):
 		if pile.ordre < ordre:
 			prochaine = false
+	if apres_serrure and not get_tree().get_nodes_in_group("serrure").any(func(serrure): return serrure.deverrouillee):
+		prochaine = false
 	Sons.garder(son, prochaine)
 
 func _process(_delta: float) -> void:

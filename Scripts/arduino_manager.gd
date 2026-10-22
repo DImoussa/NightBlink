@@ -79,6 +79,10 @@ func start_pairing() -> void:
 		if override != "":
 			break
 		var port_name: String = port_info["port_name"]
+		# Seulement les ports USB (l'Arduino en est un) : ouvrir un port série Bluetooth (COM3/COM4...)
+		# bloque tout le jeu ~5 s à chaque scan, ce qui le faisait ramer sur les PC qui en ont
+		if not str(port_info.get("port_type", "")).begins_with("USB"):
+			continue
 		for hint in PORT_NAME_HINTS:
 			if hint in port_name:
 				candidates.append(port_info)
