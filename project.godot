@@ -23,8 +23,8 @@ run/main_scene.son="uid://chmbxe7lq3jdr"
 [autoload]
 
 FmodManager="*uid://cds10pm7hwn3p"
-ArduinoManager="uid://d0vdfj6uvp4dg"
-Arduino="uid://qgbdgfabbo6o"
+ArduinoManager="*uid://d0vdfj6uvp4dg"
+Arduino="*uid://qgbdgfabbo6o"
 
 [display]
 

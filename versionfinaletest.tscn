@@ -32,9 +32,10 @@
 [ext_resource type="Script" uid="uid://bpdqk21yaghn5" path="res://Scripts/ambiance_sonore.gd" id="ambiance_sonore"]
 [ext_resource type="PackedScene" uid="uid://c5s3l8gq8dfam" path="res://Scenes/hospital_bed.glb" id="meuble_lit"]
 [ext_resource type="PackedScene" uid="uid://8okbydwjigc6" path="res://Scenes/table_basse.glb" id="meuble_table"]
+[ext_resource type="AudioStream" uid="uid://bc2wlexwdf0gt" path="res://Son/Chariot_roulant.wav" id="son_chariot"]
 [ext_resource type="Script" uid="uid://cblw6qcrnrig3" path="res://zone_depart_lampe.gd" id="zone_depart_lampe"]
-[ext_resource type="AudioStream" path="res://Son/Chariot_roulant.wav" id="son_chariot"]
-[ext_resource type="Script" path="res://zone_monstre.gd" id="zone_monstre"]
+[ext_resource type="Script" uid="uid://bibqcrwddu6dd" path="res://zone_fin.gd" id="zone_fin"]
+[ext_resource type="Script" uid="uid://cxdgwsmg8raen" path="res://zone_monstre.gd" id="zone_monstre"]
 
 [sub_resource type="ShaderMaterial" id="StandardMaterial3D_gy0ha"]
 resource_name = "Cycles_Lighting_01"
@@ -319,6 +320,9 @@ size = Vector3(3, 3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_monstre_sombre"]
 size = Vector3(4, 3, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fin_tableau"]
+size = Vector3(2.2, 3, 0.6)
 
 [node name="Node3D" type="Node3D" unique_id=956417553]
 
@@ -610,7 +614,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8361, 0)
 shape = SubResource("CylinderShape3D_table")
 
 [node name="LitEtage" parent="." unique_id=1770100030 instance=ExtResource("meuble_lit")]
-transform = Transform3D(0.36, 0, 0, 0, 0.36, 0, 0, 0, 0.36, 2.7296, 5.9825, 1.7869)
+transform = Transform3D(-0.15184325, 0, 0.32641023, 0, 0.35999998, 0, -0.32641023, 0, -0.15184325, -2.161671, 5.9825, 41.22041)
 
 [node name="Collision" type="StaticBody3D" parent="LitEtage" unique_id=1770100031]
 
@@ -623,6 +627,9 @@ transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 4.6, 6.0189, -0.7)
 
 [node name="Sphere" parent="TableEtage" index="0" unique_id=10553267]
 visible = false
+
+[node name="Cylinder_002" parent="TableEtage" index="1" unique_id=1751826647]
+transform = Transform3D(2.6348653, 0, 0, 0, 1.7570345, 0, 0, 0, 2.7704194, -28.579636, 0, 131.95958)
 
 [node name="Collision" type="StaticBody3D" parent="TableEtage" unique_id=1770100041]
 
@@ -650,19 +657,6 @@ shape = SubResource("BoxShape3D_depart_lampe")
 script = ExtResource("ambiance_sonore")
 lumieres_neon = Array[NodePath]([NodePath("../LumiereHautEscalier"), NodePath("../LumiereHautEscalier2")])
 
-[editable path="scene3jsp"]
-[editable path="CleDoublePorte"]
-[editable path="porte_gauche/Modele"]
-[editable path="porte_droite/Modele"]
-[editable path="Player"]
-[editable path="Player/Head/Camera3D/Aimant"]
-[editable path="Node3D2"]
-[editable path="portemetalentree/Modele"]
-[editable path="portemetalsortie/Modele"]
-[editable path="NoteChariot"]
-[editable path="TableSpawn"]
-[editable path="TableEtage"]
-
 [node name="ZoneMonstreEscalier" type="Area3D" parent="." unique_id=1770100300]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.5, 3.5, -25)
 script = ExtResource("zone_monstre")
@@ -679,3 +673,23 @@ script = ExtResource("zone_monstre")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ZonesSombres/ZoneSombreExemple" unique_id=1770100304]
 shape = SubResource("BoxShape3D_monstre_sombre")
+
+[node name="ZoneFinTableau" type="Area3D" parent="." unique_id=1770100400]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.703, 7.53, 44.685)
+script = ExtResource("zone_fin")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ZoneFinTableau" unique_id=1770100401]
+shape = SubResource("BoxShape3D_fin_tableau")
+
+[editable path="scene3jsp"]
+[editable path="CleDoublePorte"]
+[editable path="porte_gauche/Modele"]
+[editable path="porte_droite/Modele"]
+[editable path="Player"]
+[editable path="Player/Head/Camera3D/Aimant"]
+[editable path="Node3D2"]
+[editable path="portemetalentree/Modele"]
+[editable path="portemetalsortie/Modele"]
+[editable path="NoteChariot"]
+[editable path="TableSpawn"]
+[editable path="TableEtage"]
