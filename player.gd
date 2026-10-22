@@ -23,6 +23,10 @@ const Sons := preload("res://Scripts/sons.gd")
 const SON_AIMANT_ON := preload("res://Son/Aimant_ON.wav")
 const SON_AIMANT_OFF := preload("res://Son/Aimant_OFF.wav")
 const SON_CHUTE := preload("res://Son/Tomber.wav")
+const SON_CRI_MORT := preload("res://Son/Scream2.wav")
+const SON_AGONIE := preload("res://Son/Agonie_coupe.wav")
+@export var duree_ecran_noir := 3.0   # secondes de noir (avec le râle d'agonie) avant l'écran "Tu es mort !"
+@export var volume_agonie := -6.0     # dB : le râle d'agonie, pas trop fort
 @export var duree_son_aimant := 3.0      # secondes : on ne garde que le début du son d'activation de l'aimant
 @export var volume_bip_aimant := -12.0   # dB : le bourdonnement de l'aimant est un bip aigu qui fait mal aux oreilles
 @export var vitesse_chute_bruit := 6.0   # m/s : au-dessus, on entend le bruit de chute à l'atterrissage (~1,8 m de chute)
@@ -79,10 +83,22 @@ func mourir():
 	animation_player.stop()
 	son_marche.stop()
 	son_echelle.stop()
+	# Le cri, puis quelques secondes d'écran noir avec le râle d'agonie
+	Sons.jouer(get_tree(), SON_CRI_MORT)
+	await get_tree().create_timer(SON_CRI_MORT.get_length()).timeout
+	var noir := CanvasLayer.new()
+	var fond := ColorRect.new()
+	fond.color = Color.BLACK
+	fond.set_anchors_preset(Control.PRESET_FULL_RECT)
+	noir.add_child(fond)
+	add_child(noir)
+	Sons.jouer(get_tree(), SON_AGONIE, volume_agonie)
+	await get_tree().create_timer(duree_ecran_noir).timeout
 	# Écran "Tu es mort !" : avancer = rejouer, aimant = retour à l'accueil (voir ecran_mort.gd)
 	var ecran := ECRAN_MORT.instantiate()
 	ecran.rejouer.connect(respawn)
 	add_child(ecran)
+	noir.queue_free()
 
 
 func respawn():
@@ -104,7 +120,9 @@ func figer(cible: Vector3, duree: float):
 	var regard := create_tween().set_parallel().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	regard.tween_property(self, "rotation:y", rotation.y + wrapf(lacet - rotation.y, -PI, PI), 0.6)
 	regard.tween_property(head, "rotation:x", tangage, 0.6)
+	lampe.mettre_en_pause(true)   # comme pendant la lecture d'une note : la lampe ne s'use pas
 	await get_tree().create_timer(duree).timeout
+	lampe.mettre_en_pause(false)
 	fige = false
 
 
