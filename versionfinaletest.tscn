@@ -406,7 +406,7 @@ mesh = SubResource("ArrayMesh_t0bdw")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.871952, 1.3648002, -32.1935)
 
 [node name="NotePapier" parent="Node3D2" index="0" unique_id=2006595968]
-transform = Transform3D(1, 0, 0, 0, -7.586082e-05, -1, 0, 1, -7.586082e-05, 2.6108894, -0.28632092, -3.3118973)
+transform = Transform3D(1, 0, 0, 0, -7.586082e-05, -1, 0, 1, -7.586082e-05, 2.6108894, -0.28632092, -3.6620483)
 contenu_texte = "INSTRUCTIONS
 
 Ne perds jamais la lumière. Ta lampe s'use avec le temps : si elle s'éteint, tu meurs.
@@ -415,6 +415,7 @@ Ne perds jamais la lumière. Ta lampe s'use avec le temps : si elle s'éteint, t
 portee = 0.7
 
 [node name="CollisionShape3D" parent="Node3D2/NotePapier" index="0" unique_id=663555539]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40238953, -3.0398369e-05)
 shape = SubResource("SphereShape3D_so34w")
 
 [node name="VisuelFeuilleTest" parent="Node3D2/NotePapier" index="1" unique_id=1000619366]
@@ -605,7 +606,7 @@ transform = Transform3D(1.8823427, 0, 0, 0, -8.243124e-07, -1.7287081, 0, 1.7287
 mesh = ExtResource("29_63cr4")
 
 [node name="LitSpawn" parent="." unique_id=1770100010 instance=ExtResource("meuble_lit")]
-transform = Transform3D(0.36, 0, 0, 0, 0.36, 0, 0, 0, 0.36, 44.7296, 0.3825, -34.8131)
+transform = Transform3D(0.36, 0, 0, 0, 0.36, 0, 0, 0, 0.36, 44.7296, 0.3825, -35.511745)
 
 [node name="Collision" type="StaticBody3D" parent="LitSpawn" unique_id=1770100011]
 
@@ -619,10 +620,13 @@ transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 45.55, 0.4189, -35)
 [node name="Sphere" parent="TableSpawn" index="0" unique_id=947049541]
 visible = false
 
+[node name="Cylinder_002" parent="TableSpawn" index="1" unique_id=1748090038]
+transform = Transform3D(0.99999994, 0, 0, 0, 1.1623236, 0, 0, 0, 0.99999994, 0, 0, -1.1315689)
+
 [node name="Collision" type="StaticBody3D" parent="TableSpawn" unique_id=1770100021]
 
 [node name="Forme" type="CollisionShape3D" parent="TableSpawn/Collision" unique_id=1770100022]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8361, 0)
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0.83609986, -1.2163391)
 shape = SubResource("CylinderShape3D_table")
 
 [node name="LitEtage" parent="." unique_id=1770100030 instance=ExtResource("meuble_lit")]
@@ -705,6 +709,12 @@ Le patient possède également un aimant qu'il considère comme son porte-bonheu
 
 Décision : Placement en chambre d'isolement n° 3 et administration d'un traitement sédatif."
 portee = 0.7
+
+[node name="CollisionShape3D" parent="NoteLitSpawn/NotePapier" index="0" unique_id=663555539]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.66321945, 5.030632e-05)
+
+[node name="VisuelFeuilleTest" parent="NoteLitSpawn/NotePapier" index="1" unique_id=1000619366]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, -1.002449, 0.3231299)
 
 [node name="NotePieceSpawn" parent="." unique_id=1770100601 instance=ExtResource("17_2dqag")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.5, 0.4, -36.7)
