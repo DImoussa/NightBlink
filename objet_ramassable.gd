@@ -2,6 +2,10 @@ extends Node3D
 # Objet à ramasser en le visant avec l'aimant (touche E, voir player.gd) : il part dans l'inventaire du joueur
 
 @export var nom_objet := "cle"
+@export var son_ramassage: AudioStream = preload("res://Son/Clé.wav")
+@export var volume_ramassage := 6.0   # dB : Clé.wav est enregistré bas, sinon le bruit de fond le couvre
+
+const Sons := preload("res://Scripts/sons.gd")
 
 var centre: Vector3   # centre du modèle dans le monde (pour viser à côté, voir player.gd)
 
@@ -29,4 +33,6 @@ func _ready() -> void:
 
 func ramasser(joueur: Node) -> void:
 	joueur.ajouter_objet(nom_objet)
+	if son_ramassage:
+		Sons.jouer(get_tree(), son_ramassage, volume_ramassage)   # continue après la disparition de l'objet
 	queue_free()

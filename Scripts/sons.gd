@@ -4,9 +4,10 @@ extends RefCounted
 
 
 # Son joué une fois, qui va jusqu'au bout même si la scène change ou si l'objet disparaît (ex. pile ramassée)
-static func jouer(arbre: SceneTree, flux: AudioStream) -> void:
+static func jouer(arbre: SceneTree, flux: AudioStream, volume_db := 0.0) -> void:
 	var lecteur := AudioStreamPlayer.new()
 	lecteur.stream = flux
+	lecteur.volume_db = volume_db
 	lecteur.finished.connect(lecteur.queue_free)
 	arbre.root.add_child(lecteur)
 	lecteur.play()

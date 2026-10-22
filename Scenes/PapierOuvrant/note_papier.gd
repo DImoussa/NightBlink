@@ -4,7 +4,8 @@ extends Area3D
 
 # Écris le texte de ta note directement dans l'Inspecteur de Godot
 @export_multiline var contenu_texte: String = "Jour 14 : Ils ne m'ont pas cru...\nLe monstre craint la lumière directe de la torche."
-@export var son_papier: AudioStream # Optionnel : bruit de feuille joué à l'ouverture/fermeture
+@export var son_ouverture: AudioStream = preload("res://Son/Page_ouverture.wav") # bruit de la feuille qu'on déplie
+@export var son_fermeture: AudioStream = preload("res://Son/Page_fermeture.wav")  # bruit de la feuille qu'on replie
 @export var portee: float = 0.45 # Distance (en mètres) à laquelle la note s'ouvre
 
 @onready var indice_proche: Label3D = $IndiceEcrit
@@ -29,10 +30,8 @@ func _ready() -> void:
 	# Couleur papier de secours tant qu'aucune texture n'est mise sur "Feuille"
 	fond_papier.visible = feuille.texture == null
 
-	if son_papier:
-		_lecteur_son = AudioStreamPlayer.new()
-		_lecteur_son.stream = son_papier
-		add_child(_lecteur_son)
+	_lecteur_son = AudioStreamPlayer.new()
+	add_child(_lecteur_son)
 
 	# Connexion automatique des signaux d'entrée/sortie de zone
 	body_entered.connect(_on_body_entered)
@@ -55,7 +54,7 @@ func _ouvrir() -> void:
 		return
 	_ouverte = true
 	_pause_lampe(true)   # la lampe ne s'use pas pendant la lecture
-	_jouer_son()
+	_jouer_son(son_ouverture)
 	animation.play("ouvrir")
 	animation.queue("flottement")   # la feuille se balance une fois ouverte
 
@@ -64,7 +63,7 @@ func _fermer() -> void:
 		return
 	_ouverte = false
 	_pause_lampe(false)
-	_jouer_son()
+	_jouer_son(son_fermeture)
 	animation.play("fermer")
 
 func _pause_lampe(pause: bool) -> void:
@@ -72,7 +71,8 @@ func _pause_lampe(pause: bool) -> void:
 	if lampe and lampe.has_method("mettre_en_pause"):
 		lampe.mettre_en_pause(pause)
 
-func _jouer_son() -> void:
-	if _lecteur_son:
+func _jouer_son(son: AudioStream) -> void:
+	if son:
+		_lecteur_son.stream = son
 		_lecteur_son.pitch_scale = randf_range(0.9, 1.1)
 		_lecteur_son.play()

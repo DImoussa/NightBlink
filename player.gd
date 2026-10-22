@@ -23,6 +23,8 @@ const Sons := preload("res://Scripts/sons.gd")
 const SON_AIMANT_ON := preload("res://Son/Aimant_ON.wav")
 const SON_AIMANT_OFF := preload("res://Son/Aimant_OFF.wav")
 const SON_CHUTE := preload("res://Son/Tomber.wav")
+@export var duree_son_aimant := 3.0      # secondes : on ne garde que le début du son d'activation de l'aimant
+@export var volume_bip_aimant := -12.0   # dB : le bourdonnement de l'aimant est un bip aigu qui fait mal aux oreilles
 @export var vitesse_chute_bruit := 6.0   # m/s : au-dessus, on entend le bruit de chute à l'atterrissage (~1,8 m de chute)
 
 var inventaire: Array[String] = ["lampe", "aimant"]   # affiché par la barre du bas (inventaire_hud.gd)
@@ -36,6 +38,8 @@ var aimant_actif := false            # pour les sons de l'aimant (activation, bo
 var son_marche: AudioStreamPlayer
 var son_echelle: AudioStreamPlayer
 var son_aimant: AudioStreamPlayer
+var son_aimant_on := AudioStreamPlayer.new()
+var fondu_aimant: Tween
 
 func _ready():
 	# Garde la scène en mémoire : "Rejouer" la recrée sans relire le fichier (beaucoup plus rapide)
@@ -57,6 +61,9 @@ func _ready():
 	son_marche = Sons.boucle(self, preload("res://Son/Walking.wav"))
 	son_echelle = Sons.boucle(self, preload("res://Son/Grincement_bois_V1.wav"))
 	son_aimant = Sons.boucle(self, preload("res://Son/Aimant_continu.wav"))
+	son_aimant.volume_db = volume_bip_aimant
+	son_aimant_on.stream = SON_AIMANT_ON
+	add_child(son_aimant_on)
 
 
 func mourir():
@@ -121,7 +128,19 @@ func _son_aimant(actif: bool):
 	if actif == aimant_actif:
 		return
 	aimant_actif = actif
-	Sons.jouer(get_tree(), SON_AIMANT_ON if actif else SON_AIMANT_OFF)
+	if fondu_aimant:
+		fondu_aimant.kill()
+	if actif:
+		# Aimant_ON dure 10 s : on n'en garde que le début, avec un fondu pour ne pas couper sec
+		son_aimant_on.volume_db = 0.0
+		son_aimant_on.play()
+		fondu_aimant = create_tween()
+		fondu_aimant.tween_interval(duree_son_aimant - 0.3)
+		fondu_aimant.tween_property(son_aimant_on, "volume_db", -40.0, 0.3)
+		fondu_aimant.tween_callback(son_aimant_on.stop)
+	else:
+		son_aimant_on.stop()
+		Sons.jouer(get_tree(), SON_AIMANT_OFF)
 	Sons.garder(son_aimant, actif)
 
 

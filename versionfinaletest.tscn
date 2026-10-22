@@ -36,6 +36,7 @@
 [ext_resource type="Script" uid="uid://cblw6qcrnrig3" path="res://zone_depart_lampe.gd" id="zone_depart_lampe"]
 [ext_resource type="Script" uid="uid://bibqcrwddu6dd" path="res://zone_fin.gd" id="zone_fin"]
 [ext_resource type="Script" uid="uid://cxdgwsmg8raen" path="res://zone_monstre.gd" id="zone_monstre"]
+[ext_resource type="AudioStream" path="res://Son/PortesDoubleOuvrante.wav" id="son_double_porte"]
 
 [sub_resource type="ShaderMaterial" id="StandardMaterial3D_gy0ha"]
 resource_name = "Cycles_Lighting_01"
@@ -358,6 +359,7 @@ mesh = SubResource("ArrayMesh_2h5ct")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.72, 7.1749, 0.983)
 script = ExtResource("13_yojji")
 ouverture_aimant = false
+son_ouverture = ExtResource("son_double_porte")
 
 [node name="Modele" parent="porte_gauche" unique_id=2141515074 instance=ExtResource("14_gcb2r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.72, -7.1749, -0.983)

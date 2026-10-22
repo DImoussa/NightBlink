@@ -6,7 +6,10 @@ const Sons := preload("res://Scripts/sons.gd")
 
 @export var lumieres_neon: Array[NodePath] = []   # chaque lumière reçoit le grésillement "Neon" en 3D
 @export var secondes_coeur := 20.0                # le cœur et la respiration commencent 20 s avant que la lampe s'éteigne
-@export var volume_respiration := 12.0            # dB en plus : le fichier Respiration.wav est enregistré très bas
+@export var volume_fond := -10.0                  # dB : le bruit de fond couvrait les petits sons (clé, serrure)
+@export var volume_coeur := -10.0                 # dB : le battement de cœur était trop fort
+@export var volume_respiration := 4.0             # dB (le fichier Respiration.wav est enregistré très bas)
+@export var volume_monstre := -10.0               # dB : le grognement ne doit pas couvrir le son de la pile
 @export var seuil_monstre := 0.28                 # la musique du monstre se joue quand la lampe passe sous 28 %
 @export var delai_aleatoire := Vector2(20, 45)    # secondes entre deux bruits aléatoires (min, max)
 @export var distance_aleatoire := Vector2(6, 14)  # distance au joueur des bruits aléatoires (min, max)
@@ -32,9 +35,13 @@ var minuterie := Timer.new()
 func _ready() -> void:
 	add_to_group("ambiance_sonore")   # les zones du monstre (zone_monstre.gd) nous appellent
 	monstre.stream = preload("res://Son/Monstre.wav")
+	monstre.volume_db = volume_monstre
 	add_child(monstre)
-	Sons.boucle(self, preload("res://Son/Brown_noise.mp3")).play()
+	var fond: AudioStreamPlayer = Sons.boucle(self, preload("res://Son/Brown_noise.mp3"))
+	fond.volume_db = volume_fond
+	fond.play()
 	coeur = Sons.boucle(self, preload("res://Son/Coeur.wav"))
+	coeur.volume_db = volume_coeur
 	respiration = Sons.boucle(self, preload("res://Son/Respiration.wav"))
 	respiration.volume_db = volume_respiration
 	for chemin in lumieres_neon:

@@ -4,6 +4,7 @@ extends Node3D
 # Avec ouverture_aimant = false, seule une serrure peut l'ouvrir (serrure.gd).
 
 @export var ouverture_aimant := true
+@export var son_ouverture: AudioStream   # joué en 3D sur la porte à l'ouverture (double porte : sur un seul battant)
 
 var ouverte := false
 
@@ -18,3 +19,9 @@ func ouvrir(_position_joueur := Vector3.ZERO) -> void:
 		return
 	ouverte = true
 	$AnimationPlayer.play("ouvrir")
+	if son_ouverture:
+		var lecteur := AudioStreamPlayer3D.new()
+		lecteur.stream = son_ouverture
+		lecteur.finished.connect(lecteur.queue_free)
+		add_child(lecteur)
+		lecteur.play()
