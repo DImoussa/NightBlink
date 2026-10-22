@@ -1,13 +1,13 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cpocftttn2omb"]
 
-[ext_resource type="Script" path="res://Scripts/ecran_mort.gd" id="1_mort"]
+[ext_resource type="Script" uid="uid://b7xgcl68xc1bc" path="res://Scripts/ecran_mort.gd" id="1_mort"]
 [ext_resource type="Texture2D" uid="uid://dy2mtjnv860r6" path="res://ecranaccueil.png" id="2_fond"]
 
-[node name="EcranMort" type="CanvasLayer"]
+[node name="EcranMort" type="CanvasLayer" unique_id=1746778155]
 layer = 10
 script = ExtResource("1_mort")
 
-[node name="Fond" type="TextureRect" parent="."]
+[node name="Fond" type="TextureRect" parent="." unique_id=719838760]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,17 +16,17 @@ grow_vertical = 2
 texture = ExtResource("2_fond")
 expand_mode = 1
 
-[node name="Titre" type="Label" parent="."]
+[node name="Titre" type="Label" parent="." unique_id=229725848]
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 151.0
 offset_bottom = 352.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 72
-text = "NighBlink"
+text = "NightBlink"
 horizontal_alignment = 1
 
-[node name="Message" type="Label" parent="."]
+[node name="Message" type="Label" parent="." unique_id=164440191]
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 272.0
@@ -37,7 +37,7 @@ theme_override_font_sizes/font_size = 72
 text = "Tu es mort !"
 horizontal_alignment = 1
 
-[node name="BoutonRejouer" type="Button" parent="."]
+[node name="BoutonRejouer" type="Button" parent="." unique_id=17817598]
 unique_name_in_owner = true
 anchors_preset = 5
 anchor_left = 0.5
@@ -49,13 +49,13 @@ offset_bottom = 660.0
 grow_horizontal = 2
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 0, 0.56078434)
-theme_override_colors/font_hover_color = Color(1, 1, 0, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 72
 text = "Rejouer"
 flat = true
 
-[node name="BoutonAccueil" type="Button" parent="."]
+[node name="BoutonAccueil" type="Button" parent="." unique_id=98988874]
 unique_name_in_owner = true
 anchors_preset = 5
 anchor_left = 0.5
@@ -67,13 +67,13 @@ offset_bottom = 843.0
 grow_horizontal = 2
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 0, 0.56078434)
-theme_override_colors/font_hover_color = Color(1, 1, 0, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 72
 text = "Retourner à l'écran d'accueil"
 flat = true
 
-[node name="Aide" type="Label" parent="."]
+[node name="Aide" type="Label" parent="." unique_id=891415998]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
