@@ -4,6 +4,7 @@ extends CharacterBody3D
 
 @export var vitesse_max := 5.0       # m/s, un peu plus que le joueur pour ne pas décrocher en marchant
 @export var decrochage := 1.0        # l'aimant lâche si l'objet est bloqué à plus de cette distance de sa cible
+@export var demande_toutes_les_piles := false   # vrai pour le chariot : l'aimant n'est assez puissant qu'avec toutes les piles
 
 var porteur: Node3D = null           # le joueur qui tient l'objet
 var _distance := 0.0                 # distance caméra -> objet au moment de la prise (à plat)
@@ -12,6 +13,11 @@ var _decalage_angle := 0.0           # rotation de l'objet par rapport au joueur
 
 func _ready() -> void:
 	add_to_group("attrapable")
+
+
+# Faux tant qu'il reste des piles à ramasser dans la scène (si demande_toutes_les_piles)
+func peut_etre_attrape() -> bool:
+	return not demande_toutes_les_piles or get_tree().get_nodes_in_group("pile").is_empty()
 
 
 func attraper(joueur: Node3D) -> void:

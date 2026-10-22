@@ -575,7 +575,7 @@ portes = Array[NodePath]([NodePath("../porte_gauche"), NodePath("../porte_droite
 shape = SubResource("SphereShape3D_serrure")
 
 [node name="CleInseree" parent="Serrure" unique_id=1598812209 instance=ExtResource("2_o0jl1")]
-transform = Transform3D(0, 0, 0.4, 0.4, 0, 0, 0, 0.4, 0, 0.03, 0, 0)
+transform = Transform3D(0, 0, -0.4, 0.4, 0, 0, 0, -0.4, 0, 0.03, 0, 0)
 visible = false
 
 [node name="Echelle" type="Area3D" parent="." unique_id=1598812210]

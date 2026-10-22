@@ -6,6 +6,7 @@
 
 [node name="Imprimante" type="CharacterBody3D" unique_id=503238110]
 script = ExtResource("1_c4w1s")
+demande_toutes_les_piles = true
 
 [node name="Modele" type="MeshInstance3D" parent="." unique_id=275314942]
 mesh = ExtResource("2_12rtw")

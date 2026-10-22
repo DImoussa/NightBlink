@@ -9,6 +9,7 @@ var player: Node3D = null
 var lueur_active: bool = false
 
 func _ready() -> void:
+	add_to_group("pile")   # le chariot ne s'attrape qu'une fois toutes les piles ramassées (objet_aimante.gd)
 	body_entered.connect(_on_body_entered)
 
 func _process(_delta: float) -> void:
@@ -25,6 +26,7 @@ func _on_body_entered(body: Node3D) -> void:
 			lanterne.recharger(lanterne.max_energy)   # recharge au max
 			print("Pile ramassée en étant collé !")
 			
+			remove_from_group("pile")   # ramassée : elle ne compte plus tout de suite
 			collision_shape.set_deferred("disabled", true)
 			visible = false
 			
