@@ -3,7 +3,9 @@ extends Node
 ## Jouer : clic sur le bouton, ou avancer (Z / bouton FWD de la carte).
 ## Relance la scène où le joueur est mort ; sinon la scène de jeu par défaut ci-dessous.
 
-@export_file("*.tscn") var scene_de_jeu := "res://versionfinaletest.tscn"
+@export_file("*.tscn") var scene_de_jeu := "res://versiofinaletest.tscn"
+
+@onready var son_jouer: AudioStreamPlayer = $Interface/BoutonJouer/Jouer
 
 const DELAI_AVANT_CHOIX := 1.0   # évite de relancer par accident si on appuyait encore sur avancer
 
@@ -39,11 +41,18 @@ func _input(event: InputEvent) -> void:
 		_jouer()
 
 
+# 2. Dans la fonction qui lance le jeu quand on appuie sur "Jouer" :
+func lancer_jeu() -> void: # (Remplacez par le nom de votre fonction actuelle)
+	# Lance le son FMOD
+	son_jouer.play()
+	
+	# Petite pause de 0.3 seconde pour entendre le son avant que la scène ne soit détruite
+	await get_tree().create_timer(0.3).timeout
+	
+	# Votre ligne actuelle qui charge le niveau :
+	get_tree().change_scene_to_file("res://...")
+
 func _jouer() -> void:
-	if not pret:
-		return
-	pret = false
-	# La scène où l'on est mort est retenue par l'écran de mort (ecran_mort.gd)
-	var scene: String = get_tree().get_meta("scene_a_relancer", scene_de_jeu)
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	get_tree().change_scene_to_file(scene)
+	son_jouer.play()
+	await get_tree().create_timer(0.3).timeout
+	get_tree().change_scene_to_file("res://versionfinaletest.tscn")

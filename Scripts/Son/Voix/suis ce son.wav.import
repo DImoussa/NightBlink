@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://o88p4ye6oni3"
+path="res://.godot/imported/suis ce son.wav-43aa9d21db8a66f36668f723bc5420e9.sample"
+
+[deps]
+
+source_file="res://Scripts/Son/Voix/suis ce son.wav"
+dest_files=["res://.godot/imported/suis ce son.wav-43aa9d21db8a66f36668f723bc5420e9.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

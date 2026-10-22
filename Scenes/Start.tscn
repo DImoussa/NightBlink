@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dd3m42c4741s4" path="res://Scripts/start_screen.gd" id="1_og4jd"]
 [ext_resource type="Texture2D" uid="uid://dy2mtjnv860r6" path="res://ecranaccueil.png" id="2_nt0jr"]
+[ext_resource type="AudioStream" uid="uid://bnmtyxaddelj4" path="res://Jouer.wav" id="3_y4ycm"]
 
 [node name="StartScreen" type="Node" unique_id=1676421136]
 script = ExtResource("1_og4jd")
@@ -39,11 +40,14 @@ offset_bottom = 660.0
 grow_horizontal = 2
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 0, 0.56078434)
-theme_override_colors/font_hover_color = Color(1, 1, 0, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 72
 text = "Jouer"
 flat = true
+
+[node name="Jouer" type="AudioStreamPlayer" parent="Interface/BoutonJouer" unique_id=924021663]
+stream = ExtResource("3_y4ycm")
 
 [node name="EtatManette" type="Label" parent="Interface" unique_id=1214011700]
 unique_name_in_owner = true
