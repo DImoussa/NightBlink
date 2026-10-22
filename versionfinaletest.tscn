@@ -1,40 +1,41 @@
 [gd_scene format=4 uid="uid://chmbxe7lq3jdr"]
 
-[ext_resource type="PackedScene" path="res://scene3jsp.glb" id="1_gmjvt"]
-[ext_resource type="Texture2D" path="res://scene3jsp_cycles_lighting_01.png" id="2_i7f66"]
-[ext_resource type="Texture2D" path="res://scene3jsp_cycles_lighting_02.png" id="3_rsav7"]
-[ext_resource type="Texture2D" path="res://scene3jsp_cycles_lighting_03.png" id="4_fuuww"]
-[ext_resource type="Texture2D" path="res://scene3jsp_cycles_lighting_04.png" id="5_t0bdw"]
-[ext_resource type="Texture2D" path="res://scene3jsp_cycles_lighting_05.png" id="6_ksf3v"]
-[ext_resource type="Texture2D" path="res://scene3jsp_cycles_lighting_06.png" id="7_s1u48"]
-[ext_resource type="Texture2D" path="res://scene3jsp_cycles_lighting_07.png" id="8_1cu52"]
-[ext_resource type="Texture2D" path="res://scene3jsp_cycles_lighting_08.png" id="9_f1eol"]
-[ext_resource type="Shader" path="res://mur_carte.gdshader" id="10_d5ugt"]
-[ext_resource type="Texture2D" path="res://scene_baked_0.png" id="10_rsav7"]
-[ext_resource type="PackedScene" path="res://Key by Quaternius - bg6e1lfNsO.glb" id="11_hdhgi"]
-[ext_resource type="Script" path="res://objet_ramassable.gd" id="12_bloks"]
-[ext_resource type="Script" path="res://porte_metal.gd" id="13_yojji"]
-[ext_resource type="PackedScene" path="res://porte_grille.glb" id="14_gcb2r"]
-[ext_resource type="PackedScene" path="res://player.tscn" id="15_pbovl"]
-[ext_resource type="PackedScene" path="res://Scenes/PapierOuvrant/NotePapier.tscn" id="17_2dqag"]
-[ext_resource type="PackedScene" path="res://portemetal.glb" id="18_njt4j"]
-[ext_resource type="PackedScene" path="res://pile_rechargeable.tscn" id="19_rw4hh"]
+[ext_resource type="PackedScene" uid="uid://81ibi3yvy2o" path="res://scene3jsp.glb" id="1_gmjvt"]
+[ext_resource type="Texture2D" uid="uid://dp6ljsf7k42fm" path="res://scene3jsp_cycles_lighting_01.png" id="2_i7f66"]
+[ext_resource type="Texture2D" uid="uid://domfdjo87odye" path="res://scene3jsp_cycles_lighting_02.png" id="3_rsav7"]
+[ext_resource type="Texture2D" uid="uid://6jxyy5p5lyul" path="res://scene3jsp_cycles_lighting_03.png" id="4_fuuww"]
+[ext_resource type="Texture2D" uid="uid://btkwnw3fpl7ab" path="res://scene3jsp_cycles_lighting_04.png" id="5_t0bdw"]
+[ext_resource type="Texture2D" uid="uid://b0yisc6nwjd40" path="res://scene3jsp_cycles_lighting_05.png" id="6_ksf3v"]
+[ext_resource type="Texture2D" uid="uid://baxtprfxi6k3c" path="res://scene3jsp_cycles_lighting_06.png" id="7_s1u48"]
+[ext_resource type="Texture2D" uid="uid://covllyuetqwb7" path="res://scene3jsp_cycles_lighting_07.png" id="8_1cu52"]
+[ext_resource type="Texture2D" uid="uid://cl3dfby1twdrw" path="res://scene3jsp_cycles_lighting_08.png" id="9_f1eol"]
+[ext_resource type="Shader" uid="uid://wsc4hvo8yvy4" path="res://mur_carte.gdshader" id="10_d5ugt"]
+[ext_resource type="Texture2D" uid="uid://dn1i0jwqnbhwv" path="res://scene_baked_0.png" id="10_rsav7"]
+[ext_resource type="PackedScene" uid="uid://crepsw3p6jyxj" path="res://Key by Quaternius - bg6e1lfNsO.glb" id="11_hdhgi"]
+[ext_resource type="Script" uid="uid://1s21tedm3dgy" path="res://objet_ramassable.gd" id="12_bloks"]
+[ext_resource type="Script" uid="uid://cv6p7trts01bf" path="res://porte_metal.gd" id="13_yojji"]
+[ext_resource type="PackedScene" uid="uid://br8w5yny56eyj" path="res://porte_grille.glb" id="14_gcb2r"]
+[ext_resource type="PackedScene" uid="uid://btqmtw8fbyabk" path="res://player.tscn" id="15_pbovl"]
+[ext_resource type="PackedScene" uid="uid://bsfj7o4pcbvy" path="res://Scenes/PapierOuvrant/NotePapier.tscn" id="17_2dqag"]
+[ext_resource type="PackedScene" uid="uid://bfyr48hr1k04q" path="res://portemetal.glb" id="18_njt4j"]
+[ext_resource type="PackedScene" uid="uid://beeyxc23s0obc" path="res://pile_rechargeable.tscn" id="19_rw4hh"]
 [ext_resource type="PackedScene" path="res://imprimante/imprimante.tscn" id="20_83dw4"]
-[ext_resource type="Script" path="res://serrure.gd" id="21_t42qr"]
-[ext_resource type="Script" path="res://echelle.gd" id="22_swa2s"]
-[ext_resource type="Script" path="res://inventaire_hud.gd" id="23_sselv"]
-[ext_resource type="Texture2D" path="res://icones/lampe.png" id="24_0x4lr"]
-[ext_resource type="Texture2D" path="res://icones/aimant.png" id="25_inl4c"]
-[ext_resource type="Texture2D" path="res://icones/cle.png" id="26_8j8qd"]
-[ext_resource type="Texture2D" path="res://cieletoile.jpg" id="27_o8qtd"]
-[ext_resource type="Texture2D" path="res://tableau_Retro picture frame5_Paint_BaseColor.jpg" id="28_ln2u4"]
-[ext_resource type="Texture2D" path="res://tableau_Retro picture frame5_Paint_Metallic-Retro picture frame5_Paint_Roughness.png" id="29_pcdwb"]
-[ext_resource type="Texture2D" path="res://tableau_Retro picture frame5_Paint_Normal.jpg" id="30_3rl46"]
-[ext_resource type="Texture2D" path="res://tableau_Retro picture frame5_Retro picture frame_BaseColor.jpg" id="31_ji0nm"]
-[ext_resource type="Texture2D" path="res://tableau_Retro picture frame5_Retro picture frame_Metallic-Retro picture frame5_Retro picture frame_Roughness.png" id="32_d5his"]
-[ext_resource type="Texture2D" path="res://tableau_Retro picture frame5_Retro picture frame_Normal.jpg" id="33_ne5s5"]
-[ext_resource type="PackedScene" path="res://Scenes/hospital_bed.glb" id="meuble_lit"]
-[ext_resource type="PackedScene" path="res://Scenes/table_basse.glb" id="meuble_table"]
+[ext_resource type="Script" uid="uid://or5l6ig1lwvk" path="res://serrure.gd" id="21_t42qr"]
+[ext_resource type="Script" uid="uid://belvapldy5r2m" path="res://echelle.gd" id="22_swa2s"]
+[ext_resource type="Script" uid="uid://0odxuwcfsn1s" path="res://inventaire_hud.gd" id="23_sselv"]
+[ext_resource type="Texture2D" uid="uid://cwhn08g4aoswl" path="res://icones/lampe.png" id="24_0x4lr"]
+[ext_resource type="Texture2D" uid="uid://brfba8boywhc8" path="res://icones/aimant.png" id="25_inl4c"]
+[ext_resource type="Texture2D" uid="uid://cgc4myehnx135" path="res://icones/cle.png" id="26_8j8qd"]
+[ext_resource type="Texture2D" uid="uid://cd21a8seycela" path="res://cieletoile.jpg" id="27_o8qtd"]
+[ext_resource type="Texture2D" uid="uid://d18pexhv33fig" path="res://tableau_Retro picture frame5_Paint_BaseColor.jpg" id="28_ln2u4"]
+[ext_resource type="Texture2D" uid="uid://b7ab7ewpwwlnp" path="res://tableau_Retro picture frame5_Paint_Metallic-Retro picture frame5_Paint_Roughness.png" id="29_pcdwb"]
+[ext_resource type="Texture2D" uid="uid://dc447wdemjdmp" path="res://tableau_Retro picture frame5_Paint_Normal.jpg" id="30_3rl46"]
+[ext_resource type="Texture2D" uid="uid://bi0sxyo2r2ers" path="res://tableau_Retro picture frame5_Retro picture frame_BaseColor.jpg" id="31_ji0nm"]
+[ext_resource type="Texture2D" uid="uid://4b8ptg2pyg7" path="res://tableau_Retro picture frame5_Retro picture frame_Metallic-Retro picture frame5_Retro picture frame_Roughness.png" id="32_d5his"]
+[ext_resource type="Texture2D" uid="uid://cq63ofxskqvsp" path="res://tableau_Retro picture frame5_Retro picture frame_Normal.jpg" id="33_ne5s5"]
+[ext_resource type="PackedScene" uid="uid://c5s3l8gq8dfam" path="res://Scenes/hospital_bed.glb" id="meuble_lit"]
+[ext_resource type="PackedScene" uid="uid://8okbydwjigc6" path="res://Scenes/table_basse.glb" id="meuble_table"]
+[ext_resource type="Script" uid="uid://cblw6qcrnrig3" path="res://zone_depart_lampe.gd" id="zone_depart_lampe"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j6cut"]
 resource_name = "Cycles_Lighting_01"
@@ -659,6 +660,9 @@ size = Vector3(2.3964, 2.1509, 5.824)
 height = 1.8647
 radius = 1.0782
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_depart_lampe"]
+size = Vector3(3, 3, 1)
+
 [node name="Node3D" type="Node3D" unique_id=956417553]
 
 [node name="scene3jsp" parent="." unique_id=730180024 instance=ExtResource("1_gmjvt")]
@@ -729,8 +733,15 @@ mesh = SubResource("ArrayMesh_t0bdw")
 [node name="Node3D2" parent="." unique_id=1596967186 instance=ExtResource("17_2dqag")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.871952, 1.3648002, -32.1935)
 
-[node name="CollisionShape3D" parent="Node3D2/NotePapier" parent_id_path=PackedInt32Array(1596967186, 2006595968) index="0" unique_id=663555539]
+[node name="NotePapier" parent="Node3D2" index="0" unique_id=2006595968]
+transform = Transform3D(1, 0, 0, 0, -7.586082e-05, -1, 0, 1, -7.586082e-05, 2.6108894, -0.28632092, -3.3118973)
+portee = 0.7
+
+[node name="CollisionShape3D" parent="Node3D2/NotePapier" index="0" unique_id=663555539]
 shape = SubResource("SphereShape3D_so34w")
+
+[node name="VisuelFeuilleTest" parent="Node3D2/NotePapier" index="1" unique_id=1000619366]
+transform = Transform3D(0.3023954, 0, 0, 0, 0.29869324, 3.637979e-12, 0, 0, 0.48890892, 0.07536316, 0.507164, 0.11498183)
 
 [node name="portemetalentree" type="Node3D" parent="." unique_id=1627161871]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.13, 1.6644, -31.87)
@@ -776,7 +787,7 @@ material = SubResource("StandardMaterial3D_so34w")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5.91, 34)
 
 [node name="PileHautEchelle" parent="." unique_id=1043736120 instance=ExtResource("19_rw4hh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.1, 10.5, -4.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.354828, 10.5, -3.58245)
 
 [node name="Imprimante" parent="." unique_id=1734200511 instance=ExtResource("20_83dw4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.239414, 5.978727, 38.917637)
@@ -959,7 +970,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8361, 0)
 shape = SubResource("CylinderShape3D_table")
 
 [node name="LitCouloir" parent="." unique_id=1770100050 instance=ExtResource("meuble_lit")]
-transform = Transform3D(0, 0, 0.36, 0, 0.36, 0, -0.36, 0, 0, 35.7869, 5.5025, -4.2296)
+transform = Transform3D(0, 0, 0.36, 0, 0.36, 0, -0.36, 0, 0, 35.7869, 5.5025, -2.747455)
 
 [node name="Collision" type="StaticBody3D" parent="LitCouloir" unique_id=1770100051]
 
@@ -967,17 +978,12 @@ transform = Transform3D(0, 0, 0.36, 0, 0.36, 0, -0.36, 0, 0, 35.7869, 5.5025, -4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1399, 1.0962, -4.9636)
 shape = SubResource("BoxShape3D_lit")
 
-[node name="TableCouloir" parent="." unique_id=1770100060 instance=ExtResource("meuble_table")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 35.6, 5.5389, -5)
+[node name="DepartLampe" type="Area3D" parent="." unique_id=1770100100 groups=["depart_lampe"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.3, 1.5, -30.6)
+script = ExtResource("zone_depart_lampe")
 
-[node name="Sphere" parent="TableCouloir" index="0" unique_id=10553267]
-visible = false
-
-[node name="Collision" type="StaticBody3D" parent="TableCouloir" unique_id=1770100061]
-
-[node name="Forme" type="CollisionShape3D" parent="TableCouloir/Collision" unique_id=1770100062]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8361, 0)
-shape = SubResource("CylinderShape3D_table")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DepartLampe" unique_id=1770100101]
+shape = SubResource("BoxShape3D_depart_lampe")
 
 [editable path="scene3jsp"]
 [editable path="CleDoublePorte"]
@@ -991,4 +997,3 @@ shape = SubResource("CylinderShape3D_table")
 [editable path="NoteChariot"]
 [editable path="TableSpawn"]
 [editable path="TableEtage"]
-[editable path="TableCouloir"]

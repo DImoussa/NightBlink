@@ -14,7 +14,9 @@ signal message_received(key: String, value: String) # TOUTE trame "clé:valeur" 
 # ── Constantes de pairing ──────────────────────────────
 const DISCOVER_MSG  := "DISCOVER"
 const ACK_PREFIX    := "GDSERIAL_ACK"
-const PAIR_TIMEOUT  := 0.35   # secondes d'attente par port
+const BOOT_ATTENTE    := 1.8   # secondes : la carte redémarre à l'ouverture du port
+const DISCOVER_ATTENTE := 1.5  # secondes d'attente de GDSERIAL_ACK après chaque DISCOVER
+const DISCOVER_ESSAIS  := 3
 const BAUD_RATE     := 115200
 # Only try ports whose name contains one of these hints. Avoids opening
 # tty.Bluetooth-Incoming-Port / tty.debug-console on macOS (which hang the scan).
@@ -103,19 +105,23 @@ func _scan_ports(port_list: Array) -> void:
 
 		serial.clear_buffer()
 
-		# Attend que l'Arduino finisse son boot après l'ouverture du port
-		await get_tree().create_timer(.5).timeout
-
-		# Envoie DISCOVER plusieurs fois au cas où le premier serait perdu
-		for i in range(3):
+		# L'ouverture du port redémarre la carte (Arduino Uno) : il faut attendre la fin du boot
+		# (~1,8 s avec le gyroscope), puis laisser à la carte le temps de répondre (~0,8 s observé).
+		await get_tree().create_timer(BOOT_ATTENTE).timeout
+		var recu := ""
+		for i in range(DISCOVER_ESSAIS):
 			serial.writeline(DISCOVER_MSG)
-			await get_tree().create_timer(0.1).timeout
-			var response := _read_all_available()
-			_dbg("[Pairing]   tentative %d → '%s'" % [i + 1, response.strip_edges()])
-			if ACK_PREFIX in response:
+			var limite := Time.get_ticks_msec() + int(DISCOVER_ATTENTE * 1000)
+			while Time.get_ticks_msec() < limite and not ACK_PREFIX in recu:
+				await get_tree().create_timer(0.05).timeout
+				recu += _read_all_available()
+			_dbg("[Pairing]   tentative %d → '%s'" % [i + 1, recu.strip_edges().replace("
+", " | ")])
+			if ACK_PREFIX in recu:
 				# Garde ce qui suit la ligne d'ACK (premières trames capteur déjà arrivées)
-				var fin_ack := response.find("\n", response.find(ACK_PREFIX))
-				_buffer = response.substr(fin_ack + 1) if fin_ack != -1 else ""
+				var fin_ack := recu.find("
+", recu.find(ACK_PREFIX))
+				_buffer = recu.substr(fin_ack + 1) if fin_ack != -1 else ""
 				paired_port = port_name
 				_paired = true
 				_wasPaired = true

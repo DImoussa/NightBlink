@@ -54,6 +54,7 @@ func _ouvrir() -> void:
 	if _ouverte:
 		return
 	_ouverte = true
+	_pause_lampe(true)   # la lampe ne s'use pas pendant la lecture
 	_jouer_son()
 	animation.play("ouvrir")
 	animation.queue("flottement")   # la feuille se balance une fois ouverte
@@ -62,8 +63,14 @@ func _fermer() -> void:
 	if not _ouverte:
 		return
 	_ouverte = false
+	_pause_lampe(false)
 	_jouer_son()
 	animation.play("fermer")
+
+func _pause_lampe(pause: bool) -> void:
+	var lampe = get_tree().get_first_node_in_group("lantern")
+	if lampe and lampe.has_method("mettre_en_pause"):
+		lampe.mettre_en_pause(pause)
 
 func _jouer_son() -> void:
 	if _lecteur_son:
