@@ -19,6 +19,11 @@ signal inventaire_change
 @onready var animation_player: AnimationPlayer = $Head/AnimationPlayer   # animation "marche" (balancement de la tête)
 
 const ECRAN_MORT := preload("res://Scenes/EcranMort.tscn")
+const Sons := preload("res://Scripts/sons.gd")
+const SON_AIMANT_ON := preload("res://Son/Aimant_ON.wav")
+const SON_AIMANT_OFF := preload("res://Son/Aimant_OFF.wav")
+const SON_CHUTE := preload("res://Son/Tomber.wav")
+@export var vitesse_chute_bruit := 6.0   # m/s : au-dessus, on entend le bruit de chute à l'atterrissage (~1,8 m de chute)
 
 var inventaire: Array[String] = ["lampe", "aimant"]   # affiché par la barre du bas (inventaire_hud.gd)
 var sur_echelle := 0                 # nombre de zones d'échelle où se trouve le joueur (echelle.gd)
@@ -27,6 +32,10 @@ var objet_tenu: Node3D = null        # l'objet tenu tant que E reste appuyé (ob
 var decalage_mur: Transform3D        # position du mur par rapport à la caméra
 var arduino: Node = null             # reste vide si la manette n'est pas activée
 var mort := false                    # vrai pendant l'écran de mort : le joueur ne bouge plus
+var aimant_actif := false            # pour les sons de l'aimant (activation, bourdonnement, arrêt)
+var son_marche: AudioStreamPlayer
+var son_echelle: AudioStreamPlayer
+var son_aimant: AudioStreamPlayer
 
 func _ready():
 	# Garde la scène en mémoire : "Rejouer" la recrée sans relire le fichier (beaucoup plus rapide)
@@ -41,7 +50,15 @@ func _ready():
 	# La lampe tenue en main ne doit pas faire d'ombre devant sa propre lumière
 	for maillage in $Head/Camera3D/Lampe.find_children("*", "GeometryInstance3D", true, false):
 		maillage.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	
+	# Les sons 3D (piles, néons, bruits aléatoires) s'entendent depuis la tête du joueur
+	var oreille := AudioListener3D.new()
+	camera.add_child(oreille)
+	oreille.make_current()
+	son_marche = Sons.boucle(self, preload("res://Son/Walking.wav"))
+	# load et pas preload : le fichier du dossier Son est vide pour l'instant, le jeu doit marcher sans
+	son_echelle = Sons.boucle(self, load("res://Son/Grincement_bois_V1.wav"))
+	son_aimant = Sons.boucle(self, preload("res://Son/Aimant_continu.wav"))
+
 
 func mourir():
 	if mort:
@@ -53,6 +70,8 @@ func mourir():
 	allumer_led(false)
 	velocity = Vector3.ZERO
 	animation_player.stop()
+	son_marche.stop()
+	son_echelle.stop()
 	# Écran "Tu es mort !" : avancer = rejouer, aimant = retour à l'accueil (voir ecran_mort.gd)
 	var ecran := ECRAN_MORT.instantiate()
 	ecran.rejouer.connect(respawn)
@@ -92,9 +111,27 @@ func tourner_camera(gauche_droite: float, haut_bas: float):
 
 
 func allumer_led(allumee: bool):
+	_son_aimant(allumee)
 	# N'envoie l'ordre que si la manette est là
 	if arduino:
 		arduino.led(allumee)
+
+
+# LED allumée = aimant actif : son d'activation, bourdonnement tant qu'il tient quelque chose, son d'arrêt
+func _son_aimant(actif: bool):
+	if actif == aimant_actif:
+		return
+	aimant_actif = actif
+	Sons.jouer(get_tree(), SON_AIMANT_ON if actif else SON_AIMANT_OFF)
+	Sons.garder(son_aimant, actif)
+
+
+# La porte ne s'attrape pas : l'aimant sonne seulement le temps qu'elle s'ouvre
+func _son_aimant_porte(porte: Node):
+	_son_aimant(true)
+	await porte.get_node("AnimationPlayer").animation_finished
+	if not mur_tenu and not objet_tenu:
+		_son_aimant(false)
 
 
 func basculer_aimant():
@@ -115,8 +152,9 @@ func basculer_aimant():
 	var distance_aimant: float = origine.distance_to(resultat.position) + aimant.position.z if resultat else INF
 	var porte := trouver_dans_groupe(collider, "porte_metal")
 	if porte:
-		if distance_aimant <= portee_porte:
+		if distance_aimant <= portee_porte and not porte.ouverte:
 			porte.ouvrir(global_position)
+			_son_aimant_porte(porte)
 		return
 	# Objet métallique visé : on le tient tant que E reste appuyé
 	var objet := trouver_dans_groupe(collider, "attrapable")
@@ -193,10 +231,20 @@ func _physics_process(delta):
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
 
+	var vitesse_chute := -velocity.y
 	move_and_slide()
 
+	# Grosse chute (ex. on lâche l'échelle) : bruit de chute à l'atterrissage
+	if is_on_floor() and vitesse_chute > vitesse_chute_bruit:
+		Sons.jouer(get_tree(), SON_CHUTE)
+
+	# Bruits de pas au sol, grincement du bois quand on monte ou descend l'échelle
+	var marche := is_on_floor() and sur_echelle == 0 and input_dir != Vector2.ZERO
+	Sons.garder(son_marche, marche)
+	Sons.garder(son_echelle, sur_echelle > 0 and absf(velocity.y) > 0.1)
+
 	# Balancement de la tête quand on marche au sol (animation "marche" de player.tscn)
-	if is_on_floor() and sur_echelle == 0 and input_dir != Vector2.ZERO:
+	if marche:
 		if animation_player.current_animation != "marche":
 			animation_player.play("marche")
 	else:

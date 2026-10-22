@@ -1,6 +1,6 @@
 extends SpotLight3D
 
-@export var max_energy := 40.0
+@export var max_energy := 80.0
 @export var drain_rate := 2.0    
 
 var energy := 40.0

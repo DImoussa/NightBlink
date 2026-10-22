@@ -6,15 +6,19 @@ extends Node
 @export_file("*.tscn") var scene_de_jeu := "res://versionfinaletest.tscn"
 
 const DELAI_AVANT_CHOIX := 1.0   # évite de relancer par accident si on appuyait encore sur avancer
+const Sons := preload("res://Scripts/sons.gd")
 
 @onready var bouton_jouer: Button = %BoutonJouer
 @onready var etat_manette: Label = %EtatManette
 
 var pret := false
+var musique_menu: AudioStreamPlayer
 
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	musique_menu = Sons.boucle(self, preload("res://Son/Menu_Début.wav"))
+	musique_menu.play()
 	# La partie se charge en arrière-plan pendant qu'on est sur l'accueil : "Jouer" démarre tout de suite
 	ResourceLoader.load_threaded_request(_scene_a_lancer())
 	bouton_jouer.pressed.connect(_jouer)
@@ -45,9 +49,30 @@ func _jouer() -> void:
 	if not pret:
 		return
 	pret = false
+	Sons.jouer(get_tree(), preload("res://Son/Jouer.wav"))   # continue pendant le changement de scène
+	musique_menu.stop()
+	await _jouer_video_intro()
 	var paquet := ResourceLoader.load_threaded_get(_scene_a_lancer()) as PackedScene
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	get_tree().change_scene_to_packed(paquet)
+
+
+# Vidéo d'introduction en plein écran par-dessus l'accueil ; la partie démarre à la fin
+func _jouer_video_intro() -> void:
+	var calque := CanvasLayer.new()
+	calque.layer = 100
+	var fond := ColorRect.new()
+	fond.color = Color.BLACK
+	fond.set_anchors_preset(Control.PRESET_FULL_RECT)
+	calque.add_child(fond)
+	var video := VideoStreamPlayer.new()
+	video.stream = preload("res://Video/introductionVideo.ogv")
+	video.expand = true
+	video.set_anchors_preset(Control.PRESET_FULL_RECT)
+	calque.add_child(video)
+	add_child(calque)
+	video.play()
+	await video.finished
 
 
 # La scène où l'on est mort est retenue par l'écran de mort (ecran_mort.gd)
