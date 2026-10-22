@@ -24,7 +24,7 @@ func _ready() -> void:
 
 func update_light() -> void:
 	visible = is_on and energy > 0
-	light_energy = 1.0
+	light_energy = 1.5
 	spot_range = 12.0
 	spot_angle = 32.5
 
