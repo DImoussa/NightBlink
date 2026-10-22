@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://cs7hfsx2ba1xa"]
-
-[ext_resource type="PackedScene" uid="uid://cd4y5lj34pye1" path="res://tableau.glb" id="1_smprr"]
-
-[node name="tableau" unique_id=751690141 instance=ExtResource("1_smprr")]
