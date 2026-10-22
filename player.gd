@@ -34,6 +34,7 @@ var objet_tenu: Node3D = null        # l'objet tenu tant que E reste appuyé (ob
 var decalage_mur: Transform3D        # position du mur par rapport à la caméra
 var arduino: Node = null             # reste vide si la manette n'est pas activée
 var mort := false                    # vrai pendant l'écran de mort : le joueur ne bouge plus
+var fige := false                    # vrai pendant l'apparition du monstre : ni marche ni regard (figer())
 var aimant_actif := false            # pour les sons de l'aimant (activation, bourdonnement, arrêt)
 var son_marche: AudioStreamPlayer
 var son_echelle: AudioStreamPlayer
@@ -90,8 +91,25 @@ func respawn():
 	get_tree().reload_current_scene()
 
 
+# Apparition du monstre (monstre_ombre.gd) : le joueur se tourne vers cible et ne peut plus bouger pendant duree
+func figer(cible: Vector3, duree: float):
+	fige = true
+	velocity = Vector3.ZERO
+	animation_player.stop()
+	son_marche.stop()
+	son_echelle.stop()
+	var direction := cible - camera.global_position
+	var lacet := atan2(-direction.x, -direction.z)
+	var tangage := atan2(direction.y, Vector2(direction.x, direction.z).length())
+	var regard := create_tween().set_parallel().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	regard.tween_property(self, "rotation:y", rotation.y + wrapf(lacet - rotation.y, -PI, PI), 0.6)
+	regard.tween_property(head, "rotation:x", tangage, 0.6)
+	await get_tree().create_timer(duree).timeout
+	fige = false
+
+
 func _unhandled_input(event):
-	if mort:
+	if mort or fige:
 		return
 	# Regarder avec la souris
 	if event is InputEventMouseMotion:
@@ -235,7 +253,7 @@ func trouver_dans_groupe(objet: Object, groupe: String) -> Node:
 
 
 func _physics_process(delta):
-	if mort:
+	if mort or fige:
 		return
 	# Déplacement ZQSD dans la direction du regard
 	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")

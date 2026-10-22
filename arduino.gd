@@ -124,7 +124,7 @@ func _tourner_en_penchant(delta: float) -> void:
 	# Lacet positif = torche tournée à gauche -> tourner à gauche ; roulis positif -> tourner à droite
 	var sens := signe_rotation * signf(ecart) * (-1.0 if inverser_rotation else 1.0)
 	var joueur = get_tree().get_first_node_in_group("player")
-	if joueur and not joueur.get("mort"):
+	if joueur and not joueur.get("mort") and not joueur.get("fige"):
 		joueur.tourner_camera(deg_to_rad(sens * vitesse * delta), 0.0)
 
 
@@ -134,7 +134,7 @@ func _regarder_comme_la_torche(delta: float) -> void:
 	if not haut_bas_absolu or not imu_ok or manager == null or not manager._paired:
 		return
 	var joueur = get_tree().get_first_node_in_group("player")
-	if joueur == null or joueur.get("mort"):
+	if joueur == null or joueur.get("mort") or joueur.get("fige"):
 		return
 	var tete: Node3D = joueur.get_node_or_null("Head")
 	if tete == null:
@@ -147,7 +147,7 @@ func _regarder_comme_la_torche(delta: float) -> void:
 
 func _tourner_camera(delta_yaw: float, delta_pitch: float):
 	var joueur = get_tree().get_first_node_in_group("player")
-	if joueur == null or joueur.get("mort"):
+	if joueur == null or joueur.get("mort") or joueur.get("fige"):
 		return
 	var h := delta_yaw * sensibilite_horizontale * (-1.0 if inverser_horizontal else 1.0)
 	var v := delta_pitch * sensibilite_verticale * (-1.0 if inverser_vertical else 1.0)

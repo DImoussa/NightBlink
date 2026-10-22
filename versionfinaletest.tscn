@@ -37,6 +37,9 @@
 [ext_resource type="Script" uid="uid://bibqcrwddu6dd" path="res://zone_fin.gd" id="zone_fin"]
 [ext_resource type="Script" uid="uid://cxdgwsmg8raen" path="res://zone_monstre.gd" id="zone_monstre"]
 [ext_resource type="AudioStream" path="res://Son/PortesDoubleOuvrante.wav" id="son_double_porte"]
+[ext_resource type="AudioStream" path="res://Son/Metal_door.wav" id="son_porte_metal"]
+[ext_resource type="PackedScene" path="res://shadow_monster.glb" id="monstre_ombre_glb"]
+[ext_resource type="Script" path="res://monstre_ombre.gd" id="monstre_ombre"]
 
 [sub_resource type="ShaderMaterial" id="StandardMaterial3D_gy0ha"]
 resource_name = "Cycles_Lighting_01"
@@ -409,6 +412,7 @@ transform = Transform3D(0.3023954, 0, 0, 0, 0.29869324, 3.637979e-12, 0, 0, 0.48
 [node name="portemetalentree" type="Node3D" parent="." unique_id=1627161871]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.13, 1.6644, -31.87)
 script = ExtResource("13_yojji")
+son_ouverture = ExtResource("son_porte_metal")
 
 [node name="Modele" parent="portemetalentree" unique_id=1560398616 instance=ExtResource("18_njt4j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.13, -1.257739, 31.87)
@@ -422,6 +426,7 @@ libraries/ = SubResource("AnimationLibrary_portemetalentree")
 [node name="portemetalsortie" type="Node3D" parent="." unique_id=2021512438]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9083, 7.2662, 38.331)
 script = ExtResource("13_yojji")
+son_ouverture = ExtResource("son_porte_metal")
 
 [node name="Modele" parent="portemetalsortie" unique_id=1659996280 instance=ExtResource("18_njt4j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9083, -6.452878, -38.331)
@@ -657,9 +662,10 @@ script = ExtResource("ambiance_sonore")
 lumieres_neon = Array[NodePath]([NodePath("../LumiereHautEscalier"), NodePath("../LumiereHautEscalier2")])
 
 [node name="ZoneMonstreEscalier" type="Area3D" parent="." unique_id=1770100300]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.5, 3.5, -25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.5, 1.5, -30.3)
 script = ExtResource("zone_monstre")
 une_seule_fois = true
+monstre = NodePath("../MonstreOmbre")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ZoneMonstreEscalier" unique_id=1770100301]
 shape = SubResource("BoxShape3D_monstre_escalier")
@@ -692,3 +698,7 @@ shape = SubResource("BoxShape3D_fin_tableau")
 [editable path="NoteChariot"]
 [editable path="TableSpawn"]
 [editable path="TableEtage"]
+
+[node name="MonstreOmbre" parent="." unique_id=1770100500 instance=ExtResource("monstre_ombre_glb")]
+transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 41.5, 4.2, -21.5)
+script = ExtResource("monstre_ombre")
