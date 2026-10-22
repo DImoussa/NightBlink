@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://bx4uekgll8ow5"]
+
+[ext_resource type="Script" uid="uid://cv6p7trts01bf" path="res://porte_metal.gd" id="1_kddb7"]
+[ext_resource type="PackedScene" uid="uid://br8w5yny56eyj" path="res://porte_grille.glb" id="2_wwdp8"]
+
+[sub_resource type="Animation" id="Animation_porte_gauche"]
+resource_name = "ouvrir"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(0.4, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.745329, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_porte_gauche"]
+_data = {
+&"ouvrir": SubResource("Animation_porte_gauche")
+}
+
+[node name="porte_gauche" type="Node3D" unique_id=1554801039]
+script = ExtResource("1_kddb7")
+ouverture_aimant = false
+
+[node name="Modele" parent="." unique_id=286341489 instance=ExtResource("2_wwdp8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.72, -7.1749, -0.983)
+
+[node name="Scene_Cycles_Baked_001" parent="Modele" index="0" unique_id=1431619278]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.719995, 7.174866, 0.4250177)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=978830326]
+libraries/ = SubResource("AnimationLibrary_porte_gauche")
+
+[editable path="Modele"]
