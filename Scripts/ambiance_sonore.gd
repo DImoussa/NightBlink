@@ -7,6 +7,7 @@ const Sons := preload("res://Scripts/sons.gd")
 @export var lumieres_neon: Array[NodePath] = []   # chaque lumière reçoit le grésillement "Neon" en 3D
 @export var secondes_coeur := 20.0                # le cœur et la respiration commencent 20 s avant que la lampe s'éteigne
 @export var volume_respiration := 12.0            # dB en plus : le fichier Respiration.wav est enregistré très bas
+@export var seuil_monstre := 0.28                 # la musique du monstre se joue quand la lampe passe sous 28 %
 @export var delai_aleatoire := Vector2(20, 45)    # secondes entre deux bruits aléatoires (min, max)
 @export var distance_aleatoire := Vector2(6, 14)  # distance au joueur des bruits aléatoires (min, max)
 
@@ -23,10 +24,15 @@ const SONS_ALEATOIRES: Array[AudioStream] = [
 
 var coeur: AudioStreamPlayer
 var respiration: AudioStreamPlayer
+var monstre := AudioStreamPlayer.new()
+var niveau_precedent := 1.0
 var minuterie := Timer.new()
 
 
 func _ready() -> void:
+	add_to_group("ambiance_sonore")   # les zones du monstre (zone_monstre.gd) nous appellent
+	monstre.stream = preload("res://Son/Monstre.wav")
+	add_child(monstre)
 	Sons.boucle(self, preload("res://Son/Brown_noise.mp3")).play()
 	coeur = Sons.boucle(self, preload("res://Son/Coeur.wav"))
 	respiration = Sons.boucle(self, preload("res://Son/Respiration.wav"))
@@ -52,6 +58,17 @@ func _process(_delta: float) -> void:
 	Sons.garder(respiration, actif)
 	# Plus la lampe est près de s'éteindre, plus le cœur bat vite
 	coeur.pitch_scale = lerpf(1.6, 1.0, clampf(restant / secondes_coeur, 0.0, 1.0))
+	# La lampe vient de passer sous 28 % (rejoue si on recharge puis qu'on y repasse)
+	var niveau: float = lampe.energy / lampe.max_energy
+	if niveau < seuil_monstre and niveau_precedent >= seuil_monstre and not joueur.mort:
+		musique_monstre()
+	niveau_precedent = niveau
+
+
+# Escalier du début, lampe sous 28 %, zones sombres : un seul morceau à la fois, pas de superposition
+func musique_monstre() -> void:
+	if not monstre.playing:
+		monstre.play()
 
 
 func _bruit_aleatoire() -> void:

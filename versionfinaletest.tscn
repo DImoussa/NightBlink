@@ -34,6 +34,7 @@
 [ext_resource type="PackedScene" uid="uid://8okbydwjigc6" path="res://Scenes/table_basse.glb" id="meuble_table"]
 [ext_resource type="Script" uid="uid://cblw6qcrnrig3" path="res://zone_depart_lampe.gd" id="zone_depart_lampe"]
 [ext_resource type="AudioStream" path="res://Son/Chariot_roulant.wav" id="son_chariot"]
+[ext_resource type="Script" path="res://zone_monstre.gd" id="zone_monstre"]
 
 [sub_resource type="ShaderMaterial" id="StandardMaterial3D_gy0ha"]
 resource_name = "Cycles_Lighting_01"
@@ -312,6 +313,12 @@ radius = 1.0782
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_depart_lampe"]
 size = Vector3(3, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_monstre_escalier"]
+size = Vector3(3, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_monstre_sombre"]
+size = Vector3(4, 3, 4)
 
 [node name="Node3D" type="Node3D" unique_id=956417553]
 
@@ -655,3 +662,20 @@ lumieres_neon = Array[NodePath]([NodePath("../LumiereHautEscalier"), NodePath(".
 [editable path="NoteChariot"]
 [editable path="TableSpawn"]
 [editable path="TableEtage"]
+
+[node name="ZoneMonstreEscalier" type="Area3D" parent="." unique_id=1770100300]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.5, 3.5, -25)
+script = ExtResource("zone_monstre")
+une_seule_fois = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ZoneMonstreEscalier" unique_id=1770100301]
+shape = SubResource("BoxShape3D_monstre_escalier")
+
+[node name="ZonesSombres" type="Node3D" parent="." unique_id=1770100302]
+
+[node name="ZoneSombreExemple" type="Area3D" parent="ZonesSombres" unique_id=1770100303]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.354828, 9.5, -3.58245)
+script = ExtResource("zone_monstre")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ZonesSombres/ZoneSombreExemple" unique_id=1770100304]
+shape = SubResource("BoxShape3D_monstre_sombre")
