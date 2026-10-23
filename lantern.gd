@@ -1,7 +1,7 @@
 extends SpotLight3D
 
 @export var max_energy := 80.0
-@export var drain_rate := 2.0
+@export var drain_rate := 1
 @export var duree_extinction := 5.0   # secondes : avant la mort, la lumière baisse peu à peu jusqu'à s'éteindre
 
 var energy := 40.0

@@ -5,7 +5,7 @@ extends CharacterBody3D
 @export var portee_aimant := 30.0   # distance max pour attraper un mur
 @export var portee_porte := 10     # distance max entre l'aimant et une porte métallique pour l'ouvrir
 @export var portee_objet := 10     # distance max entre l'aimant et un objet à attraper (imprimante...)
-@export var portee_ramassage := 1.0 # distance max entre l'aimant et un objet à ramasser (clé...)
+@export var portee_ramassage := 3.0 # distance max entre l'aimant et un objet à ramasser (clé...)
 @export var tolerance_visee := 0.4  # on ramasse aussi si on vise à moins de ça de l'objet (ex. le lavabo autour)
 @export var vitesse_echelle := 2.5  # m/s pour monter/descendre une échelle
 @onready var lampe: SpotLight3D = get_tree().get_first_node_in_group("lantern")

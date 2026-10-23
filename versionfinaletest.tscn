@@ -549,7 +549,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.719995, 7.174866, -0.71907
 libraries/ = SubResource("AnimationLibrary_porte_droite")
 
 [node name="Player" parent="." unique_id=502473477 instance=ExtResource("15_pbovl")]
-transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, 42.784405, 1.4973085, -36.55981)
+transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, 19.145645, 7.5407553, 40.459637)
 
 [node name="Aimant" parent="Player/Head/Camera3D" parent_id_path=PackedInt32Array(502473477, 1500617760) index="2" unique_id=726911098]
 transform = Transform3D(0.009727407, 0.0006109037, 0.07135048, -0.0040993555, 0.050020766, -9.268333e-06, -0.056608867, -0.003517305, 0.012261205, -0.2885399, -0.12726581, -0.49510765)
