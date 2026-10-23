@@ -5,6 +5,7 @@ extends Node3D
 
 @export var ouverture_aimant := true
 @export var son_ouverture: AudioStream   # joué en 3D sur la porte à l'ouverture (double porte : sur un seul battant)
+@export var surbrillance_entiere := false   # aura légère sur toute la porte (sinon juste le contour)
 
 var ouverte := false
 
@@ -14,7 +15,7 @@ const Surbrillance := preload("res://Scripts/surbrillance.gd")
 func _ready() -> void:
 	if ouverture_aimant:
 		add_to_group("porte_metal")
-		Surbrillance.appliquer(self, true)
+		Surbrillance.appliquer(self, Surbrillance.MATERIAU_LEGER if surbrillance_entiere else Surbrillance.MATERIAU_CONTOUR)
 
 
 func ouvrir(_position_joueur := Vector3.ZERO) -> void:

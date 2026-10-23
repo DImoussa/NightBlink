@@ -4,10 +4,13 @@ extends CharacterBody3D
 @export var mouse_sensitivity := 0.002
 @export var portee_aimant := 30.0   # distance max pour attraper un mur
 @export var portee_porte := 10     # distance max entre l'aimant et une porte métallique pour l'ouvrir
-@export var portee_objet := 10     # distance max entre l'aimant et un objet à attraper (imprimante...)
+@export var portee_objet := 20     # distance max entre l'aimant et un objet à attraper (imprimante...)
 @export var portee_ramassage := 3.0 # distance max entre l'aimant et un objet à ramasser (clé...)
 @export var tolerance_visee := 0.4  # on ramasse aussi si on vise à moins de ça de l'objet (ex. le lavabo autour)
+@export var portee_serrure := 15.0  # distance max entre l'aimant et la serrure pour y insérer la clé
+@export var tolerance_serrure := 0.8  # on vise la serrure ou juste à côté
 @export var vitesse_echelle := 2.5  # m/s pour monter/descendre une échelle
+@export var rayon_collision := 0.35 # m : la capsule par défaut (0,5) passait tout juste la porte avant l'escalier du début
 @onready var lampe: SpotLight3D = get_tree().get_first_node_in_group("lantern")
 
 
@@ -56,6 +59,7 @@ func _ready():
 	# (Le bouton de la carte déclenche directement l'action "magnet", voir arduino.gd)
 	arduino = get_node_or_null("/root/Arduino")
 	add_to_group("player")   # pour que le gyroscope (arduino.gd) retrouve le joueur
+	($CollisionShape3D.shape as CapsuleShape3D).radius = rayon_collision
 	# La lampe tenue en main ne doit pas faire d'ombre devant sa propre lumière
 	for maillage in $Head/Camera3D/Lampe.find_children("*", "GeometryInstance3D", true, false):
 		maillage.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -180,10 +184,10 @@ func _son_aimant(actif: bool):
 	Sons.garder(son_aimant, actif)
 
 
-# La porte ne s'attrape pas : l'aimant sonne seulement le temps qu'elle s'ouvre
-func _son_aimant_porte(porte: Node):
+# Porte qui s'ouvre, chariot balayé : l'aimant sonne seulement le temps du mouvement
+func _son_aimant_pendant(fin: Signal):
 	_son_aimant(true)
-	await porte.get_node("AnimationPlayer").animation_finished
+	await fin
 	if not mur_tenu and not objet_tenu:
 		_son_aimant(false)
 
@@ -208,17 +212,27 @@ func basculer_aimant():
 	if porte:
 		if distance_aimant <= portee_porte and not porte.ouverte:
 			porte.ouvrir(global_position)
-			_son_aimant_porte(porte)
+			_son_aimant_pendant(porte.get_node("AnimationPlayer").animation_finished)
 		return
 	# Objet métallique visé : on le tient tant que E reste appuyé
 	var objet := trouver_dans_groupe(collider, "attrapable")
 	if objet:
 		# Le chariot reste trop lourd tant que toutes les piles n'ont pas été ramassées
 		if distance_aimant <= portee_objet and objet.peut_etre_attrape():
-			objet_tenu = objet
-			objet.attraper(self)
-			allumer_led(true)
+			if objet.trajet_balayage.is_empty():
+				objet_tenu = objet
+				objet.attraper(self)
+				allumer_led(true)
+			else:
+				# Le chariot ne se contrôle pas : l'aimant le balaye d'un coup sur le côté
+				objet.balayer()
+				_son_aimant_pendant(objet.balayage_fini)
 		return
+	# Serrure visée (ou juste à côté) avec la clé : on l'insère de loin
+	if resultat and distance_aimant <= portee_serrure:
+		for serrure in get_tree().get_nodes_in_group("serrure"):
+			if serrure.global_position.distance_to(resultat.position) <= tolerance_serrure and serrure.deverrouiller(self):
+				return
 	# Objet à ramasser visé (clé...) : il part dans l'inventaire
 	var ramassable := trouver_dans_groupe(collider, "ramassable")
 	# On vise juste à côté (ex. le bord du lavabo) : on prend l'objet à ramasser le plus proche du point visé

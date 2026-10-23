@@ -492,7 +492,7 @@ shadow_mesh = SubResource("ArrayMesh_awb41")
 
 [node name="scene3jsp" parent="." unique_id=730180024 instance=ExtResource("1_gmjvt")]
 
-[node name="Scene_Cycles_Baked" parent="scene3jsp" index="0" unique_id=1135601623]
+[node name="Scene_Cycles_Baked" parent="scene3jsp" index="0" unique_id=1346103037]
 transform = Transform3D(0.99942106, 0, 0, 0, 0.99942106, 0, 0, 0, 0.99942106, -0.0009460449, -0.0049004555, 0.0055994987)
 mesh = ExtResource("2_xpu21")
 surface_material_override/0 = SubResource("StandardMaterial3D_gy0ha")
@@ -504,7 +504,7 @@ surface_material_override/5 = SubResource("StandardMaterial3D_o4r7m")
 surface_material_override/6 = SubResource("StandardMaterial3D_pkedk")
 surface_material_override/7 = SubResource("StandardMaterial3D_kr2xi")
 
-[node name="CollisionShape3D" parent="scene3jsp/Scene_Cycles_Baked/StaticBody3D" parent_id_path=PackedInt32Array(730180024, 651703024) index="0" unique_id=920972477]
+[node name="CollisionShape3D" parent="scene3jsp/Scene_Cycles_Baked/StaticBody3D" parent_id_path=PackedInt32Array(730180024, 1919058477) index="0" unique_id=1532675569]
 visible = false
 
 [node name="CleDoublePorte" parent="." unique_id=825424458 instance=ExtResource("11_hdhgi")]
@@ -512,10 +512,10 @@ transform = Transform3D(-0.010217815, 0, -0.37923014, 0, 0.9952929, 0, 0.4314667
 script = ExtResource("12_bloks")
 son_reperage = ExtResource("son_suivre_cle")
 
-[node name="RootNode" parent="CleDoublePorte" index="0" unique_id=901913484]
+[node name="RootNode" parent="CleDoublePorte" index="0" unique_id=1968425476]
 transform = Transform3D(1, 0, -3.7252903e-09, 0, 0.8760972, 0, -3.7252903e-09, 0, 1, 0, 0.072368145, 0)
 
-[node name="Key4" parent="CleDoublePorte/RootNode" index="0" unique_id=1444380205]
+[node name="Key4" parent="CleDoublePorte/RootNode" index="0" unique_id=817882523]
 transform = Transform3D(100.00001, 0, 0, 0, -1.1920931e-05, 100, 0, -100.00001, -1.1920931e-05, 0, -0.17595863, 0)
 mesh = SubResource("ArrayMesh_2h5ct")
 
@@ -528,7 +528,7 @@ son_ouverture = ExtResource("son_double_porte")
 [node name="Modele" parent="porte_gauche" unique_id=2141515074 instance=ExtResource("14_gcb2r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.72, -7.1749, -0.983)
 
-[node name="Scene_Cycles_Baked_001" parent="porte_gauche/Modele" index="0" unique_id=1431619278]
+[node name="Scene_Cycles_Baked_001" parent="porte_gauche/Modele" index="0" unique_id=1280315669]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.719995, 7.174866, 0.4250177)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="porte_gauche" unique_id=1996605156]
@@ -542,19 +542,19 @@ ouverture_aimant = false
 [node name="Modele" parent="porte_droite" unique_id=286341489 instance=ExtResource("14_gcb2r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.72, -7.1749, 1.281)
 
-[node name="Scene_Cycles_Baked_001" parent="porte_droite/Modele" index="0" unique_id=1431619278]
+[node name="Scene_Cycles_Baked_001" parent="porte_droite/Modele" index="0" unique_id=1280315669]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.719995, 7.174866, -0.7190703)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="porte_droite" unique_id=145878039]
 libraries/ = SubResource("AnimationLibrary_porte_droite")
 
 [node name="Player" parent="." unique_id=502473477 instance=ExtResource("15_pbovl")]
-transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, 19.145645, 7.5407553, 40.459637)
+transform = Transform3D(-0.99014866, 0, -0.14002053, 0, 1, 0, 0.14002053, 0, -0.99014866, 44.71351, 1.4933105, -34.059525)
 
 [node name="Aimant" parent="Player/Head/Camera3D" parent_id_path=PackedInt32Array(502473477, 1500617760) index="2" unique_id=726911098]
 transform = Transform3D(0.009727407, 0.0006109037, 0.07135048, -0.0040993555, 0.050020766, -9.268333e-06, -0.056608867, -0.003517305, 0.012261205, -0.2885399, -0.12726581, -0.49510765)
 
-[node name="Scene_Baked" parent="Player/Head/Camera3D/Aimant" index="0" unique_id=631722791]
+[node name="Scene_Baked" parent="Player/Head/Camera3D/Aimant" index="0" unique_id=1968391353]
 mesh = SubResource("ArrayMesh_t0bdw")
 
 [node name="Node3D2" parent="." unique_id=1596967186 instance=ExtResource("17_2dqag")]
@@ -580,11 +580,12 @@ transform = Transform3D(0.3023954, 0, 0, 0, 0.29869324, 3.637979e-12, 0, 0, 0.48
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.13, 1.6644, -31.87)
 script = ExtResource("13_yojji")
 son_ouverture = ExtResource("son_porte_metal")
+surbrillance_entiere = true
 
 [node name="Modele" parent="portemetalentree" unique_id=1560398616 instance=ExtResource("18_njt4j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.13, -1.257739, 31.87)
 
-[node name="Scene_Cycles_Baked" parent="portemetalentree/Modele" index="0" unique_id=1206415484]
+[node name="Scene_Cycles_Baked" parent="portemetalentree/Modele" index="0" unique_id=1187978702]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.696037, 1.2577634, -31.87)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="portemetalentree" unique_id=109623624]
@@ -598,7 +599,7 @@ son_ouverture = ExtResource("son_porte_metal")
 [node name="Modele" parent="portemetalsortie" unique_id=1659996280 instance=ExtResource("18_njt4j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9083, -6.452878, -38.331)
 
-[node name="Scene_Cycles_Baked" parent="portemetalsortie/Modele" index="0" unique_id=1206415484]
+[node name="Scene_Cycles_Baked" parent="portemetalsortie/Modele" index="0" unique_id=1187978702]
 transform = Transform3D(-0.062060904, 0, 0.9980724, 0, 1, 0, -0.9980724, 0, -0.062060904, 1.8731952, 6.452925, 38.895927)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="portemetalsortie" unique_id=154469641]
@@ -630,6 +631,7 @@ portee_son = 60.0
 [node name="Imprimante" parent="." unique_id=1734200511 instance=ExtResource("20_83dw4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.239414, 5.978727, 38.917637)
 son_deplacement = ExtResource("son_chariot")
+trajet_balayage = PackedVector3Array(3.8, 6, 38.9, 3.5, 6, 32.5)
 
 [node name="Serrure" type="Area3D" parent="." unique_id=1598812207]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.15, 7.49, 1.48)
@@ -772,10 +774,10 @@ shape = SubResource("BoxShape3D_lit")
 [node name="TableSpawn" parent="." unique_id=1770100020 instance=ExtResource("meuble_table")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 45.55, 0.4189, -35)
 
-[node name="Sphere" parent="TableSpawn" index="0" unique_id=1194436267]
+[node name="Sphere" parent="TableSpawn" index="0" unique_id=947049541]
 visible = false
 
-[node name="Cylinder_002" parent="TableSpawn" index="1" unique_id=1852357560]
+[node name="Cylinder_002" parent="TableSpawn" index="1" unique_id=1748090038]
 transform = Transform3D(0.99999994, 0, 0, 0, 1.1623236, 0, 0, 0, 0.99999994, 0, 0, -1.1315689)
 
 [node name="Collision" type="StaticBody3D" parent="TableSpawn" unique_id=1770100021]
@@ -796,10 +798,10 @@ shape = SubResource("BoxShape3D_lit")
 [node name="TableEtage" parent="." unique_id=1770100040 instance=ExtResource("meuble_table")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 4.6, 6.0189, -0.7)
 
-[node name="Sphere" parent="TableEtage" index="0" unique_id=1194436267]
+[node name="Sphere" parent="TableEtage" index="0" unique_id=947049541]
 visible = false
 
-[node name="Cylinder_002" parent="TableEtage" index="1" unique_id=1852357560]
+[node name="Cylinder_002" parent="TableEtage" index="1" unique_id=1748090038]
 transform = Transform3D(2.6348653, 0, 0, 0, 1.7570345, 0, 0, 0, 2.7704194, -28.579636, 0, 131.95958)
 
 [node name="Collision" type="StaticBody3D" parent="TableEtage" unique_id=1770100041]

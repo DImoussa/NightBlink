@@ -25,9 +25,14 @@ signal imu_changed(pitch: float, roll: float, yaw: float)  # angles en degrés, 
 # Tant que la torche est tournée par rapport au centre, la caméra continue de tourner (360° faciles) ;
 # revenir au centre l'arrête. false = la caméra suit l'angle de la torche (1 pour 1, sans 360°).
 @export var rotation_continue := true
-@export var zone_morte := 8.0             # degrés autour du centre sans rotation
-@export var inclinaison_max := 40.0       # degrés depuis le centre pour tourner à la vitesse max
-@export var vitesse_rotation_max := 150.0 # degrés par seconde
+@export var zone_morte := 10.0            # degrés autour du centre sans rotation (avec lacet : la caméra y suit la torche 1 pour 1)
+@export var inclinaison_max := 45.0       # degrés depuis le centre pour tourner à la vitesse max
+@export var vitesse_rotation_max := 140.0 # degrés par seconde
+@export var courbe := 1.7                 # 1 = vitesse proportionnelle, plus grand = plus doux près de la zone morte
+@export var ecart_max := 55.0             # au-delà, le centre est entraîné avec la torche : revenir de quelques degrés suffit à s'arrêter
+@export var recentrage := 6.0             # °/s : torche tenue tournée, le centre la rejoint, la rotation ralentit puis s'arrête (jamais infinie)
+@export var recentrage_zone := 1.0        # °/s : dans la zone, le centre suit la torche sans bouger la caméra (dérive du gyroscope)
+@export var lissage := 15.0               # plus grand = plus réactif, plus petit = plus doux
 @export var inverser_rotation := false
 
 var manager: Node = null
@@ -39,6 +44,8 @@ var tourne_en_penchant := false   # rotation continue active (carte sans lacet, 
 var inclinaison := 0.0            # écart (°) au centre qui sert à tourner dans ce mode
 var signe_rotation := -1.0        # roulis positif = tourner à droite ; lacet positif = tourner à gauche
 var centre_lacet := 0.0           # direction "centre" de la torche (lacet au moment de la connexion)
+var visee := 0.0                  # part de l'écart déjà appliquée 1 pour 1 à la caméra (degrés, dans la zone morte)
+var vitesse_lissee := 0.0         # vitesse de rotation continue actuelle (°/s)
 
 
 func _ready():
@@ -70,6 +77,7 @@ func _message(cle: String, valeur: String):
 			var continu := a_lacet and rotation_continue
 			if not imu_ok:
 				centre_lacet = y   # la torche est "au centre" quand le jeu se connecte
+				visee = 0.0
 			if imu_ok:
 				var haut_bas := 0.0 if haut_bas_absolu else ((r - roll) if utiliser_roll else (p - pitch))
 				var gauche_droite := (y - yaw) if (a_lacet and not continu) else 0.0
@@ -107,25 +115,56 @@ func _process(delta):
 		manager._send("energy:" + str(niveau))
 
 
-# Carte sans lacet : tant que la manette est penchée sur le côté, la caméra tourne (vitesse selon l'angle).
+# Tant que la torche est tournée par rapport au centre, la caméra tourne (vitesse selon l'angle).
 # Appelé à chaque image, car la carte n'envoie rien tant que l'angle ne bouge pas.
 func _tourner_en_penchant(delta: float) -> void:
 	if not tourne_en_penchant or not imu_ok or manager == null or not manager._paired:
+		vitesse_lissee = 0.0
 		return
-	var ecart: float = (yaw - centre_lacet) if signe_rotation > 0.0 else inclinaison
-	var exces: float = abs(ecart) - zone_morte
-	if exces <= 0.0:
-		# Torche au centre : le centre suit doucement la torche (compense la petite dérive du gyroscope)
-		if signe_rotation > 0.0:
-			centre_lacet = move_toward(centre_lacet, yaw, 2.0 * delta)
+	var joueur = get_tree().get_first_node_in_group("player")
+	var actif: bool = joueur != null and not joueur.get("mort") and not joueur.get("fige")
+	if signe_rotation > 0.0:
+		_tourner_avec_lacet(delta, joueur if actif else null)
+		return
+	# Carte sans lacet : roulis positif = tourner à droite
+	var exces: float = abs(inclinaison) - zone_morte
+	if exces <= 0.0 or not actif:
 		return
 	var t: float = clamp(exces / max(inclinaison_max - zone_morte, 1.0), 0.0, 1.0)
-	var vitesse := vitesse_rotation_max * t * t   # douce près de la zone morte, rapide en penchant fort
-	# Lacet positif = torche tournée à gauche -> tourner à gauche ; roulis positif -> tourner à droite
-	var sens := signe_rotation * signf(ecart) * (-1.0 if inverser_rotation else 1.0)
-	var joueur = get_tree().get_first_node_in_group("player")
-	if joueur and not joueur.get("mort") and not joueur.get("fige"):
-		joueur.tourner_camera(deg_to_rad(sens * vitesse * delta), 0.0)
+	var sens := -signf(inclinaison) * (-1.0 if inverser_rotation else 1.0)
+	joueur.tourner_camera(deg_to_rad(sens * vitesse_rotation_max * pow(t, courbe) * delta), 0.0)
+
+
+# Carte avec lacet : petits gestes = visée 1 pour 1, torche tournée plus loin = rotation continue.
+# Lacet positif = torche tournée à gauche -> tourner à gauche.
+func _tourner_avec_lacet(delta: float, joueur) -> void:
+	var ecart := yaw - centre_lacet
+	if absf(ecart) > ecart_max:
+		# Torche tournée très loin (ou dérive) : le centre suit, la vitesse ne dépasse jamais le max
+		centre_lacet = yaw - signf(ecart) * ecart_max
+	elif absf(ecart) > zone_morte:
+		# Torche tenue tournée : le centre la rejoint doucement, la rotation finit par s'arrêter
+		centre_lacet = move_toward(centre_lacet, yaw - signf(ecart) * zone_morte, recentrage * delta)
+	else:
+		# Dans la zone : le centre suit lentement la torche, la visée est décalée d'autant (la caméra ne bouge pas)
+		var avant := centre_lacet
+		centre_lacet = move_toward(centre_lacet, yaw, recentrage_zone * delta)
+		visee -= centre_lacet - avant
+	ecart = yaw - centre_lacet
+	var lisse := minf(1.0, lissage * delta)
+	# Visée fine : la caméra suit la torche 1 pour 1 dans la zone morte (lissée, la carte envoie par pas de 0,3°)
+	var nouvelle_visee := lerpf(visee, clampf(ecart, -zone_morte, zone_morte), lisse)
+	var pas_visee := nouvelle_visee - visee
+	visee = nouvelle_visee
+	# Rotation continue au-delà de la zone : douce près du bord, rapide en tournant fort
+	var exces := absf(ecart) - zone_morte
+	var t := clampf(exces / maxf(inclinaison_max - zone_morte, 1.0), 0.0, 1.0)
+	vitesse_lissee = lerpf(vitesse_lissee, signf(ecart) * vitesse_rotation_max * pow(t, courbe), lisse)
+	if joueur == null:
+		vitesse_lissee = 0.0
+		return
+	var sens := -1.0 if inverser_rotation else 1.0
+	joueur.tourner_camera(deg_to_rad(sens * (pas_visee * sensibilite_horizontale + vitesse_lissee * delta)), 0.0)
 
 
 # Haut/bas absolu : à chaque image, la tête du joueur prend l'inclinaison réelle de la torche

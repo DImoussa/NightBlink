@@ -47,6 +47,8 @@ float pitch = 0, roll = 0, yaw = 0;      // roll = lever/baisser la torche, yaw 
 float pitchEnvoye = 999, rollEnvoye = 999, yawEnvoye = 999;
 float biaisX = 0, biaisY = 0, biaisZ = 0; // dérive du gyroscope (°/s), mesurée quand la torche est immobile
 const float SEUIL_IMMOBILE = 2.0;         // °/s : en dessous sur les 3 axes, la torche est considérée immobile
+const unsigned long DUREE_IMMOBILE_MS = 500; // ... mais seulement après ce temps : une rotation lente est quand même comptée
+unsigned long debutCalme = 0;
 unsigned long dernierImu = 0;
 bool imuPremiereMesure = true;
 unsigned long derniereRecherche = 0;      // gyroscope absent : on le recherche toutes les secondes
@@ -130,7 +132,9 @@ void lireImu(float dt) {
   float ax = v[3], ay = v[4], az = v[5];                     // l'échelle n'importe pas pour les angles
 
   // Dérive du gyroscope : apprise en continu tant que la torche ne bouge pas
-  bool immobile = abs(gx - biaisX) < SEUIL_IMMOBILE && abs(gy - biaisY) < SEUIL_IMMOBILE && abs(gz - biaisZ) < SEUIL_IMMOBILE;
+  bool calme = abs(gx - biaisX) < SEUIL_IMMOBILE && abs(gy - biaisY) < SEUIL_IMMOBILE && abs(gz - biaisZ) < SEUIL_IMMOBILE;
+  if (!calme) debutCalme = millis();
+  bool immobile = calme && millis() - debutCalme >= DUREE_IMMOBILE_MS;
   if (immobile) {
     biaisX += 0.02 * (gx - biaisX);
     biaisY += 0.02 * (gy - biaisY);
@@ -151,10 +155,10 @@ void lireImu(float dt) {
   roll  = 0.96 * (roll  + gx * dt) + 0.04 * rollAcc;
 
   // Lacet : pas de boussole, on intègre la vitesse de rotation autour de la VERTICALE réelle
-  // (formule d'Euler : reste juste quand la torche est levée, baissée ou penchée)
+  // (projection sur la gravité : pas de blocage ni d'amplification quand la torche est vrillée, levée ou baissée)
   if (!immobile) {
-    float r = roll * PI / 180.0, cp = cos(pitch * PI / 180.0);
-    if (abs(cp) > 0.2) yaw += (gy * sin(r) + gz * cos(r)) / cp * dt;
+    float r = roll * PI / 180.0, p = pitch * PI / 180.0;
+    yaw += (-gx * sin(p) + (gy * sin(r) + gz * cos(r)) * cos(p)) * dt;
   }
 }
 
