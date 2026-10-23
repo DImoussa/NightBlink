@@ -6,6 +6,7 @@ extends Area3D
 @export_file("*.tscn") var scene_apres := "res://Scenes/Start.tscn"
 
 const VIDEO_OUTRO := preload("res://Video/outro.ogv")
+const GENERIQUE := preload("res://Scripts/generique.gd")
 
 var declenchee := false
 
@@ -40,5 +41,8 @@ func _jouer_outro() -> void:
 	get_tree().paused = true
 	video.play()
 	await video.finished
+	var generique := GENERIQUE.new()
+	add_child(generique)
+	await generique.fini
 	get_tree().paused = false
 	get_tree().change_scene_to_file(scene_apres)
